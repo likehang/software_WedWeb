@@ -51,13 +51,13 @@
                         <div class="field">
                             <div class="">
                                 <label>公司名称</label>
-                                <input type="text" placeholder="xxxx" id="C_name" :value="form_Company.new_form.name" :readOnly="!modal.Com_isEdit">
+                                <input type="text" placeholder="xxxx" id="C_name" v-model.trim="form_Company.new_form.name" :readOnly="!modal.Com_isEdit">
                             </div>
-                            <div class="ui error message"><p>长度限制</p></div>
+                            <div class="ui error message" v-show=""><p>长度限制</p></div>
                             <br>
                             <div class="">
                                 <label>经营范围</label>
-                                <select id="C_kind" class="ui fluid dropdown" :value="form_Company.new_form.business_kind" :disabled="!modal.Com_isEdit">
+                                <select id="C_kind" class="ui fluid dropdown" v-model="form_Company.new_form.business_kind" :disabled="!modal.Com_isEdit">
                                     <option v-for="Ckind in Ckinds" :value="Ckind.id" >{{Ckind.ex_name}}</option>
                                 </select>
                             </div>
@@ -73,20 +73,20 @@
                             <br>
                             <div class="">
                                 <label>内部电话</label>
-                                <input type="text" placeholder="方便网站联系" id="C_inphone" :value="form_Company.new_form.inward_phone" :readOnly="!modal.Com_isEdit">
+                                <input type="text" placeholder="方便网站联系" id="C_inphone" v-model.trim="form_Company.new_form.inward_phone" :readOnly="!modal.Com_isEdit">
                             </div>
                             <div class="ui error message"><p>电话限制</p></div>
                             <br>
                             <div class="">
                                 <label>客户电话</label>
-                                <input type="text" placeholder="方便与用户联系" id="C_phone" :value="form_Company.new_form.phone" :readOnly="!modal.Com_isEdit">
+                                <input type="text" placeholder="方便与用户联系" id="C_phone" v-model.trim="form_Company.new_form.phone" :readOnly="!modal.Com_isEdit">
                             </div>
                             <div class="ui error message"><p>电话限制</p></div>
                             <br>
                             <div class="two fields">
                                 <div class="field">
                                     <div class="ui toggle checkbox ">
-                                        <input type="checkbox" id="C_run" :value="form_Company.new_form.isopen" :disabled="!modal.Com_isEdit"><label>营业状态</label> 
+                                        <input type="checkbox" id="C_run" v-model="form_Company.new_form.isopen" :disabled="!modal.Com_isEdit"><label>营业状态</label> 
                                     </div>
                                 </div>
                                 <div class="field">
@@ -111,7 +111,7 @@
                             <br>
                             <div class="">
                                 <label>上传图标</label>
-                                <input type="file" id="C_new_icon" :disabled="!modal.Com_isEdit">
+                                <input type="file" id="C_new_icon" v-on:click="CnewI" :disabled="!modal.Com_isEdit">
                             </div>
                             <div class="ui error message"><p>大小限制</p></div>
                         </div>
@@ -483,7 +483,8 @@
                 },
                 Com_edit:function(id){
                     var Com =this.modal;
-                    if(Com.Com_isEdit){this.putCompany();}
+                    if(Com.Com_isEdit){
+                        if(this.is_Cchange())this.putCompany();}
                     Com.Com_isEdit=!Com.Com_isEdit;
                     if(Com.Com_isEdit){Com.Com_dis="";Com.Com_button="保存";
                         this.form_Company.old_form=this.form_Company.new_form;}
@@ -526,6 +527,27 @@
                 matchCkind:function(bkind,ckind){
                     if(bkind == ckind){return 'checked';}
                     else{return '';}
+                },
+                is_Cchange:function(){
+                    var oldC = this.form_Company.old_form;
+                    var newC = this.form_Company.new_form;
+                    for(var i=0;i<oldC.length;i++){
+                        var prop = oldC[i]
+                        if(a[prop].value != b[prop].value){alert('false') ;return false;}
+                    }
+                    alert('true') ;
+                    return true;
+                },
+                CnewI:function(img){
+                    var self = this;
+                    var file = img.target.files[0];
+                    var imgSize = file.size/1024;
+                    if(imgSize>200)alert('');
+                    else{
+                        var reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        self.form_Company.new_form.icon = reader.result;
+                    }
                 },
                 getCookie:function(name){  //获取cookie函数
                     name = name + "=";
