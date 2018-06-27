@@ -1,0 +1,56 @@
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static '/css/style.css' %}" type="text/css" media="all" />
+    <div class="header">
+        <div class="container">
+            <div class="header-left">
+                <div class="w3layouts-logo">
+                    <h1>
+                        <a href="../../index/"> 婚礼时光<span></span></a>
+                    </h1>
+                </div>
+            </div>
+            <div class="top-nav">
+                <nav class="navbar navbar-default">
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li><a class="" href="../../index/">Home</a></li>
+                            <li>
+                                <a href="#" class="dropdown-toggle hvr-bounce-to-bottom" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">服务<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    {% for sk in s_kind  %}
+                                    <li><a class="hvr-bounce-to-bottom" href="../../server/0&{{sk.id}}">{{sk}}</a></li>
+                                    {% endfor %}         
+                                </ul>
+                            </li>
+                            <li class="">
+                                <a href="#" class="dropdown-toggle hvr-bounce-to-bottom" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">地址<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    {% for ct in city  %}
+                                    <li><a class="hvr-bounce-to-bottom" href="../../server/{{ct.id}}&0">{{ct}}</a></li> 
+                                    {% endfor %}        
+                                </ul>
+                            </li>
+                            {% if User %}
+                            <li>
+                                <a href="#" class="dropdown-toggle hvr-bounce-to-bottom" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <img class="" src="{{user.icon.url}}" alt="">{{User.belong_to.name}}
+                                    <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    {% if User.is_C_man %}
+                                        <li><a class="hvr-bounce-to-bottom" href="../../backManage/">公司管理</a></li>
+                                    {% endif %}
+                                        <li><a class="hvr-bounce-to-bottom" href="../../person/">个人详情</a></li>
+                                        <li><a class="hvr-bounce-to-bottom" href="../../loginout/">注销</a></li>    
+                                </ul>
+                            </li>
+                            {% else %}								
+                                <li class="ui right float"><a href="../../login/">login</a></li>
+                            {% endif %}
+                        </ul>	
+                        <div class="clearfix"> </div>
+                    </div>	
+                </nav>		
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>

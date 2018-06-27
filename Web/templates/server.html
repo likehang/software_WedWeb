@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+<title>single server</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="{% static '/css/semantic.css' %}" media="screen" title="no title" charset="utf-8">
+<link href="{% static '/css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+<link rel="stylesheet" href="{% static '/css/style.css' %}" type="text/css" media="all" />
+<script src="{% static '/js/jquery-1.11.1.min.js' %}"></script>
+<script src="{% static '/js/bootstrap.js' %}"></script>
+ 
+</head>
+<body>
+	<div class="banner">
+        {% include "header.html" %}
+		<div class="agileinfo-top-heading">
+			<h2>Blog Post</h2>
+		</div>
+    </div>
+    
+<div class="ui attached tabular menu">
+    <a class="active item">chosse your server</a>
+    <div class="ui  attached segment">
+            <div class="ui segment">
+                <p>城市</p>
+                {% for ct in city %}
+                    {%if kind.id %}
+                        {% if ct.id == site.id %}
+                            <a class="ui red large label" href="../../server/{{ct.id}}&{{kind.id}}">{{ct}}</a>
+                        {% else %}
+                            <a class="ui pink large label" href="../../server/{{ct.id}}&{{kind.id}}">{{ct}}</a>
+                        {% endif %}
+                    {%else%}
+                        {% if ct.id == site.id %}
+                            <a class="ui red large label" href="../../server/{{ct.id}}&0">{{ct}}</a>
+                        {% else %}
+                            <a class="ui pink large label" href="../../server/{{ct.id}}&0">{{ct}}</a>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="ui segment">
+                <p>类型</p> 
+                {% for sk in s_kind %}
+                    {%if site.id %}
+                        {% if sk.id == kind.id %}
+                            <a class="ui red large label" href="../../server/{{site.id}}&{{sk.id}}">{{sk}}</a>
+                        {% else %}
+                            <a class="ui pink large label" href="../../server/{{site.id}}&{{sk.id}}">{{sk}}</a>
+                        {% endif %}
+                    {%else%}
+                        {% if sk.id == kind.id %}
+                            <a class="ui red large label" href="../../server/0&{{sk.id}}">{{sk}}</a>
+                        {% else %}
+                            <a class="ui pink large label" href="../../server/0&{{sk.id}}">{{sk}}</a>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+    </div>
+</div>
+<div class="posts">
+		<div class="container">
+			<div class="posts-grids">
+                {% if servers %}
+				{% for ser in servers %}
+				<div class="col-md-4 w3-agile-post-grids">
+					<div class="w3-agile-post-img" style="background-image:url({{ ser.icon.url }})">
+						<a href="../../single/{{ser.id}}"> 
+							<ul>
+								<li>{{ser.create_time}}</li>
+							</ul>
+						</a>
+					</div>
+					<div class="w3-agile-post-info">
+						<h4><a href="../../single/{{ser.id}}">{{ser.topic}}</a></h4>
+						<p>{{ser.introduction}}</p>
+					</div>
+				</div>
+                {% endfor %}  
+                {%else%}
+                <div>
+                    None
+                </div>
+                {% endif %}
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+<!--
+
+-->
+<footer>
+    {% include "footer.html" %}
+</footer>
+</body>	
+</html>

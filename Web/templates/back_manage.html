@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="ch">
+<head>
+<title>Company Manager</title>
+<link rel="stylesheet" href="{% static '/css/semantic.css' %}" media="screen" title="no title" charset="utf-8">
+<link href="{% static '/css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+<link rel="stylesheet" href="{% static '/css/style.css' %}" type="text/css" media="all" />
+<script src="{% static '/js/vue.js' %}"></script>
+<script src="{% static '/js/reqwest.js' %}"></script>
+</head>
+<body>
+	<div class="banner">
+        {% include "header.html" %}
+            <div class="agileinfo-top-heading">
+			    <h2>Blog Post</h2>
+		    </div>
+	</div>
+{% verbatim %}
+<div class="ui grid padded" id="mainmenu">
+        <div class="three wide column">
+            <div class="ui vertical inverted grey tabular stretched left menu " >
+                <div class="item">
+                    <a class="ui logo icon image"></a>
+                    <a v-on:click="showMain()"><b>菜单</b></a>
+                </div>
+                <div class="item">
+                    <div class="">公司</div>
+                    <div class="menu">
+                        <a class="item" v-on:click="showCompany()">公司管理</a>
+                        <a class="item" v-on:click="showList()">订单管理
+                            <div class=" ui teal circular label">数量</div></a>
+                    </div>
+                </div>
+                <div class="item">
+                    <div v-on:click="showServer()">服务</div>
+                    <div class="menu">
+                        <a class="item" v-on:click="showServer()"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="thirteen wide column"> 
+            <div class="ui vertical segment " v-show="menu.main">
+                欢迎
+            </div>
+            <div class="ui vertical segment " v-show="menu.company">
+                <form action="post" class="ui form error success" id="C_form">
+                    <h4 class="ui large violet header center aligned inverted "> {{form_Company.new_form.name}}公司 详情</h4>
+                    <div class="two fields">
+                        <div class="field">
+                            <div class="">
+                                <label>公司名称</label>
+                                <input type="text" placeholder="xxxx" id="C_name" :value="form_Company.new_form.name" :readOnly="!modal.Com_isEdit">
+                            </div>
+                            <div class="ui error message"><p>长度限制</p></div>
+                            <br>
+                            <div class="">
+                                <label>经营范围</label>
+                                <select id="C_kind" class="ui fluid dropdown" :value="form_Company.new_form.business_kind" :disabled="!modal.Com_isEdit">
+                                    <option v-for="Ckind in Ckinds" :value="Ckind.id" >{{Ckind.ex_name}}</option>
+                                </select>
+                            </div>
+                            <div class="ui error message"><p>经营限制</p></div>
+                            <br>
+                            <div class="">
+                                <label>城市</label>
+                                <select id="C_city" class="ui fluid dropdown" v-model="form_Company.new_form.adress" :disabled="!modal.Com_isEdit">
+                                    <option v-for="city in Citys" :value="city.id" >{{city.city_name}}</option>
+                                </select>
+                            </div>
+                            <div class="ui error message"><p>城市限制</p></div>
+                            <br>
+                            <div class="">
+                                <label>内部电话</label>
+                                <input type="text" placeholder="方便网站联系" id="C_inphone" :value="form_Company.new_form.inward_phone" :readOnly="!modal.Com_isEdit">
+                            </div>
+                            <div class="ui error message"><p>电话限制</p></div>
+                            <br>
+                            <div class="">
+                                <label>客户电话</label>
+                                <input type="text" placeholder="方便与用户联系" id="C_phone" :value="form_Company.new_form.phone" :readOnly="!modal.Com_isEdit">
+                            </div>
+                            <div class="ui error message"><p>电话限制</p></div>
+                            <br>
+                            <div class="two fields">
+                                <div class="field">
+                                    <div class="ui toggle checkbox ">
+                                        <input type="checkbox" id="C_run" :value="form_Company.new_form.isopen" :disabled="!modal.Com_isEdit"><label>营业状态</label> 
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui success message" v-if="form_Company.new_form.ident == 1"><p>审核通过</p></div>
+                                    <div class="ui error message" v-else><p>尚未通过审核</p></div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="two fields">
+                                <div class="field">
+                                    <a class="ui blue button" v-on:click="Com_edit(0)">{{modal.Com_button}}</a>
+                                </div>
+                                <div class="field">
+                                    <a class="ui grey button">取消</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui segment field">
+                            <label>当前图标</label>
+                            <br>
+                            <img :src="form_Company.new_form.icon" style="width: 300px;height: 300px;" class="ui image" id="C_icon">
+                            <br>
+                            <div class="">
+                                <label>上传图标</label>
+                                <input type="file" id="C_new_icon" :disabled="!modal.Com_isEdit">
+                            </div>
+                            <div class="ui error message"><p>大小限制</p></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="ui vertical segment " v-show="menu.list">
+                <div>
+                    <span class="ui header">订单管理</span>
+                    <a class="ui label"><i class="angle double down icon"></i> 顺序</a>
+                    <a class="ui label"><i class="angle double up icon"></i> 顺序</a>
+                </div>
+                <div class="ui divider"></div>
+                <div class="ui inverted divided list">
+                    <div>
+                        <a class="ui right ribbon label">date</a>
+                        <div class="ui grid ">
+                            <div class="three wide column">
+                                <div class="header">男士、女士</div>电话</div>
+                            <div class="nine wide column">
+                                <div class="header">主题</div>参数
+                                <a href="">[更多]</a>
+                            </div>
+                            <div class="four wide column">
+                                <div class="header">
+                                    <i class="yen sign icon"></i>价格
+                                    <a class="ui olive basic floated label">状态</a>
+                                </div>
+                                <div class="ui icon buttons centered">
+                                    <div class="ui basic green button icon">
+                                        <i class="plus icon"></i>下一阶段
+                                    </div>
+                                    <div class="ui basic red button icon">
+                                        <i class="delete icon"></i>取消
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui divider"></div>
+                    </div>
+                </div>
+                <div>
+
+                </div>
+                <div>下一阶段</div>
+                <div>取消</div>
+            </div>
+            <div class="ui vertical segment " v-show="menu.server">
+                <div class="ui vertical segment" v-show="servermenu.sinpage">
+                    <form action="post" class="ui form error success">
+                        <h4 class="ui large violet header center aligned inverted "> {{form_SingleServer.new_form.topic}}服务详情</h4>
+                        <div class="two fields">
+                            <div class="field">
+                                <div class="field">
+                                    <label>服务主题</label>
+                                    <input type="text" placeholder="xxxx" name="C_name" :value="form_SingleServer.new_form.topic" :readOnly="!modal.Ser_isEdit">
+                                </div>
+                                <div class="ui error message"><p>长度限制</p></div>
+                                <br>
+                                <div class="field">
+                                    <label>服务种类</label>
+                                    <select name="C_kind" class="ui fluid dropdown" :value="form_SingleServer.new_form.service_kind" :disabled="!modal.Ser_isEdit">
+                                        <option :value="kind.id" v-for="kind in Skinds">{{kind.ex_ser_name}}</option>
+                                    </select>
+                                </div>
+                                <div class="ui error message"><p>经营限制</p></div>
+                                <br>
+                                <div class="field">
+                                    <label>简介</label>
+                                    <textarea name="" id="" cols="30" rows="10" :value="form_SingleServer.new_form.detail" :readOnly="!modal.Ser_isEdit"></textarea>
+                                </div>
+                                <br>
+                                <div class="field">
+                                    <label>价格区间</label>
+                                    <div  class="three fields">  
+                                        <div class="field">
+                                            <input type="text" placeholder="minprice" name="min" :value="form_SingleServer.new_form.minprice" :readOnly="!modal.Ser_isEdit">
+                                        </div>
+                                        <div class="field">
+                                            ~
+                                        </div>
+                                        <div class="field">
+                                            <input type="text" placeholder="maxprice" name="max" :value="form_SingleServer.new_form.maxprice" :readOnly="!modal.Ser_isEdit">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="field">
+                                    <label>详细参数</label>
+                                    <table class="ui compact celled structured table" :disabled="!modal.Ser_isEdit">
+                                        <thead>
+                                            <tr>
+                                                <th class="center aligned">物品</th>
+                                                <th class="center aligned">方案</th>
+                                                <th class="center aligned">详细</th>
+                                                <th class="center aligned">价格</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td rowspan="3" class="center aligned">物品1</td>
+                                                    <td class="center aligned">方案1</td>
+                                                    <td class="center aligned">很多东西</td>
+                                                    <td class="center aligned">特别贵</td>
+                                            </tr>
+                                            <tr>
+                                                    <td class="center aligned">方案2</td>
+                                                    <td class="center aligned">很多东西</td>
+                                                    <td class="center aligned">特别贵</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="center aligned"><button class="ui blue small basic button"><i class="plus icon"></i>添加新</button></td>
+                                                <td class="center aligned"></td>
+                                                <td class="center aligned"><button class="ui red small basic button"><i class="delete icon"></i>删除上</button></td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot class="full-width">
+                                            <tr>
+                                                <th colspan="4">
+                                                    <div class="ui right floated small primary labeled icon button">
+                                                        <i class="plus icon"></i>添加新项
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <br>
+                                <div class="two fields">
+                                    <div class="field">
+                                        <a class="ui blue button" v-on:click="Ser_edit(0)">{{modal.Ser_button}}</a>
+                                    </div>
+                                    <div class="field">
+                                        <a class="ui grey button">取消</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui segment field">
+                                <div class="field">
+                                    <label>首图标</label>
+                                    <br>
+                                    <img :src="form_SingleServer.new_form.icon" style="width: 300px;height: 300px;" class="ui image">
+                                    <br>
+                                    <div class="">
+                                        <label>上传图标</label>
+                                        <input class="" type="file" name="C_icon" :disabled="!modal.Ser_isEdit">
+                                    </div>
+                                    <div class="ui error message"><p>大小限制</p></div>
+                                </div>
+                                <div class="field">
+                                    <br>
+                                    <label>预览图</label>
+                                    <br>
+                                    <div class="" v-for="graph in server_graphs">
+                                        <label class="center ">{{graph.order_number}}</label>
+                                        <br>
+                                        <img :src="graph.img" alt="" style="width: 200px;height: 200px;">
+                                        <br>
+                                        <div class="">
+                                            <label>上传图片</label>
+                                            <div class="two fields">
+                                                <input class="" type="file" name="C_icon" :disabled="!modal.Ser_isEdit">
+                                                <a class="ui right floated basic blue button " v-on:click="Ser_edit(0)">{{modal.Com_button}}</a>
+                                                <a class="ui right floated basic red button ">删除</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="ui vertical segment" v-show="servermenu.mulpage">
+                    <span class="ui header">业务管理</span>
+                    <span>
+                        <select class="ui right floated pointing " v-on:click="">
+                            <div class="menu" v-show="modal.showSerKind">
+                                <option class="item" value="0" v-on:click="setSerKind(0)">全部</option>
+                                <option class="item" :value="Skind.id" v-for="Skind in Skinds" v-on:click="setSerKind(Skind.id)">{{Skind.ex_ser_name}}</option>
+                            </div>
+                        </select>
+                    </span>
+                </div>
+                    <div class="ui divider"></div>
+                    <div class="ui two column grid items"> 
+                        <div class="column item" v-for="server in servers" v-show="samekind(server.service_kind)">
+                            <div class="ui blue segment grid">
+                                <a class="ui right red corner label">
+                                    <i class="delete icon"></i>
+                                </a>
+                                <div class="ui fluid image four wide column">
+                                    <img :src="server.icon" >
+                                </div>
+                                <div class="content twelve wide column">
+                                    <div class="header"> 
+                                        {{server.topic}}
+                                        <span class="ui right floated">
+                                            <i class="yen sign icon"></i>
+                                            {{server.minprice}}~{{server.maxprice}}
+                                        </span>
+                                    </div>
+                                    <div class="description">{{server.detail}}</div>
+                                    <div class="ui divider"></div>
+                                    <div class="extra">
+                                        <span class="ui left floated">{{server.create_time}}</span>
+                                        <button class="ui right floated blue button" v-on:click="showSinPage(server)"><i class="wrench icon"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column item">
+                            <div class="ui segment">
+                                <div class="ui blue massive button">
+                                    <i class="plus icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endverbatim %}
+    <script >
+        var mainmenu = new Vue({
+            el:'#mainmenu',
+            data:{
+                modal:{
+                    Com_isEdit:false,
+                    Com_button:"修改",
+                    Com_dis:"disable",
+                    
+                    showSerKind:false,
+                    Ser_isEdit:false,
+                    Ser_button:"修改",
+                    Ser_dis:"disable",
+                },
+                menu:{
+                    main:true,
+                    company:false,
+                    list:false,
+                    server:false,
+                },
+                servermenu:{
+                    mulpage:true,
+                    sinpage:false,
+                },
+                company_detail:[],
+                Ckinds:[],
+                Citys:[],
+                lists:[],
+                Choise_kind:0,
+                DjangoCookie:null,
+                servers:[],
+                server_graphs:[],
+                Skinds:[],
+                form_Company:{
+                    new_form:[],
+                    old_form:[],
+                },
+                form_SingleServer:{
+                    new_form:[],
+                    old_form:[],
+                },
+            },
+            mounted:function(){
+                this.getCkinds();
+                this.getCitys();
+                this.getCompany();
+            },
+            methods:{
+                setSerKind:function(kind){this.Choise_kind = kind;},
+                SerKind:function(){this.modal.showSerKind = !this.modal.showSerKind;},
+                showMulPage:function(){this.servermenu.mulpage=true;this.servermenu.sinpage=false},
+                showSinPage:function(ser){
+                    this.servermenu.mulpage=false;this.servermenu.sinpage=true;
+                    this.form_SingleServer.new_form = ser;
+                    this.getserver_graphs(ser);
+                    },
+                showMain:function(){this.menu.main=true;this.menu.company=false;this.menu.list=false;this.menu.server=false},
+                showCompany:function(){
+                    this.menu.main=false;this.menu.company=true;this.menu.list=false;this.menu.server=false
+                    this.getCompany();},
+                showList:function(){
+                    this.menu.main=false;this.menu.company=false;this.menu.list=true;this.menu.server=false
+                    },
+                showServer:function(){
+                    this.menu.main=false;this.menu.company=false;this.menu.list=false;this.menu.server=true;
+                    this.getAllServers();
+                    this.getServer_kind();
+                    },
+                getCompany:function(){
+                    var self = this;
+                    reqwest({
+                        url:'api/manageCompany/',
+                        type:'json',
+                        method:'get',
+                        success:function(resp){
+                            console.log(resp);
+                            self.form_Company.new_form=resp;
+                            self.DjangoCookie=self.getCookie('csrftoken');}
+                        })
+                },
+                getLists:function(){
+                    var self = this;
+                    reqwest({})
+                },
+                getAllServers:function(){
+                    var self = this;
+                    reqwest({
+                        url:'api/getCServer/',
+                        type:'json',
+                        method:'get',
+                        success:function(resp){console.log(resp);
+                            self.servers=resp}
+                    })
+                },
+                getserver_graphs:function(ser){
+                    var id = ser.id 
+                    var self = this
+                    reqwest({
+                        url:'api/getserver_graphs/'+ id,
+                        type:'json',
+                        method:'get',
+                        success:function(resp){console.log(resp);
+                            self.server_graphs=resp}
+                    })
+                },
+                getServer_kind:function(){
+                    var self = this;
+                    reqwest({
+                        url:'api/getServer_kind/',
+                        type:'json',
+                        method:'get',
+                        success:function(resp){console.log(resp);
+                            self.Skinds=resp
+                        }
+                    })
+                },
+                putCompany:function(){
+                    var self = this;
+                    reqwest({
+                        url:'api/manageCompany/',
+                        type:'json',
+                        method:'post',
+                        headers:{'X-CSRFToken':this.DjangoCookie},
+                        data:self.form_Company.new_form,
+                        success:function(resp){
+                            console.log(resp);
+                            self.form_Company.new_form=resp;}
+                    })
+                },
+                putSingleList:function(id){
+                    var self = this;
+                    reqwest({})
+                },
+                putSingleServer:function(id){
+                    var self = this;
+                    reqwest({})
+                },
+
+                addSingleServer:function(){
+                    var self = this;
+                    reqwest({})
+                },
+                delSingleServer:function(id){
+                    var self = this;
+                    reqwest({})
+                },
+                Com_edit:function(id){
+                    var Com =this.modal;
+                    if(Com.Com_isEdit){this.putCompany();}
+                    Com.Com_isEdit=!Com.Com_isEdit;
+                    if(Com.Com_isEdit){Com.Com_dis="";Com.Com_button="保存";
+                        this.form_Company.old_form=this.form_Company.new_form;}
+                    else{Com.Com_dis="disabled";Com.Com_button="修改";}
+                },
+                Ser_edit:function(id){
+                    var Ser=this.modal;
+                    if(Ser.Ser_isEdit){}
+                    Ser.Ser_isEdit=!Ser.Ser_isEdit;
+                    if(Ser.Ser_isEdit){Ser.dis="";Ser.Ser_button="保存";}
+                    else{Ser.Ser_dis="disabled";Ser.Ser_button="修改";}
+                },
+                samekind:function(kind){
+                    if (this.Choise_kind == 0){return true;}
+                    else if(kind == this.Choise_kind){return true;}
+                    else{return false;}
+                },
+                getCkinds:function(){
+                    var self = this;
+                    reqwest({
+                        url:'api/getBusinessKind/',
+                        type:'json',
+                        method:'get',
+                        success:function(resp){
+                            console.log(resp);
+                            self.Ckinds=resp;}
+                    })
+                },
+                getCitys:function(){
+                    var self = this;
+                    reqwest({
+                        url:'api/getCity/',
+                        type:'json',
+                        method:'get',
+                        success:function(resp){
+                            console.log(resp);
+                            self.Citys=resp;}
+                    })
+                },
+                matchCkind:function(bkind,ckind){
+                    if(bkind == ckind){return 'checked';}
+                    else{return '';}
+                },
+                getCookie:function(name){  //获取cookie函数
+                    name = name + "=";
+                    var start = document.cookie.indexOf(name),
+                        value = null;
+                    if(start>-1){
+                        var end = document.cookie.indexOf(";",start);
+                        if(end == -1){
+                            end = document.cookie.length;
+                        }
+                        value = document.cookie.substring(start+name.length,end);
+                    }
+                    return value;
+                },
+            },
+            computed:{
+                
+            },
+
+        })
+    </script>
+        
+<!--
+
+--> 
+
+    <footer>
+        {% include "footer.html" %}
+    </footer>
+</body>	
+</html>

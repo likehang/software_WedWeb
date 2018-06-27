@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+<title>single server</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="{% static '/css/semantic.css' %}" media="screen" title="no title" charset="utf-8">
+<link href="{% static '/css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+<link rel="stylesheet" href="{% static '/css/style.css' %}" type="text/css" media="all" />
+<script src="{% static '/js/jquery-1.11.1.min.js' %}"></script>
+<script src="{% static '/js/bootstrap.js' %}"></script>
+ 
+</head>
+<body>
+	<div class="banner">
+		{% include "header.html" %}
+		<div class="agileinfo-top-heading">
+			<h2>Blog Post</h2>
+		</div>
+	</div>
+		<div class="blog">
+			<div class="container">
+
+				<div class="single">
+						<div class="single-grid">
+							<div class="col-md-8 w3ls-blog-left">
+								<div class="w3-blog-left-grid">
+									<div class="w3ls-blog-leftl">
+										<h4>{{server.create_time}}</h4>
+									</div>
+									<div class="w3ls-blog-leftr">
+										<h3>{{server.topic}}</h3>
+										<p>{{server.introduction}}</p>
+										<ul>
+											<li><a href="#"><i class="glyphicon glyphicon-user" aria-hidden="true"></i>{{company.manager}}</a></li>
+											<li><a href="#"><i class="heart icon"></i></i>{{server.public_like}}</a></li>
+											<li><a href="#"><i class="yen sign icon"></i>{{server.price}}</a></li>
+										</ul>
+									</div>
+									<div class="clearfix"> </div>
+									<div class="admin-text">
+											<h5>detail</h5>
+											<div class="admin-text-left">
+												<a href="#"><img src="{{server.icon.url}}" alt=""/></a>
+												<div class="admin-text-right">
+													<p>{{server.detail}}</p>
+													{% for image in images %}
+													<a href="#"><img src="{{image.img.url}}" alt=""/></a>
+													{% endfor %}
+													<span class="right floated">Writed by:<a href="#">{{company.manager}}</a></span>
+												</div>
+											</div>
+										<div class="clearfix"> </div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4 w3-agile-blog-right">
+								<div class="ui segment">
+									<h3>{{company.name}}</h3>
+									<img class="" src="{{company.icon.url}}" alt="">
+									<div>
+										<a href=""> <button class="ui red button">订购</button></a>
+									</div>
+								</div>
+								<div class="agile-info-recent">
+									<h3>other server</h3>
+									<div class="w3ls-recent-grids">
+										{% for i in other %}
+										<div class="w3l-recent-grid">
+											<div class="wom">
+												<a href="#"><img src="{{i.icon.url}}" alt=" " class="img-responsive" /></a>
+											</div>
+											<div class="wom-right">
+												<h4><a href="#">{{i.topic}}</a></h4>
+												<p>{{i.introduction}}</p>
+											</div>
+											<div class="clearfix"> </div>
+										</div>
+										{% endfor %}
+									</div>
+								</div>
+								<div class="footer-top-grid1">
+									<h3>Tags</h3>
+									<ul class="w3-tag2">
+										{% for tag in tags %}
+										<li><a href="#">{{tag.flag_name}}</a></li>
+										{% endfor %}
+									</ul>
+								</div>
+							</div>
+							<div class="clearfix"> </div>
+						</div>
+				</div>
+				<!-- //single -->
+			</div>
+		</div>
+		<!-- // Blog -->
+	<!-- footer -->
+	<footer>
+		{% include "footer.html" %}
+	</footer>
+</body>	
+</html>

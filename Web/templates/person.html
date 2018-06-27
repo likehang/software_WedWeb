@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+<title>Company Manager</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="{% static '/css/semantic.css' %}" media="screen" title="no title" charset="utf-8">
+<link href="{% static '/css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+<link rel="stylesheet" href="{% static '/css/style.css' %}" type="text/css" media="all" />
+<script src="{% static '/js/jquery-1.11.1.min.js' %}"></script>
+<script src="{% static '/js/bootstrap.js' %}"></script>
+ 
+</head>
+<body>
+	<!-- banner -->
+	<div class="banner">
+        {% include "header.html" %}
+		<div class="agileinfo-top-heading">
+			<h2>Blog Post</h2>
+		</div>
+    </div>
+
+<div>
+        <div class="ui vertical segment container">
+                <div class="ui vertical horizontal segments">
+                        <div class="ui right aligned vertical segment">
+                            <a href="">
+                                <h5 class="ui large violet header center aligned inverted">
+                                    <i class="gift icon"></i>我的订单
+                                </h5>
+                            </a>
+                        </div>
+                        <div class="ui vertical segment">
+                            <h4 class="ui large violet header center aligned inverted ">
+                                <i class="user outline icon"></i>个人详情
+                            </h4>
+                        </div>
+                        <div class="ui left aligned vertical segment">
+                            <a href="">
+                                <h5 class="ui large violet header center aligned inverted">
+                                    <i class="star outline icon"></i>我的收藏
+                                </h5>
+                            </a>
+                        </div>
+                    </div>
+                <form action="post" class="ui form error success" >
+                    <br>
+                    <div class="ui segment vertical">
+                        <a href=""><img src="{% static '/images/sz57a8MNSQANMAYZHZH0djf_WGz4fsM1.jpg' %}" alt="" class="ui circular centered small image"></a>
+                        <div >
+                            <a class="ui yellow basic label icon"><i class="user outline icon "></i>公司管理员</a>
+                            <button class="ui right floated red button">验证身份</button>
+                            <a class="ui green basic floated label">身份确认</a>
+                            <a class="ui orange basic floated label">身份验证</a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="two fields">
+                        <div class="field">
+                            <label >Your Name</label>
+                            <input type="text" placeholder="xxxx" name="User_name" readonly>
+                        </div>
+                        <div class="field">
+                            <label >Your Email</label>
+                            <input type="text" placeholder="xxxx" name="User_email" readonly>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>城市</label>
+                            <select name="C_city" class="ui fluid dropdown" readonly>
+                                <option value="">选择城市</option>
+                                <option value="">北京</option>
+                                <option value="">南京</option>
+                                <option value="">秦皇岛</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="sex">性别</label>
+                            <div class="two fields">
+                                <div class="field ">
+                                    <div class="ui radio checkbox center aligned">
+                                        <input type="radio" name="sex" value="1">
+                                        <label>男</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox center aligned">
+                                        <input type="radio" name="sex" value="0">
+                                        <label>女</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="field">
+                        <label >Your Phone</label>
+                        <input type="text" placeholder="xxxx" name="User_phone" readonly>
+                    </div>
+                    <br>
+                    <div class="three fields">
+                        <div class="field"><button class="ui blue button">修改信息</button></div>
+                        <div class="field"><button class="ui orange button">修改密码</button></div>
+                        <div class="field"><button class="ui green button">上传头像</button></div>
+                    </div>
+                </form>
+                <div class="ui upimg">
+                    上传头像
+                </div>
+                <div class="ui upsecret">
+                    更改密码
+                </div>
+                <div class="ui upident">
+                    身份验证
+                </div>
+            </div>
+</div>
+
+<footer>
+    {% include "footer.html" %}
+    </footer>
+</body>	
+</html>

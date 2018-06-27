@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+<title>Wedding Website</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="{% static '/css/semantic.css' %}" media="screen" title="no title" charset="utf-8">
+<link href="{% static '/css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+<link rel="stylesheet" href="{% static '/css/style.css' %}" type="text/css" media="all" />
+<script src="{% static '/js/jquery-1.11.1.min.js' %}"></script>
+<script src="{% static '/js/bootstrap.js' %}"></script>
+
+</head>
+<body>
+	<div class="banner">
+		{% include "header.html" %}
+		<div class="w3layouts-banner-slider">
+			<div class="container">
+				<div class="slider">
+					<div class="callbacks_container">
+						<div class="agileits-banner-info">
+							<h3>Enjoy <span>your best day ever</span></h3>
+							<div class="w3-button">
+								<a href="../../server/0&0">More</a>
+							</div>
+						</div>					
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="posts">
+		<div class="container">
+			<div class="w3-agileits-heading">
+				<h3>服务 <span>各种各样</span></h3>
+			</div>
+			<div class="posts-grids">
+				<div class="ui segment ">
+					<span class="left floated">{{k1.ex_ser_name}}</span>
+					<span class="right floated"><a href="../../server/0&{{k1.id}}">More>></a></span>
+				</div>
+				{% for ser in favor1 %}
+				<div class="col-md-4 w3-agile-post-grids">
+					<div class="w3-agile-post-img" style="background-image:url({{ ser.icon.url }})">
+						<a href="../../single/{{ser.id}}"> 
+							<ul>
+								<li>{{ser.create_time}}</li>
+							</ul>
+						</a>
+					</div>
+					<div class="w3-agile-post-info">
+						<h4><a href="../../single/{{ser.id}}">{{ser.topic}}</a></h4>
+						<p>{{ser.introduction}}</p>
+					</div>
+				</div>
+				{% endfor %}  
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+	<footer>
+		{% include "footer.html" %}
+	</footer>
+</body>	
+</html>

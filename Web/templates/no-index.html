@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>index</title>
+        <link rel="stylesheet" href="{% static '/css/semantic.css' %}" media="screen" title="no title" charset="utf-8">
+        <link rel="stylesheet" href="{% static '/css/animate.css' %}"  media="screen" title="no title" charset="utf-8">
+        <script src="{% static '/js/vue1.js' %}"></script>
+        <script src="{% static '/js/reqwest.js' %}"></script>
+    </head>
+    <body class="centre" >
+        <div class="ui menu fixed inverted pink">
+            <a class ="ui left floated" href="/"><img src="" alt=""></a>
+            <div class=" left floated inverted item">
+                <a class="browse item">全国 <i class="dropdown icon"></i> </a>
+            </div>
+            <div  class=" left floated inverted item">
+                <a class="browse item">所有服务 <i class="dropdown icon"></i> </a>
+            </div>
+            <div class="ui fluid popup">
+                <div class="ui two column relaxed equal height divided grid">
+                    <div class="column">
+                        <h4 class="ui header">Fabrics</h4>
+                        <div class="ui link list">
+                        <a class="item">Cashmere</a>
+                        <a class="item">Linen</a>
+                        <a class="item">Cotton</a>
+                        <a class="item">Viscose</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class=" right menu floated inverted ">
+                <div class="item ui search ">
+                    <div class="ui icon input">
+                        <input class="prompt" placeholder="键入关键词" type="text">
+                        <i class="search icon"></i>
+                    </div>
+                    <div class="result"></div>
+                </div>
+            </div>   
+        </div>
+        
+        <header>
+            <video src="{% static 'images/header.mp4' %}" alt="">
+            <h1>提供优质婚礼服务
+            <br>留下最美好的婚礼时光</h1>
+        </header>
+        {% verbatim %}
+        <div id="app">
+            <div><!-- 定制轮播区 --> 
+                <div></div>
+                <div></div>
+            </div>
+                        
+            <div><!-- 各类服务 -->
+                <div >
+                    <div></div>
+                    <div class="ui link cards grid">
+                        <div class="card four wide column">
+                            <div class="ui fade reveal">
+                                <div class="visible content"> <!-- 放图 -->
+                                  <img src="" class="ui small image">
+                                </div>
+                                <div class="hidden content">
+                                  <div class="ui secondary inverted segment pink"><a href="">了解详情 >></a></div>
+                                </div>
+                              </div>
+                            <div class="content">
+                                <div class="header">服务/案例</div>
+                                <div class="meta">
+                                    <span>价格</span>
+                                    <span>公司名</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 靠右悬浮窗 -->
+            <div class="right ui rail" id="right" >
+                <div class="ui sticky" >
+                    <h3 class="ui header">固定的短内容</h3>
+                    <img>
+                </div>
+            </div>
+        </div>
+        {% endverbatim %}
+
+        <footer>
+            <div></div>
+            <div></div>
+        </footer>
+    </body>
+    <script>
+    </script>
+</html>
+<script>
+    $('.ui.sticky')
+  .sticky({
+    context: '#right'
+  })
+;
+    var menu = new Vue({
+        el:'#app',
+        data:{
+            modal:{},
+            C_S:[],
+            detailC_S:[],
+            kindC_S:[],
+            sites:[],
+        },
+        ready:function()
+        {},
+        methods:{
+            getallkind:function()
+            {
+                var self = this;
+                reqwest({
+                    url:'api/C_S/',
+                    type:'json',
+                    method:'get',
+                    success:function(resp)
+                    {console.log(resp);
+                    self.C_S= resp;}
+                })
+            },
+            getdetailC_S:function(C_Sid)
+            {
+                var self = this;
+                var id = C_Sid;
+                reqwest({
+                    url:'api/detailC_S/'+id,
+                    type:'json',
+                    method:'get',
+                    success:function(resp)
+                    {console.log(resp);
+                    self.detailC_S= resp;}
+                })
+            },
+            getSampleKind:function(kind)
+            {
+                var self=this;
+                var id = kind;
+                reqwest({
+                    url:'api/kind/'+id,
+                    type:'json',
+                    method:'get',
+                    success:function(resp)
+                    {console.log(resp);
+                    self.kindC_S= resp;}
+                })
+            },
+            getSite:function()
+            {
+                var self = this;
+                    reqwest({
+                        url:'api/sites/',
+                        type:'json',
+                        method:'get',
+                        success:function(resp){
+                            console.log(resp);
+                            self.sites = resp
+                        }
+                    })
+            },
+        },
+        computed:{}
+
+    })
+</script>

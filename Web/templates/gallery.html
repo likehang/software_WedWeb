@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+<title>gallery</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="{% static '/css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+<link rel="stylesheet" href="{% static '/css/style.css' %}" type="text/css" media="all" />
+<script src="{% static '/js/jquery-1.11.1.min.js' %}"></script>
+<script src="{% static '/js/bootstrap.js' %}"></script>
+</head>
+<body>
+	<!-- banner -->
+	<div class="banner">
+		<div class="header">
+			<div class="container">
+				<div class="header-left">
+					<div class="w3layouts-logo">
+						<h1>
+							<a href="index.html"> 写网站名<span></span></a>
+						</h1>
+					</div>
+				</div>
+				<div class="top-nav">
+					<nav class="navbar navbar-default">
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+							<ul class="nav navbar-nav">
+								<li><a class="active" href="index.html">Home</a></li>
+								<li><a href="sever.html">服务</a></li>
+								<li class=""><a href="#" class="dropdown-toggle hvr-bounce-to-bottom" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">地址<span class="caret"></span></a>
+									<ul class="dropdown-menu">
+										<li><a class="hvr-bounce-to-bottom" href="server.html">北京</a></li>
+										<li><a class="hvr-bounce-to-bottom" href="server.html">之类的</a></li>          
+									</ul>
+								</li>								
+								<li class="ui right float"><a href="login.html">login</a></li>
+							</ul>	
+							<div class="clearfix"> </div>
+						</div>	
+					</nav>		
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+		<div class="agileinfo-top-heading">
+			<h2>Blog Post</h2>
+		</div>
+	</div>
+	<!-- //banner -->
+	<!-- gallery -->
+	<div class="gallery">
+		<div class="container"> 
+			<div id="jzBox" class="jzBox">
+				<div id="jzBoxNextBig"></div>
+				<div id="jzBoxPrevBig"></div>
+				<img src="#" id="jzBoxTargetImg" alt=""/>
+				<div id="jzBoxBottom">
+					<div id="jzBoxTitle"></div>
+					<div id="jzBoxMoreItems">
+						<div id="jzBoxCounter"></div>
+						<i class="arrow-left" id="jzBoxPrev"></i> 
+						<i class="arrow-right" id="jzBoxNext"></i> 
+					</div>
+					<i class="close" id="jzBoxClose"></i>
+				</div>
+			</div>
+			<div class="gallery-grids-row">
+				<div class="col-md-4 gallery-grid">
+					<div class="wpf-demo-4">  
+						<a href="images/g1.jpg" class="jzBoxLink item-hover" title="Events Venue">  
+							<img src="images/g1.jpg" alt=" " class="img-responsive" />
+							<div class="view-caption">
+								<p>Full View</p>
+							</div> 
+						</a>    		
+					</div>
+				</div>
+				<div class="col-md-4 gallery-grid">
+					<div class="wpf-demo-4">  
+						<a href="images/g2.jpg" class="jzBoxLink item-hover" title="Events Venue">  
+							<img src="images/g2.jpg" alt=" " class="img-responsive" />
+							<div class="view-caption">
+								<p>Full View</p>
+							</div> 
+						</a>    			
+					</div>
+				</div>
+				<div class="col-md-4 gallery-grid">
+					<div class="wpf-demo-4">  
+						<a href="images/g3.jpg" class="jzBoxLink item-hover" title="Events Venue">  
+							<img src="images/g3.jpg" alt=" " class="img-responsive" />
+							<div class="view-caption">
+								<p>Full View</p>
+							</div> 
+						</a>    			
+					</div>
+				</div>
+				<div class="col-md-4 gallery-grid">
+					<div class="wpf-demo-4">  
+						<a href="images/g4.jpg" class="jzBoxLink item-hover" title="Events Venue">  
+							<img src="images/g4.jpg" alt=" " class="img-responsive" />
+							<div class="view-caption">
+								<p>Full View</p>
+							</div> 
+						</a>    			
+					</div>
+				</div>
+				<div class="col-md-4 gallery-grid">
+					<div class="wpf-demo-4">  
+						<a href="images/g5.jpg" class="jzBoxLink item-hover" title="Events Venue">  
+							<img src="images/g5.jpg" alt=" " class="img-responsive" />
+							<div class="view-caption">
+								<p>Full View</p>
+							</div> 
+						</a>    		
+					</div>
+				</div>
+				<div class="col-md-4 gallery-grid">
+					<div class="wpf-demo-4">  
+						<a href="images/g6.jpg" class="jzBoxLink item-hover" title="Events Venue">  
+							<img src="images/g6.jpg" alt=" " class="img-responsive" />
+							<div class="view-caption">
+								<p>Full View</p>
+							</div> 
+						</a>    		
+					</div>
+				</div>
+				<div class="col-md-4 gallery-grid">
+					<div class="wpf-demo-4">  
+						<a href="images/g7.jpg" class="jzBoxLink item-hover" title="Events Venue">  
+							<img src="images/g7.jpg" alt=" " class="img-responsive" />
+							<div class="view-caption">
+								<p>Full View</p>
+							</div> 
+						</a>    			
+					</div>
+				</div>
+				<div class="col-md-4 gallery-grid">
+					<div class="wpf-demo-4">  
+						<a href="images/g3.jpg" class="jzBoxLink item-hover" title="Events Venue">  
+							<img src="images/g3.jpg" alt=" " class="img-responsive" />
+							<div class="view-caption">
+								<p>Full View</p>
+							</div> 
+						</a>    		
+					</div>
+				</div>  
+				<div class="col-md-4 gallery-grid">
+					<div class="wpf-demo-4">  
+						<a href="images/g1.jpg" class="jzBoxLink item-hover" title="Events Venue">  
+							<img src="images/g1.jpg" alt=" " class="img-responsive" />
+							<div class="view-caption">
+								<p>Full View</p>
+							</div> 
+						</a>    		
+					</div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+			<script src="js/jzBox.js"></script>
+		</div>
+	</div>
+	<!-- //gallery --> 
+	<!-- footer -->
+	<footer>
+		<div class="agileits-w3layouts-footer-top">
+			<div class="container">
+				<div class="col-md-6 agileits-w3layouts-footer-top-left">
+					<p><i class="fa fa-phone" aria-hidden="true"></i> +1 234 567 8901</p>
+				</div>
+				<div class="col-md-6 agileits-w3layouts-footer-top-left">
+					<p><i class="fa fa-envelope" aria-hidden="true"></i> Email :<a href="mailto:example@email.com"> mail@example.com</a></p>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+		<div class="agileits-footer-bottom">
+			<div class="container">
+				<div class="agileits-footer-bottom-grids">
+					<div class="col-md-6 footer-bottom-left">
+						<h5>About Us</h5>
+						<div class="footer-img-grids">
+							<div class="footer-img">
+								<img src="images/f1.jpg" alt="" />
+							</div>
+							<div class="footer-img-info">
+								<p>Suspendisse potenti. Pellentesque pulvinar tellus at est ullamcorper, at elementum nibh laoreet. Nunc id diam in nulla sollicitudin auctor. Donec elementum felis turpis, vel interdum libero congue non. Mauris non magna convallis</p>
+							</div>
+							<div class="clearfix"> </div>
+						</div>
+					</div>
+					<div class="col-md-3 footer-bottom-right">
+						<h5>Newsletter</h5>
+						<p>Maecenas volutpat arcu at massa lacinia, ut interdum lorem venenatis.</p>
+						<form action="#" method="post">
+							<input type="text" placeholder="Subscribe" name="Subscribe" required="">
+							<input type="submit" value="Subscribe">
+						</form>
+					</div>
+					<div class="col-md-3 footer-bottom-right">
+						<h5>We are social</h5>
+						<div class="agileinfo-social-grids">
+							<ul>
+								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+								<li><a href="#"><i class="fa fa-rss"></i></a></li>
+								<li><a href="#"><i class="fa fa-vk"></i></a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="clearfix"> </div>
+				</div>
+			</div>
+		</div>
+		<div class="copyright">
+			<div class="container">
+				<p>© 2017 Events Venue. All rights reserved | Design by <a href="http://w3layouts.com">W3layouts</a></p>
+			</div>
+		</div>
+	</footer>
+	<!-- //footer -->
+</body>	
+</html>
