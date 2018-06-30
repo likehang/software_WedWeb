@@ -417,7 +417,12 @@
                 },
                 getLists:function(){
                     var self = this;
-                    reqwest({})
+                    reqwest({url:'api/getCServer/',
+                        type:'json',
+                        method:'get',
+                        success:function(resp){console.log(resp);
+                            self.servers=resp}
+                    })
                 },
                 getAllServers:function(){
                     var self = this;
