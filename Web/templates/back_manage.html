@@ -455,13 +455,13 @@
                 },
                 putCompany:function(){
                     var self = this;
-                    if(this.Cnew_img != null){this.CnewI(this.Cnew_img);this.Cnew_img=null;}
                     reqwest({
                         url:'api/manageCompany/',
                         type:'json',
                         method:'post',
-                        headers:{'X-CSRFToken':this.DjangoCookie},
-                        data:self.form_Company.new_form,
+                        headers:{'X-CSRFToken':self.DjangoCookie},
+                        data:{'form':self.form_Company.new_form,
+                                'file':self.Cnew_img},
                         success:function(resp){
                             console.log(resp);
                             self.form_Company.new_form=resp;}
@@ -545,13 +545,13 @@
                     var file = e.target.files[0];
                     var reader = new FileReader();
                     reader.readAsDataURL(file);
-                    this.Cnew_img = new FormData();
                     reader.onload = function(){
                         var dataurl = reader.result;
                         var output = document.getElementById('output'); 
                         output.src = dataurl
+                        this.Cnew_img = {'url':dataurl,'file':reader}
                     }
-
+                    
                 },
                 getCookie:function(name){  //获取cookie函数
                     name = name + "=";

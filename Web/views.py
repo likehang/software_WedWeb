@@ -95,7 +95,20 @@ def person(request):
     return render(request,'person.html',context=None)
 
 def person_fav(request):
-    return render(request,'person-fav.html',context=None)
+    context={}
+    if request.user:
+        User=UserProfile.objects.get(id=request.user.id)
+        print(User)
+    else:
+        User = None
+    cities = City.objects.all()
+    ser_kind = server_choices.objects.all()
+    favs = Fav.objects.filter(fav_user = User)
+    print(favs)
+    context['User']=User
+    context['city']=cities
+    context['favs']=favs
+    return render(request,'person-fav.html',context=context)
 
 def person_list(request):
     return render(request,'person-list.html',context=None)
