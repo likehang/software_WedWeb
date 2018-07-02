@@ -47,38 +47,21 @@
             <div class="ui divider"></div>
         <div class="ui vertical segment container">
                 <div class="ui center aligned very padded vertical segment container">
-                        <div class="ui pagination menu">
-                            {% if  like_tickets.has_previous %}
-                                <a href="?page={{  like_tickets.previous_page_number }}" class="item">
-                                    <i class="icon red left caret"></i>
-                                </a>
-                            {% else %}
-                                <a href="?page={{  like_tickets.start_index }}" class="disabled item">
-                                    <i class="icon  left caret"></i>
-                                </a>
-                            {% endif %}
-                
-                            {% for page_number in  like_tickets.paginator.page_range %}
-                                {% ifequal page_number   like_tickets.number %}
-                                    <a href="?page={{ page_number }}" class="active item" style="background-color: red; color:white">
-                                        {{ page_number }}
-                                    </a>
-                                {% else %}
-                                    <a href="?page={{ page_number }}" class=" item">
-                                        {{ page_number }}
-                                    </a>
-                                {% endifequal %}
-                            {% endfor %}
-                
-                            {% if  like_tickets.has_next %}
-                                <a href="?page={{  like_tickets.next_page_number }}" class="item">
-                                    <i class="icon red right caret"></i>
-                                </a>
-                            {% else %}
-                                <a href="?page={{  like_tickets.paginator.num_pages }}" class="disabled item">
-                                    <i class="icon  right caret"></i>
-                                </a>
-                            {% endif %}
+                        <div class="ui ">
+                            <div class="ui link items">
+                                {% for fav in favs %}
+                                <div class="segment item">
+                                  <div class="ui small image">
+                                    <img url="{{fav.fav_ser.icon.url}}">
+                                  </div>
+                                  <div class="content">
+                                    <a class="header left floated" href="../../single/{{fav.fav_ser.id}}">{{fav.fav_ser.topic}}</a>&nbsp;<button class="ui right floated button">删除</button>
+                                    <div class="description ">
+                                      <p>{{fav.fav_ser.introduction}}</p>
+                                    </div>
+                                  </div>
+                                </div>
+                                {% endfor %}
                         </div>
                     </div>
         </div>
