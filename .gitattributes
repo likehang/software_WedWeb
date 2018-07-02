@@ -1,0 +1,4 @@
+* text=auto
+*.less linguist-language=html
+*.html linguist-language=html
+*.css linguist-language=python
