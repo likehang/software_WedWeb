@@ -45,7 +45,7 @@
                 欢迎
             </div>
             <div class="ui vertical segment " v-show="menu.company">
-                <form action="post" class="ui form error success" id="C_form">
+                <form class="ui form error success" id="C_form">
                     <h4 class="ui large violet header center aligned inverted "> {{form_Company.new_form.name}}公司 详情</h4>
                     <div class="two fields">
                         <div class="field">
@@ -61,7 +61,7 @@
                                     <option v-for="Ckind in Ckinds" :value="Ckind.id" >{{Ckind.ex_name}}</option>
                                 </select>
                             </div>
-                            <div class="ui error message"><p>经营限制</p></div>
+                            <div class="ui error message" v-show=""><p>经营限制</p></div>
                             <br>
                             <div class="">
                                 <label>城市</label>
@@ -69,19 +69,19 @@
                                     <option v-for="city in Citys" :value="city.id" >{{city.city_name}}</option>
                                 </select>
                             </div>
-                            <div class="ui error message"><p>城市限制</p></div>
+                            <div class="ui error message" v-show=""><p>城市限制</p></div>
                             <br>
                             <div class="">
                                 <label>内部电话</label>
                                 <input type="text" placeholder="方便网站联系" id="C_inphone" v-model.trim="form_Company.new_form.inward_phone" :readOnly="!modal.Com_isEdit">
                             </div>
-                            <div class="ui error message"><p>电话限制</p></div>
+                            <div class="ui error message" v-show=""><p>电话限制</p></div>
                             <br>
                             <div class="">
                                 <label>客户电话</label>
                                 <input type="text" placeholder="方便与用户联系" id="C_phone" v-model.trim="form_Company.new_form.phone" :readOnly="!modal.Com_isEdit">
                             </div>
-                            <div class="ui error message"><p>电话限制</p></div>
+                            <div class="ui error message" v-show=""><p>电话限制</p></div>
                             <br>
                             <div class="two fields">
                                 <div class="field">
@@ -107,13 +107,13 @@
                         <div class="ui segment field">
                             <label>当前图标</label>
                             <br>
-                            <img :src="form_Company.new_form.icon" style="width: 300px;height: 300px;" class="ui image" id="C_icon">
+                            <img :src="form_Company.new_form.icon" style="width: 300px;height: 300px;" class="ui image" id="output">
                             <br>
                             <div class="">
                                 <label>上传图标</label>
-                                <input type="file" id="C_new_icon" v-on:click="CnewI" :disabled="!modal.Com_isEdit">
+                                <input type="file" v-on:change="CnewI($event)" :disabled="!modal.Com_isEdit" accept="image/*">
                             </div>
-                            <div class="ui error message"><p>大小限制</p></div>
+                            <div class="ui error message" v-show=""><p>大小限制</p></div>
                         </div>
                     </div>
                 </form>
@@ -295,42 +295,42 @@
                         </select>
                     </span>
                 </div>
-                    <div class="ui divider"></div>
-                    <div class="ui two column grid items"> 
-                        <div class="column item" v-for="server in servers" v-show="samekind(server.service_kind)">
-                            <div class="ui blue segment grid">
-                                <a class="ui right red corner label">
-                                    <i class="delete icon"></i>
-                                </a>
-                                <div class="ui fluid image four wide column">
-                                    <img :src="server.icon" >
-                                </div>
-                                <div class="content twelve wide column">
-                                    <div class="header"> 
-                                        {{server.topic}}
-                                        <span class="ui right floated">
-                                            <i class="yen sign icon"></i>
-                                            {{server.minprice}}~{{server.maxprice}}
-                                        </span>
+                <div class="ui divider"></div>
+                        <div class="ui two column grid items"> 
+                            <div class="column item" v-for="server in servers" v-show="samekind(server.service_kind)">
+                                <div class="ui blue segment grid">
+                                    <a class="ui right red corner label">
+                                        <i class="delete icon"></i>
+                                    </a>
+                                    <div class="ui fluid image four wide column">
+                                        <img :src="server.icon" >
                                     </div>
-                                    <div class="description">{{server.detail}}</div>
-                                    <div class="ui divider"></div>
-                                    <div class="extra">
-                                        <span class="ui left floated">{{server.create_time}}</span>
-                                        <button class="ui right floated blue button" v-on:click="showSinPage(server)"><i class="wrench icon"></i></button>
+                                    <div class="content twelve wide column">
+                                        <div class="header"> 
+                                            {{server.topic}}
+                                            <span class="ui right floated">
+                                                <i class="yen sign icon"></i>
+                                                {{server.minprice}}~{{server.maxprice}}
+                                            </span>
+                                        </div>
+                                        <div class="description">{{server.detail}}</div>
+                                        <div class="ui divider"></div>
+                                        <div class="extra">
+                                            <span class="ui left floated">{{server.create_time}}</span>
+                                            <button class="ui right floated blue button" v-on:click="showSinPage(server)"><i class="wrench icon"></i></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="column item">
-                            <div class="ui segment">
-                                <div class="ui blue massive button">
-                                    <i class="plus icon"></i>
+                            <div class="column item">
+                                <div class="ui segment">
+                                    <div class="ui blue massive button">
+                                        <i class="plus icon"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     </div>
@@ -365,6 +365,7 @@
                 lists:[],
                 Choise_kind:0,
                 DjangoCookie:null,
+                Cnew_img:null,
                 servers:[],
                 server_graphs:[],
                 Skinds:[],
@@ -417,11 +418,7 @@
                 },
                 getLists:function(){
                     var self = this;
-                    reqwest({url:'api/getCServer/',
-                        type:'json',
-                        method:'get',
-                        success:function(resp){console.log(resp);
-                            self.servers=resp}
+                    reqwest({
                     })
                 },
                 getAllServers:function(){
@@ -458,6 +455,7 @@
                 },
                 putCompany:function(){
                     var self = this;
+                    if(this.Cnew_img != null){this.CnewI(this.Cnew_img);this.Cnew_img=null;}
                     reqwest({
                         url:'api/manageCompany/',
                         type:'json',
@@ -543,16 +541,17 @@
                     alert('true') ;
                     return true;
                 },
-                CnewI:function(img){
-                    var self = this;
-                    var file = img.target.files[0];
-                    var imgSize = file.size/1024;
-                    if(imgSize>200)alert('');
-                    else{
-                        var reader = new FileReader();
-                        reader.readAsDataURL(file);
-                        self.form_Company.new_form.icon = reader.result;
+                CnewI(e) {
+                    var file = e.target.files[0];
+                    var reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    this.Cnew_img = new FormData();
+                    reader.onload = function(){
+                        var dataurl = reader.result;
+                        var output = document.getElementById('output'); 
+                        output.src = dataurl
                     }
+
                 },
                 getCookie:function(name){  //获取cookie函数
                     name = name + "=";
