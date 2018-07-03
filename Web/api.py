@@ -121,17 +121,41 @@ class Orderlist(serializers.ModelSerializer):
     class Meta:
         model = Order_list
         fields = '__all__'
+        depth = 2
 
-@api_view(['GET','PUT'])
-def manageOrderList(request,id):
-    if request.mathod == 'GET':
-        pass
-    elif request.method == 'POST':
-        pass
-    elif request.method == 'PUT':
-        pass
+@api_view(['GET'])
+def getClist(request):
+    if request.method == 'GET':
+        user = request.user
+        com = Company.objects.get(manager__belong_to = user)
+        lists = Order_list.objects.filter(needlist__belong = com)
+        serializer = Orderlist(lists,many = True)
+        return Response(serializer.data)
     else:
         return Response(status=None)
+
+@api_view(['POST'])
+def manageOrderList(request,id):
+    if request.method == 'POST':
+        The_list = Order_list.objects.get(id=id)
+        msg = request.POST['next']
+        if msg =='cancel':
+            The_list.status.status_level = The_list.status.next_2
+        else:
+            The_list.status.status_level = The_list.status.next_1
+        The_list.save()
+
+        user = request.user
+        com = Company.objects.get(manager__belong_to = user)
+        lists = Order_list.objects.filter(needlist__belong = com)
+        serializer = Orderlist(lists,many = True)
+        return Response(serializer.data)
+    else:
+        return Response(status=None)
+
+@api_view(['PUT'])
+def newlist(request):
+    pass
 
 class FavList(serializers.ModelSerializer):
     class Meta:

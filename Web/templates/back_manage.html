@@ -136,7 +136,7 @@
                                 </div>   
                                 <div class="five wide column">
                                     <div class="header"><h3>主题</h3></div>
-                                    <a class="item" v-on:click="showCompany()">公司</a>
+                                    <a class="item" v-on:click="showCompanyMess()">公司</a>
                                 </div>
                                 <div class="five wide column">
                                     <br>
@@ -415,6 +415,7 @@
                     this.getCompany();},
                 showList:function(){
                     this.menu.main=false;this.menu.company=false;this.menu.list=true;this.menu.server=false
+                    this.getLists();
                     },
                 showServer:function(){
                     this.menu.main=false;this.menu.company=false;this.menu.list=false;this.menu.server=true;
@@ -436,6 +437,11 @@
                 getLists:function(){
                     var self = this;
                     reqwest({
+                        url:'api/getClist/',
+                        type:'json',
+                        method:'get',
+                        success:function(resp){console.log(resp);
+                            self.lists=resp}
                     })
                 },
                 getAllServers:function(){
@@ -472,12 +478,12 @@
                 },
                 putCompany:function(){
                     var self = this;
-                    if(this.Cnew_img != null){this.CnewI(this.Cnew_img);this.Cnew_img=null;}
+                    form.append()
                     reqwest({
                         url:'api/manageCompany/',
                         type:'json',
                         method:'post',
-                        headers:{'X-CSRFToken':this.DjangoCookie},
+                        headers:{'X-CSRFToken':self.DjangoCookie},
                         data:self.form_Company.new_form,
                         success:function(resp){
                             console.log(resp);
@@ -562,13 +568,13 @@
                     var file = e.target.files[0];
                     var reader = new FileReader();
                     reader.readAsDataURL(file);
-                    this.Cnew_img = new FormData();
                     reader.onload = function(){
                         var dataurl = reader.result;
                         var output = document.getElementById('output'); 
                         output.src = dataurl
+                        this.Cnew_img = {'url':dataurl,'file':reader}
                     }
-
+                    
                 },
                 getCookie:function(name){  //获取cookie函数
                     name = name + "=";
