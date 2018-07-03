@@ -127,19 +127,35 @@
                 <div class="ui divider"></div>
                 <div class="ui inverted divided list">
                     <div>
-                        <a class="ui right ribbon label">date</a>
+                        <a class="ui right ribbon label">生成日期</a>
                         <div class="ui grid ">
-                            <div class="three wide column">
-                                <div class="header">男士、女士</div>电话</div>
-                            <div class="nine wide column">
-                                <div class="header">主题</div>参数
-                                <a href="">[更多]</a>
-                            </div>
-                            <div class="four wide column">
-                                <div class="header">
-                                    <i class="yen sign icon"></i>价格
-                                    <a class="ui olive basic floated label">状态</a>
+                                <div class="three wide column">
+                                        <img class="left floated large ui image"
+                                src="{% static '/images/timg.jpg' %}">
+                                </div>   
+                                <div class="five wide column">
+                                    <div class="header"><h3>主题</h3></div>
+                                    <a class="item" v-on:click="showCompanyMess()">公司</a>
                                 </div>
+                                <div class="five wide column">
+                                    <br>
+                                    <div class="">客户</div>
+                                    <div class="">客户联系方式</div>    
+                                </div>
+                                <div class="three wide column">
+                                        <div class="header">
+                                            <div class="">订单号</div>
+                                             <div class="">订单状态</div>
+                                                <a href="">[更多]</a>          
+                                        </div>
+                                </div>
+                                <div class="three wide column">
+                                </div>
+                                <div class="six wide column">
+                                    <i class="yen sign icon"></i>价格                           
+                                </div> 
+                                <div class="three wide column"> </div>
+                            <div class="four wide column">
                                 <div class="ui icon buttons centered">
                                     <div class="ui basic green button icon">
                                         <i class="plus icon"></i>下一阶段
