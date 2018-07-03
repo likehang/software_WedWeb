@@ -15,20 +15,62 @@ def getCServer(request):
     print('getCServer')
     if request.method == 'GET':
         token = get_token(request)
-        print(token)
         user = request.user
         com = Company.objects.get(manager__belong_to = user)
         ser = C_S.objects.filter(belong = com)
         serializer = singleC_S(ser , many = True)
         return Response(serializer.data)
+    elif request.method == 'PUT':
+        user = request.user
+        com = Company.objects.get(manager__belong_to = user)
+        reform = request.POST
+        ser = C_S()
+
+        ser.belong = com
+        ser.topic = reform['topic']
+        if request.FILES:
+            ser.icon = request.FILES
+        else:
+            print('no files')
+        ser.introduction = reform['introduction']
+        ser.service_kind.id = reform['service_kind']
+        ser.minprice = float(reform['minprice'])
+        ser.maxprice = float(reform['maxprice'])
+        ser.detail = reform['detail']
+        ser.save()
+        return Response(status=None)
     else:
         return Response(status=None)
     
-@api_view(['GET']) 
-def putCServer(request,id):
-    print('putCServer')
-    if request.method == 'PUT':
-        pass
+@api_view(['DELETE','POST']) 
+def ManageCServer(request,id):
+    print('ManageCServer')
+    if request.method == 'POST':
+        user = request.user
+        com = Company.objects.get(manager__belong_to = user)
+        ser = C_S.objects.get(id = id)
+        reform = request.POST
+        ser.topic = reform['topic']
+        if request.FILES:
+            ser.icon = request.FILES
+        else:
+            print('no files')
+        ser.introduction = reform['introduction']
+        ser.service_kind.id = reform['service_kind']
+        ser.minprice = float(reform['minprice'])
+        ser.maxprice = float(reform['maxprice'])
+        ser.detail = reform['detail']
+        ser.save()
+        return Response(status=None)
+    elif request.method == 'DELETE':
+        user = request.user
+        com = Company.objects.get(manager__belong_to = user)
+        ser = C_S.objects.get(id = id)
+        if ser.belong == com :
+            ser.delete()
+            return Response(status=None)
+        else:
+            return Response(status=None)
     else:
         return Response(status=None)
 
@@ -41,8 +83,8 @@ class graph(serializers.ModelSerializer):
 def getserver_graphs(request,id):
     pass
 
-@api_view(['POST','DELETE'])
-def putserver_graphs(request):
+@api_view(['DELETE'])
+def putserver_graphs(request,id):
     pass
 
 class Skinds(serializers.ModelSerializer):
@@ -62,6 +104,7 @@ class singleCom(serializers.ModelSerializer):
         model = Company
         fields = ['name','icon','phone','ident','isopen','inward_phone','business_kind','adress']
 
+<<<<<<< HEAD
 class ComForm(forms.Form):
     name = forms.CharField(max_length=30, required=True)
     icon = forms.ImageField(required = True)
@@ -70,6 +113,8 @@ class ComForm(forms.Form):
     inward_phone = forms.CharField(max_length=20, required=True)
     business_choices = forms.IntegerField(required=True)
     adress = forms.IntegerField(required=True)
+=======
+>>>>>>> bc6d0707e9c0a6bbf56aea7157d481afd2cc506c
 
 @api_view(['GET','POST'])
 def manageCompany(request):
@@ -87,6 +132,11 @@ def manageCompany(request):
         user = request.user
         com = Company.objects.get(manager__belong_to = user)
         old_serializer = singleCom(com , many = False)
+<<<<<<< HEAD
+        #new_serializer = singleCom(data = request.data)
+        form = ComForm(request.POST,request.FILES)
+        print(form)
+=======
         reform = request.POST
         print(reform)
         com.name = reform['name']
@@ -103,6 +153,7 @@ def manageCompany(request):
         serializer = singleCom(com , many = False)
         return Response(serializer.data)
         
+>>>>>>> bc6d0707e9c0a6bbf56aea7157d481afd2cc506c
         # if new_serializer.is_valid():
         #     if os.path.exists(MEDIA_ROOT+com.icon):
         #         print('exist')
@@ -124,13 +175,15 @@ class Orderlist(serializers.ModelSerializer):
         depth = 2
 
 @api_view(['GET'])
-def getClist(request):
+def getputClist(request):
     if request.method == 'GET':
         user = request.user
         com = Company.objects.get(manager__belong_to = user)
         lists = Order_list.objects.filter(needlist__belong = com)
         serializer = Orderlist(lists,many = True)
         return Response(serializer.data)
+    elif request.method == 'PUT':
+        pass
     else:
         return Response(status=None)
 
@@ -153,26 +206,41 @@ def manageOrderList(request,id):
     else:
         return Response(status=None)
 
-@api_view(['PUT'])
-def newlist(request):
-    pass
-
 class FavList(serializers.ModelSerializer):
     class Meta:
         model = Fav
         fields = '__all__'
 
-@api_view(['GET','POST','DELETE'])
-def manageFav(request,id):
-    if request.mathod == 'GET':
-        pass
-    elif request.method == 'POST':
-        pass
-    elif request.method == 'DELETE':
-        pass
+@api_view(['GET'])
+def getFav(request):
+    if request.method == 'GET':
+        user = UserProfile.objects.get(id = request.user.id)
+        favs = Fav.objects.filter(fav_user = user)
+        serializer = FavList(favs,many = True)
+        return Response(serializer.data)
     else:
         return Response(status=None)
-    
+
+@api_view(['DELETE','PUT'])
+def dpFav(request,ser_id):
+    if request.method == 'PUT':
+        ser = C_S.objects.get(id = ser_id)
+        user = UserProfile.objects.get(belong_to = user)
+        fav = Fav()
+        fav.fav_ser = ser
+        fav.fav_user = user
+        fav.save()
+        return Response(status=None)
+    elif request.method == 'DELETE':
+        fav = Fav.objects.get(id = ser_id)
+        user = UserProfile.objects.get(belong_to = user)
+        if fav.fav_user == user:
+            dav.delete()
+            Response(status=None)
+        else:
+            Response(status=None)
+    else:
+        return Response(status=None)
 
 class Business_kind(serializers.ModelSerializer):
     class Meta:
@@ -194,4 +262,20 @@ def getCity(request):
     kind = City.objects.all()
     serializer = serCity(kind ,many = True)
     print('getCity')
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def searchS(request,msg):
+    sers = C_S.objects.filter(introduction__icontains = msg)
+    serializer = singleC_S(sers,many = True)
+    return Response(serializer.data)
+@api_view(['GET'])
+def searchCom(request,msg):
+    coms = Company.objects.filter(name__icontains = msg)
+    serializer = singleCom(coms,many = True)
+    return Response(serializer.data)
+@api_view(['GET'])    
+def searchCity(request,msg):
+    citys = City.objects.filter(city_name__icontains = msg)
+    serializer = serCity(citys,many = True)
     return Response(serializer.data)

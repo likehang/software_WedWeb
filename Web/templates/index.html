@@ -8,6 +8,7 @@
 <link href="{% static '/css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
 <link rel="stylesheet" href="{% static '/css/style.css' %}" type="text/css" media="all" />
 <script src="{% static '/js/jquery-1.11.1.min.js' %}"></script>
+<script src="{% static '/js/vue.js' %}"></script>
 <script src="{% static '/js/bootstrap.js' %}"></script>
 
 </head>
@@ -29,43 +30,85 @@
 			</div>
 		</div>
 	</div>
-	<div>
-		<div class="ui  segment" style="width: 272px !important; height: 300.531px !important;position: fixed;bottom: 200px;right: 10px; padding: 10px;">
-			<div class="another example">
-					<div class="ui relaxed divided list">
-					  <div class="item">
-						<i class="large github middle aligned icon"></i>
-						<div class="content">
-						  <a class="header">Semantic-Org/Semantic-UI</a>
-						  <div class="description">Updated 10 mins ago</div>
-						</div>
-					  </div>
-					  <div class="item">
-						<i class="large github middle aligned icon"></i>
-						<div class="content">
-						  <a class="header">Semantic-Org/Semantic-UI-Docs</a>
-						  <div class="description">Updated 22 mins ago</div>
-						</div>
-					  </div>
-					  <div class="item">
-						<i class="large github middle aligned icon"></i>
-						<div class="content">
-						  <a class="header">Semantic-Org/Semantic-UI-Meteor</a>
-						  <div class="description">Updated 34 mins ago</div>
-						</div>
+
+	{% verbatim %}
+	<div id = "tab">
+		<div id="shortcut directory" v-show="modal.tab" class="ui  segment" style="width: 272px !important; height: 280.531px !important;position: fixed;bottom:60px;right: 10px; padding-left: 20px;">
+			<div class="another example"  >
+					<div class="ui relaxed divided list"> 
+					  <div class="item" v-for="server in servers">
 					  </div>
 					</div>
 				  </div>
 				</div>		
-		<div style="width: 272px !important; height: 100.531px !important;position: fixed;bottom: 100px;right: 10px; margin-top: 15px;">
-			<div class="ui segment">
+		<div style="width: 272px !important; height: 100.531px !important;position: fixed;bottom:80px;right: 10px; margin-top: 15px;" >
+			<div class="ui segment" v-show="modal.intro">
 				<p>Hi!我是您的新娘顾问Echo我将为您提供专业的婚礼策划咨询及预约服务，有什么可以帮您的吗？</p>
 			</div>
-			<div class="ui input focus" style="width:272px">
-				<input type="text">
+			<div class="ui input focus" style="width:272px;position:fixed;bottom:20px;">
+				<input type="text" v-model="modal.userName" >
+				<a class="ui button" v-on:click="showtab()" style="width:45px !important;padding-left: 8px;">OK</a>
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+		var vue = new Vue({
+			el:'#tab',
+			data:{
+				modal:{
+					intro:true,
+					tab:false,
+					userName:null,
+					server:null,
+					company:null,
+					city:null,
+				},
+				servers:[],
+				companies:[],
+        cities:[],
+			},
+			methods:{
+				showtab:function(){
+						this.modal.intro=false;
+						this.modal.tab=true;
+				},
+				getserver:function(){
+					var self = this;
+					reqwest({
+							url:'api/getserver/',
+							type:'json',
+							method:'get',
+							success:function(resp){
+								console.log(resp);
+								self.servers=resp;}
+					})
+				},
+					getcompany:function(){
+						var self = this;
+						reqwest({
+								url:'api/getcompany/',
+								type:'json',
+								method:'get',
+								success:function(resp){
+									console.log(resp);
+									self.companies=resp;}
+						})
+				},
+				getcity:function(){
+					var self = this;
+					reqwest({
+							url:'api/getcity/',
+							type:'json',
+							method:'get',
+							success:function(resp){
+								console.log(resp);
+								self.cities=resp;}
+					})
+				},
+			}
+		})
+	</script>
+	{% endverbatim %}
 	<div class="posts">
 		<div class="container">
 			<div class="w3-agileits-heading">
