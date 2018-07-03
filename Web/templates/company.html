@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+<title>Company Manager</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="{% static '/css/semantic.css' %}" media="screen" title="no title" charset="utf-8">
+<link href="{% static '/css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+<link rel="stylesheet" href="{% static '/css/style.css' %}" type="text/css" media="all" />
+<script src="{% static '/js/jquery-1.11.1.min.js' %}"></script>
+<script src="{% static '/js/bootstrap.js' %}"></script>
+ 
+</head>
+<body>
+	<!-- banner -->
+	<div class="banner">
+        {% include "header.html" %}
+		<div class="agileinfo-top-heading">
+			<h2>Blog Post</h2>
+		</div>
+    </div>
+   <!--
+
+-->
+<div class="ui divider"></div>
+
+
+<div class="ui  ">
+        <img class="ui centered medium image" 
+src="{% static '/images/logo.jpg' %}">
+</div>
+<div class="ui container">
+       
+    <h1><p align=center>公司名</p></h1>
+    <h3><p align=center>公司简介</p></h3>
+         <div class="ui segment vertical padded">
+           
+            <p ><font size =4 color ="grey">秦皇岛领尚文化传播有限公司是一家具有高水平、硬技术的专业文化传播公司。
+                公司集构思、策划、宣传、执行于一体，对外开展：大型会议及会展服务、综艺演出、各类庆典、企业年会、商业策划。
+                 同时公司还经营：拍摄宣传片、广告片、艺术类艺员培训、组织各类赛事、艺人推广、文化交流活动、演出设备租赁等项目。
+                 并与国内各知名演艺人员保持良好合作关系，与多家网络、杂志、媒体、电视栏目、影视剧组、企事业单位有长期合作。</font></p>
+           
+            <p ><font size =4 color ="grey">公司主旨</font></p>
+            <p><font size =4 color ="grey">内容</font></p>
+            <p ><font size =4 color ="grey">优秀案例</font></p>
+            <p><font size =4 color ="grey">内容</font></p>
+        </div>
+    <h3><p align=center>主营项目</p></h3>
+
+    <div class="ui three column grid">
+        <div class="column">服务类型</div>
+        <div class="column">服务介绍</div>
+        <div class="column"><i class="yen sign icon"></i>价格</div>
+        <div class="column">服务类型</div>
+        <div class="column">服务介绍</div>
+        <div class="column"><i class="yen sign icon"></i>价格</div>
+        <div class="column">服务类型</div>
+        <div class="column">服务介绍</div>
+        <div class="column"><i class="yen sign icon"></i>价格</div>
+    </div>
+    <br>
+    <h3><p align=center>案例展示</p></h3>
+         
+        </div>
+        <p align=center><i class="text telephone icon"></i>TEL</p>
+        <p align=center><i class="mail icon"></i>E-mail</p>
+        <p align=center>Address</p>
+        <br>
+    </div>
+</div>
+
+
+<footer>
+    {% include "footer.html" %}
+    </footer>
+</body>	
+</html>

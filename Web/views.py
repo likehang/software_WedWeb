@@ -8,7 +8,11 @@ from Web.models import *
 def index(request):
     context={}
     if request.method =='GET':
+<<<<<<< HEAD
         # if request.user:
+=======
+        # try :
+>>>>>>> bc6d0707e9c0a6bbf56aea7157d481afd2cc506c
         #     User=UserProfile.objects.get(id=request.user.id)
         #     print(User)
         # else:
@@ -92,6 +96,11 @@ def server(request,site,kind):
     return render(request,'server.html',context=context)
 
 def person(request):
+    cities = City.objects.all()
+    ser_kind = server_choices.objects.all()
+    
+    context['city'] =cities
+    context['s_kind'] = ser_kind
     return render(request,'person.html',context=None)
 
 def person_fav(request):
