@@ -42,6 +42,7 @@ urlpatterns = [
 
     url(r'api/getserver_graphs/$',getserver_graphs),
     url(r'api/manageCompany/$',manageCompany),
+    url(r'api/getClist/$',getClist),
     url(r'api/manageOrderList/$',manageOrderList),
     url(r'api/manageFav/$',manageFav),
     

@@ -398,6 +398,7 @@
                     this.getCompany();},
                 showList:function(){
                     this.menu.main=false;this.menu.company=false;this.menu.list=true;this.menu.server=false
+                    this.getLists();
                     },
                 showServer:function(){
                     this.menu.main=false;this.menu.company=false;this.menu.list=false;this.menu.server=true;
@@ -419,6 +420,11 @@
                 getLists:function(){
                     var self = this;
                     reqwest({
+                        url:'api/getClist/',
+                        type:'json',
+                        method:'get',
+                        success:function(resp){console.log(resp);
+                            self.lists=resp}
                     })
                 },
                 getAllServers:function(){
@@ -455,6 +461,7 @@
                 },
                 putCompany:function(){
                     var self = this;
+                    form.append()
                     reqwest({
                         url:'api/manageCompany/',
                         type:'json',

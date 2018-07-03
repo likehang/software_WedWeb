@@ -103,29 +103,17 @@ class status(models.Model):#订单状态及下阶段
     next_2 = models.IntegerField(null=True,blank = True)
 
     def __str__(self):
-        return str(self.status_level)+self.status_name
+        return str(self.status_level)+str(self.status_name)
 
 class Order_list(models.Model):#存订单
     Username = models.ForeignKey(to=UserProfile)#用户名
     create_time=models.DateField(auto_now_add=True)#订单生成时间
     needlist = models.ForeignKey(to = C_S)#需要的服务
-    status_seq = {
-        ("1","已提交"),
-        ("2","商议中"),
-        ("3","安排中"),
-        ("4","执行中"),
-        ("5","结算中"),
-        ("10","请求退款"),
-        ("11","退款中"),
-        ("12","已取消"),
-        ("25","其他"),
-        ("99","已完成"),
-        }
-    status = models.CharField(choices=status_seq,default="1",max_length=10)
+    status = models.ForeignKey(to = status ,default=1)
     price = models.DecimalField(max_digits=8,decimal_places=2,default = 0,null=True,blank=True)#价格999999.99
 
     def __str__(self):
-        return str(self.create_time)+' '+self.id
+        return str(self.create_time)+' '+str(self.id)
 
 class Fav(models.Model):#收藏
     fav_user = models.ForeignKey(to=UserProfile)
