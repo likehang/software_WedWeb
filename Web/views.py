@@ -8,11 +8,11 @@ from Web.models import *
 def index(request):
     context={}
     if request.method =='GET':
-        if request.user:
-            User=UserProfile.objects.get(id=request.user.id)
-            print(User)
-        else:
-            User = None
+        # if request.user:
+        #     User=UserProfile.objects.get(id=request.user.id)
+        #     print(User)
+        # else:
+        #     User = None
         cities = City.objects.all()
         ser_kind = server_choices.objects.all()
         k1 = server_choices.objects.get(ex_ser_name='定制婚礼')
