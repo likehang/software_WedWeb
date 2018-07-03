@@ -167,34 +167,34 @@
                             <div class="field">
                                 <div class="field">
                                     <label>服务主题</label>
-                                    <input type="text" placeholder="xxxx" name="C_name" :value="form_SingleServer.new_form.topic" :readOnly="!modal.Ser_isEdit">
+                                    <input type="text" placeholder="xxxx" name="C_name" v-model="form_SingleServer.new_form.topic" :readOnly="!modal.Ser_isEdit">
                                 </div>
-                                <div class="ui error message"><p>长度限制</p></div>
+                                <div class="ui error message" v-show=""><p>长度限制</p></div>
                                 <br>
                                 <div class="field">
                                     <label>服务种类</label>
-                                    <select name="C_kind" class="ui fluid dropdown" :value="form_SingleServer.new_form.service_kind" :disabled="!modal.Ser_isEdit">
+                                    <select name="C_kind" class="ui fluid dropdown" v-model="form_SingleServer.new_form.service_kind" :disabled="!modal.Ser_isEdit">
                                         <option :value="kind.id" v-for="kind in Skinds">{{kind.ex_ser_name}}</option>
                                     </select>
                                 </div>
-                                <div class="ui error message"><p>经营限制</p></div>
+                                <div class="ui error message" v-show=""><p>经营限制</p></div>
                                 <br>
                                 <div class="field">
                                     <label>简介</label>
-                                    <textarea name="" id="" cols="30" rows="10" :value="form_SingleServer.new_form.detail" :readOnly="!modal.Ser_isEdit"></textarea>
+                                    <textarea name="" id="" cols="30" rows="10" v-model="form_SingleServer.new_form.detail" :readOnly="!modal.Ser_isEdit"></textarea>
                                 </div>
                                 <br>
                                 <div class="field">
                                     <label>价格区间</label>
                                     <div  class="three fields">  
                                         <div class="field">
-                                            <input type="text" placeholder="minprice" name="min" :value="form_SingleServer.new_form.minprice" :readOnly="!modal.Ser_isEdit">
+                                            <input type="text" placeholder="minprice" name="min" v-model="form_SingleServer.new_form.minprice" :readOnly="!modal.Ser_isEdit">
                                         </div>
                                         <div class="field">
                                             ~
                                         </div>
                                         <div class="field">
-                                            <input type="text" placeholder="maxprice" name="max" :value="form_SingleServer.new_form.maxprice" :readOnly="!modal.Ser_isEdit">
+                                            <input type="text" placeholder="maxprice" name="max" v-model="form_SingleServer.new_form.maxprice" :readOnly="!modal.Ser_isEdit">
                                         </div>
                                     </div>
                                 </div>
@@ -259,16 +259,19 @@
                                         <label>上传图标</label>
                                         <input class="" type="file" name="C_icon" :disabled="!modal.Ser_isEdit">
                                     </div>
-                                    <div class="ui error message"><p>大小限制</p></div>
+                                    <div class="ui error message" v-show=""><p>大小限制</p></div>
                                 </div>
                                 <div class="field">
                                     <br>
                                     <label>预览图</label>
                                     <br>
-                                    <div class="" v-for="graph in server_graphs">
-                                        <label class="center ">{{graph.order_number}}</label>
+                                    <div class="" >
                                         <br>
-                                        <img :src="graph.img" alt="" style="width: 200px;height: 200px;">
+                                        <div v-for="graph in server_graphs">
+                                            <label class="center ">{{graph.order_number}}</label>
+                                            <img src="" alt="" style="width: 200px;height: 200px;">
+                                            <br>
+                                        </div>
                                         <br>
                                         <div class="">
                                             <label>上传图片</label>
@@ -294,8 +297,7 @@
                             </div>
                         </select>
                     </span>
-                </div>
-                <div class="ui divider"></div>
+                    <div class="ui divider"></div>
                         <div class="ui two column grid items"> 
                             <div class="column item" v-for="server in servers" v-show="samekind(server.service_kind)">
                                 <div class="ui blue segment grid">
@@ -324,12 +326,14 @@
                             </div>
                             <div class="column item">
                                 <div class="ui segment">
-                                    <div class="ui blue massive button">
+                                    <div class="ui blue massive button" v-on:click="new_Ser()">
                                         <i class="plus icon"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                </div>
+                
                     </div>
             </div>
         </div>
@@ -366,6 +370,7 @@
                 Choise_kind:0,
                 DjangoCookie:null,
                 Cnew_img:null,
+                new_ser:[],
                 servers:[],
                 server_graphs:[],
                 Skinds:[],
@@ -386,12 +391,20 @@
             methods:{
                 setSerKind:function(kind){this.Choise_kind = kind;},
                 SerKind:function(){this.modal.showSerKind = !this.modal.showSerKind;},
-                showMulPage:function(){this.servermenu.mulpage=true;this.servermenu.sinpage=false},
+                showMulPage:function(){
+                    this.servermenu.mulpage=true;this.servermenu.sinpage=false;
+                    this.Choise_kind = 0;},
                 showSinPage:function(ser){
                     this.servermenu.mulpage=false;this.servermenu.sinpage=true;
                     this.form_SingleServer.new_form = ser;
                     this.getserver_graphs(ser);
                     },
+                new_Ser:function(){
+                    this.servermenu.mulpage=false;this.servermenu.sinpage=true;
+                    this.form_SingleServer.new_form = []
+                    this.form_SingleServer.new_form.service_kind = this.Choise_kind;
+                    this.Ser_edit();
+                },
                 showMain:function(){this.menu.main=true;this.menu.company=false;this.menu.list=false;this.menu.server=false},
                 showCompany:function(){
                     this.menu.main=false;this.menu.company=true;this.menu.list=false;this.menu.server=false
