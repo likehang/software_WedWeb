@@ -4,7 +4,7 @@ from rest_framework import serializers,status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.middleware.csrf import get_token
-
+from django import forms
 class singleC_S(serializers.ModelSerializer):
     class Meta:
         model = C_S
@@ -62,6 +62,15 @@ class singleCom(serializers.ModelSerializer):
         model = Company
         fields = ['name','icon','phone','ident','isopen','inward_phone','business_kind','adress']
 
+class ComForm(forms.Form):
+    name = forms.CharField(max_length=30, required=True)
+    icon = forms.ImageField(required = True)
+    phone = forms.CharField(max_length=20, required=True)
+    isopen = forms.BooleanField(required=True)
+    inward_phone = forms.CharField(max_length=20, required=True)
+    business_choices = forms.IntegerField(required=True)
+    adress = forms.IntegerField(required=True)
+
 @api_view(['GET','POST'])
 def manageCompany(request):
     print('manageCompany')
@@ -78,18 +87,32 @@ def manageCompany(request):
         user = request.user
         com = Company.objects.get(manager__belong_to = user)
         old_serializer = singleCom(com , many = False)
-        new_serializer = singleCom(data = request.data)
-        print(new_serializer)
-        if new_serializer.is_valid():
-            if os.path.exists(MEDIA_ROOT+com.icon):
-                print('exist')
-                return Response(new_serializer.data,status=None)
-            else:
-                print('false')
-                return Response(old_serializer.data,status=None)
+        reform = request.POST
+        print(reform)
+        com.name = reform['name']
+        if request.FILES:
+            com.icon = request.FILES
         else:
-            print(new_serializer.errors)
-            return Response(old_serializer.data,status=None)
+            print('no files')
+        com.phone = reform['phone']
+        com.isopen = bool(reform['isopen'])
+        com.inward_phone = reform['inward_phone']
+        com.business_kind.id = reform['business_kind']
+        com.adress.id = reform['adress']
+        com.save()
+        serializer = singleCom(com , many = False)
+        return Response(serializer.data)
+        
+        # if new_serializer.is_valid():
+        #     if os.path.exists(MEDIA_ROOT+com.icon):
+        #         print('exist')
+        #         return Response(new_serializer.data,status=None)
+        #     else:
+        #         print('false')
+        #         return Response(old_serializer.data,status=None)
+        # else:
+        #     print(new_serializer.errors)
+        #     return Response(old_serializer.data,status=None)
     else:
         return Response(old_serializer.data,status=None)
 

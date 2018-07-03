@@ -49,19 +49,19 @@
                 <div class="ui center aligned very padded vertical segment container">
                         <div class="ui ">
                             <div class="ui link items">
-        
+                                {% for fav in favs %}
                                 <div class="segment item">
                                   <div class="ui small image">
-                                    <img src="{% static '/images/p2.jpg' %}">
+                                    <img url="{{fav.fav_ser.icon.url}}">
                                   </div>
                                   <div class="content">
-                                    <div class="header left floated">装饰</div>&nbsp;<button class="ui right floated button">删除</button>
+                                    <a class="header left floated" href="../../single/{{fav.fav_ser.id}}">{{fav.fav_ser.topic}}</a>&nbsp;<button class="ui right floated button">删除</button>
                                     <div class="description ">
-                                      <p>小清新</p>
+                                      <p>{{fav.fav_ser.introduction}}</p>
                                     </div>
                                   </div>
                                 </div>
-
+                                {% endfor %}
                         </div>
                     </div>
         </div>
