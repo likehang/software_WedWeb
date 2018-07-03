@@ -44,9 +44,9 @@
                 {% for sk in s_kind %}
                     {%if site.id %}
                         {% if sk.id == kind.id %}
-                            <a class="ui large label" href="../../server/{{site.id}}&{{sk.id}}" style="background-color:#f173ac;color:white">{{sk}}</a>
+                            <a class="ui large label" href="../../server/{{site.id}}&{{sk.id}}" style="background-color:#f173ac; color:white">{{sk}}</a>
                         {% else %}
-                            <a class="ui large label" href="../../server/{{site.id}}&{{sk.id}}" style="background-color:#f8aba6;color:white">{{sk}}</a>
+                            <a class="ui large label" href="../../server/{{site.id}}&{{sk.id}}" style="background-color:#f8aba6; color:white">{{sk}}</a>
                         {% endif %}
                     {%else%}
                         {% if sk.id == kind.id %}
