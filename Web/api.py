@@ -87,9 +87,22 @@ def manageCompany(request):
         user = request.user
         com = Company.objects.get(manager__belong_to = user)
         old_serializer = singleCom(com , many = False)
-        #new_serializer = singleCom(data = request.data)
-        form = ComForm(request.POST,request.FILES)
-        print(form)
+        reform = request.POST
+        print(reform)
+        com.name = reform['name']
+        if request.FILES:
+            com.icon = request.FILES
+        else:
+            print('no files')
+        com.phone = reform['phone']
+        com.isopen = bool(reform['isopen'])
+        com.inward_phone = reform['inward_phone']
+        com.business_kind.id = reform['business_kind']
+        com.adress.id = reform['adress']
+        com.save()
+        serializer = singleCom(com , many = False)
+        return Response(serializer.data)
+        
         # if new_serializer.is_valid():
         #     if os.path.exists(MEDIA_ROOT+com.icon):
         #         print('exist')
