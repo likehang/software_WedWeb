@@ -26,7 +26,7 @@
                 {% for ct in city %}
                     {%if kind.id %}
                         {% if ct.id == site.id %}
-                            <a class="ui large label" href="../../server/{{ct.id}}&{{kind.id}}" style="background-color:#f173ac; color:white">{{ct}}</a>
+                            <a class="ui large label" href="../../server/{{ct.id}}&{{kind.id}}" style="background-color:#f173ac;color:white">{{ct}}</a>
                         {% else %}
                             <a class="ui large label" href="../../server/{{ct.id}}&{{kind.id}}" style="background-color:#f8aba6;color:white" >{{ct}}</a>
                         {% endif %}
