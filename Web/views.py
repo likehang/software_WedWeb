@@ -40,9 +40,14 @@ def backWeb(request):
     context={}
     if request.method == 'GET':
         if isinstance(request.user,User):
-            manage = UserProfile.objects.get(belong_to=request.user)
-            if manage.is_C_man:
-                return render(request,'back_manage.html',context=None)
+            user = UserProfile.objects.get(belong_to=request.user)
+            if user.is_C_man:
+                cities = City.objects.all()
+                ser_kind = server_choices.objects.all()
+                context['User'] = user
+                context['city']=cities
+                context['s_kind'] = ser_kind
+                return render(request,'back_manage.html',context=context)
     return redirect(to='index')
 
 def single(request,id):
@@ -143,8 +148,22 @@ def person_list(request):
     context['s_kind'] = ser_kind
     return render(request,'person-list.html',context=context)
 
-def company(request):
-    return render(request,'company.html',context=None)
+def company(request,id):
+    context={}
+    if request.method =='GET':
+        if isinstance(request.user,User):
+            user = UserProfile.objects.get(belong_to = request.user)
+        else:
+            user = None
+        cities = City.objects.all()
+        ser_kind = server_choices.objects.all()
+        com = Company.objects.get(id = id)
+        sers = C_S.objects.filter(belong = com)
+        context['com'] = com
+        context['user'] = user
+        context['city'] = cities
+        context['s_kind'] = ser_kind
+    return render(request,'company.html',context=context)
 
 class LoginForm(forms.Form):
     username = forms.CharField()

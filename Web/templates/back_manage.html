@@ -492,24 +492,12 @@
                 },
                 putCompany:function(){//图片上传未完成
                     var self = this;
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-                    form.append()
->>>>>>> bc6d0707e9c0a6bbf56aea7157d481afd2cc506c
->>>>>>> 7c20468407a57442e2f2c16077b5c1defa79c0f4
                     reqwest({
                         url:'api/manageCompany/',
                         type:'json',
                         method:'post',
                         headers:{'X-CSRFToken':self.DjangoCookie},
-<<<<<<< HEAD
-                        data:{'form':self.form_Company.new_form,
-                                'file':self.Cnew_img},
-=======
                         data:self.form_Company.new_form,
->>>>>>> bc6d0707e9c0a6bbf56aea7157d481afd2cc506c
                         success:function(resp){
                             console.log(resp);
                             self.form_Company.new_form=resp;}
