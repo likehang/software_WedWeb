@@ -2,6 +2,8 @@ from django.shortcuts import render ,redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+from django.middleware.csrf import get_token
 from Web.models import *
 
 # Create your views here.
@@ -33,7 +35,7 @@ def index(request):#用户的验证
         print(context)
         return render(request,'index.html',context=context)
     else:
-        return redirect(to='index')
+        return redirect(to='/index/')
 
 
 def backWeb(request):
@@ -48,7 +50,7 @@ def backWeb(request):
                 context['city']=cities
                 context['s_kind'] = ser_kind
                 return render(request,'back_manage.html',context=context)
-    return redirect(to='index')
+    return redirect(to='/index/')
 
 def single(request,id):
     context={}
@@ -75,11 +77,15 @@ def single(request,id):
         print(context)
         return render(request,'single.html',context=context)
     else:
-        return redirect(to='index')
+        return redirect(to='/index/')
 
 def server(request,site,kind):
     context={}
     if request.method =='GET':
+        if isinstance(request.user,User):
+            user = UserProfile.objects.get(belong_to = request.user)
+        else:
+            user = None
         cities = City.objects.all()
         ser_kind = server_choices.objects.all()
         if site == '0':
@@ -94,6 +100,7 @@ def server(request,site,kind):
             servers = C_S.objects.filter(belong__adress=site,service_kind=kind)
             tsite = City.objects.get(id = site)
             tkind = server_choices.objects.get(id = kind)
+        context['User'] = user
         context['city'] =cities
         context['s_kind'] = ser_kind
         context['servers'] = servers
@@ -103,26 +110,41 @@ def server(request,site,kind):
     return render(request,'server.html',context=context)
 
 def person(request):
+    context={}
+    if isinstance(request.user,User):
+        user = UserProfile.objects.get(belong_to = request.user)
+    else:
+        return redirect(to='/index/')
     if request.method == 'GET':
-        if isinstance(request.user,User):
-            user = UserProfile.objects.get(belong_to = request.user)
-        else:
-            return redirect(to='index')
-        context={}
         cities = City.objects.all()
         ser_kind = server_choices.objects.all()
-        context['user'] = user
+        context['User'] = user
         context['city'] =cities
         context['s_kind'] = ser_kind
         return render(request,'person.html',context=context)
-    return redirect(to='index')
+    elif request.method =='POST':
+            form = request.POST
+            user.belong_to.username = form['User_name']
+            user.email = form['User_email']
+            user.location.id = int(form['city'])
+            user.sex = bool(form['sex'])#  error!
+            user.phone = form['User_phone']
+            user.save()
+            cities = City.objects.all()
+            ser_kind = server_choices.objects.all()
+            context['User'] = user
+            context['city'] =cities
+            context['s_kind'] = ser_kind
+            return render(request,'person.html',context=context)
+    else:   
+        return redirect(to='/index/')
 
 def person_fav(request):
     context={}
     if isinstance(request.user,User):
         user = UserProfile.objects.get(belong_to = request.user)
     else:
-        return redirect(to='index')
+        return redirect(to='/index/')
     cities = City.objects.all()
     ser_kind = server_choices.objects.all()
     favs = Fav.objects.filter(fav_user = user)
@@ -137,7 +159,7 @@ def person_list(request):
     if isinstance(request.user,User):
         user = UserProfile.objects.get(belong_to = request.user)
     else:
-        return redirect(to='index')
+        return redirect(to='/index/')
     cities = City.objects.all()
     ser_kind = server_choices.objects.all()
     lists = Order_list.objects.filter(Username = user)
@@ -160,6 +182,7 @@ def company(request,id):
         com = Company.objects.get(id = id)
         sers = C_S.objects.filter(belong = com)
         context['com'] = com
+        context['sers'] = sers
         context['user'] = user
         context['city'] = cities
         context['s_kind'] = ser_kind
@@ -171,32 +194,34 @@ class LoginForm(forms.Form):
 
 def index_login(request):
     context = {}
+    other = "Register"
+    url="../../register/"
+    context['other'] = other
+    context['url'] = url
     if request.method == 'GET':
         form = AuthenticationForm
-        other = "Register"
-        url="../../register/"
-        context['other'] = other
-        context['url'] = url
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             login(request, form.get_user())
-            return redirect(to='index')
+            return redirect(to='/index/')
     context['form'] = form
     return render(request, 'register_login.html', context)
 
 def index_register(request):
     context = {}
+    other = "Login"
+    url="../../login/"
+    context['other'] = other
+    context['url'] = url
     if request.method == 'GET':
         form = UserCreationForm
-        other = "Login"
-        url="../../login/"
-        context['other'] = other
-        context['url'] = url
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect(to='index')
+            new = form.save()
+            user = UserProfile(belong_to=new)
+            user.save()
+            return redirect(to='/login/')
     context['form'] = form
     return render(request, 'register_login.html', context)

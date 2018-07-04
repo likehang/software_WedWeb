@@ -9,9 +9,20 @@
 <link rel="stylesheet" href="{% static '/css/style.css' %}" type="text/css" media="all" />
 <script src="{% static '/js/jquery-1.11.1.min.js' %}"></script>
 <script src="{% static '/js/bootstrap.js' %}"></script>
- 
+<script src="{% static '/js/vue.js' %}"></script>
+<script src="{% static '/js/reqwest.js' %}"></script>
+<style>
+        .ui.showcard{
+            position: absolute;
+            transform: translate(-50%,-50%);
+            left: 50%;
+            top: 50%;
+            z-index:999;
+        }
+</style>
+
 </head>
-<body>
+<body >
 	<!-- banner -->
 	<div class="banner">
         {% include "header.html" %}
@@ -20,9 +31,9 @@
 		</div>
     </div>
 
-<div>
-        <div class="ui vertical segment container">
-                <div class="ui vertical horizontal segments">
+<div id="ident" >
+        <div class="ui vertical segment container ">
+                <div class="ui vertical horizontal segments ">
                         <div class="ui right aligned vertical segment">
                             <a href="../../person-list/">
                                 <h5 class="ui large violet header center aligned inverted">
@@ -43,39 +54,48 @@
                             </a>
                         </div>
                     </div>
-                <form action="post" class="ui form error success" >
+                <form method="post" class="ui form error success" >
+                        {% csrf_token %}
                     <br>
+                   
                     <div class="ui segment vertical">
-                        <a href=""><img src="{% static '/images/sz57a8MNSQANMAYZHZH0djf_WGz4fsM1.jpg' %}" alt="" class="ui circular centered small image"></a>
+                        <a href=""><img src="/store/{{ User.icon }}" alt="" class="ui circular centered small image"></a>
                         <div >
-                            {% if user.is_C_man %}
+                            {% if User.is_C_man %}
                             <a class="ui yellow basic label icon"><i class="user outline icon "></i>公司管理员</a>
                             {% endif %}
-                            <button class="ui right floated red button">验证身份</button>
+                            {% if User.is_ident %}
                             <a class="ui green basic floated label">身份确认</a>
+                            {% else %}
                             <a class="ui orange basic floated label">身份验证</a>
+                            <a class="ui right floated red button" v-on:click="ide2()">验证身份</a>
+                            {% endif %}
                         </div>
                     </div>
                     <br>
                     <div class="two fields">
                         <div class="field">
                             <label >Your Name</label>
-                            <input type="text" placeholder="xxxx" name="User_name" readonly>
+                            <input type="text" placeholder="xxxx" name="User_name" value={{User.belong_to.username}}>
                         </div>
                         <div class="field">
                             <label >Your Email</label>
-                            <input type="text" placeholder="xxxx" name="User_email" readonly>
+                            <input type="text" placeholder="xxxx" name="User_email" value={{User.email}} >
                         </div>
                     </div>
                     <br>
                     <div class="two fields">
                         <div class="field">
                             <label>城市</label>
-                            <select name="C_city" class="ui fluid dropdown" readonly>
-                                <option value="">选择城市</option>
-                                <option value="">北京</option>
-                                <option value="">南京</option>
-                                <option value="">秦皇岛</option>
+                            <select name="city" class="ui fluid dropdown" >
+                                <option value="0">选择城市</option>
+                                {% for ct in city %}
+                                    {% if ct.id ==  User.location.id %}
+                                        <option value={{ct.id}} selected>{{ct.city_name}}</option>
+                                    {%else%}
+                                        <option value={{ct.id}}>{{ct.city_name}}</option>
+                                    {%endif%}
+                                {% endfor %}
                             </select>
                         </div>
                         <div class="field">
@@ -83,13 +103,21 @@
                             <div class="two fields">
                                 <div class="field ">
                                     <div class="ui radio checkbox center aligned">
-                                        <input type="radio" name="sex" value="1">
+                                        {% if User.sex %}
+                                            <input type="radio" name="sex" value="True" checked>
+                                        {%else%}
+                                            <input type="radio" name="sex" value="True" >
+                                        {% endif %}
                                         <label>男</label>
                                     </div>
                                 </div>
                                 <div class="field">
                                     <div class="ui radio checkbox center aligned">
-                                        <input type="radio" name="sex" value="0">
+                                        {% if User.sex %}
+                                        <input type="radio" name="sex" value="False">
+                                        {% else %}
+                                        <input type="radio" name="sex" value="False" checked>
+                                        {% endif %}
                                         <label>女</label>
                                     </div>
                                 </div>
@@ -99,107 +127,269 @@
                     <br>
                     <div class="field">
                         <label >Your Phone</label>
-                        <input type="text" placeholder="xxxx" name="User_phone" readonly>
+                        <input type="text" placeholder="xxxx" name="User_phone" value={{User.phone}}>
                     </div>
                     <br>
                     <div class="three fields">
-                        <div class="field"><button class="ui blue button">修改信息</button></div>
-                        <div class="field"><button class="ui orange button">修改密码</button></div>
-                        <div class="field"><button class="ui green button">上传头像</button></div>
+                        <div class="field"><button class="ui blue button" type="submit" >修改信息</button></div>
+                        <div class="field"><a class="ui orange button" v-on:click="cha2()">修改密码</a></div>
+                        <div class="field"><a class="ui green button" v-on:click="upl2()">上传头像</a></div>
                     </div>
                 </form>
-                <div class="ui upimg">
-                   <h3> 上传头像:</h3><br>
-                  个人头像支持jpg，gif，png格式的图片，大小限制1m，建议尺寸120*120<br>
-                  <div class="ui segment">
-                        <img class="ui small left floated image" src="t1.jpg">
-                       <p> 请输入地址：<p class="ui input focus"><input type="file" placeholder="address"></p>
-                       <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <button class="ui  green button ">上传头像 </button>
-                            <button class="ui button">取消 </button></p><br>  
-                            温馨提示：上传照片后，您可能需要刷新一下本页面（按F5键），才能查看最新图片效果！          
-                      </div>
-                </div>
-                <div class="ui upsecret">
-                        <table class="ui celled padded table">
-                                <thead>
-                                  <tr><th class="single line">修改密码：</th>
-                                </tr></thead>
-                                <tbody>
-                                  <tr>
-                                    <td>
-                                      <h2 class="ui center aligned header">请输入密码:</h2>
-                                    </td>
-                                    <td class="single line"> <div class="ui input focus">
-                                                          <input type="text" placeholder="password...">
-                                                        </div> </td>
-                                  </tr>
-                                  <tr>
-                                    <td>
-                                      <h2 class="ui center aligned header">请设置新密码:</h2>
-                                    </td>
-                                    <td class="single line"><div class="ui input focus">
-                                                          <input type="text" placeholder="new password...">
-                                                        </div> </td>
-                                  </tr>
-                                   <tr>
-                                    <td>
-                                      <h2 class="ui center aligned header"> 再次输入新密码:</h2>
-                                    </td>
-                                    <td class="single line"><div class="ui input focus">
-                                                          <input type="text" placeholder="new password...">
-                                                        </div> </td>
-                                  </tr>
-                                  <tr>
-                                  <td   class="single line ">
-                                      <center>
-                                      <button class="ui  orange button ">确认 </button>
-                                    </center></td>
-                                    <td   class="single line ">
-                                            <center>
-                                     <button class="ui button">取消 </button> 
-                                     </center></td>
-                                   
-                                  </tr>
-                </div><br>
-                <div class="ui upident">
-                        <table class="ui celled padded table">
-                                <thead>
-                                  <tr><th class="single line">身份验证:</th>
-                                </tr></thead>
-                                <tbody>
-                                  <tr>
-                                    <td>
-                                      <h2 class="ui center aligned header">请输入姓名：</h2>
-                                    </td>
-                                    <td class="single line"> <div class="ui input focus">
-                                                          <input type="text" placeholder="name...">
-                                                        </div> </td>
-                                  </tr>
-                                  <tr>
-                                    <td>
-                                      <h2 class="ui center aligned header">请输入身份证号：</h2>
-                                    </td>
-                                    <td class="single line"><div class="ui input focus">
-                                                          <input type="text" placeholder="ID number...">
-                                                        </div> </td>
-                                  </tr>
-                                  <tr>
-                                  <td   class="single line ">
-                                      <center>
-                                      <button class="ui  blue button ">确认 </button>
-                                    </center></td>
-                                    <td   class="single line ">
-                                            <center>
-                                     <button class="ui button">取消 </button> 
-                                     </center></td>
-                                   
-                                  </tr>
-
-                </div>
-            </div>
+             
+        </div>   
+        <div class="ui showcard" v-show="upl1" >
+                    
+                <table class="ui celled padded table">
+                        {% csrf_token %}
+                        <thead>
+                             <tr>
+                                 <th class="single line">上传头像:</th>
+                             </tr>
+                       </thead>
+                       <tbody>                                   
+                             <tr>
+                               <td>
+                                 <h2 class="ui center aligned header">头像:</h2>
+                               </td>
+                               <td class="">
+                                    <div class="ui ">
+                                        <img class="ui  left floated image" id="Uoutput" src="/store/{{ User.icon }}">
+                                   </div> 
+                               </td>
+                             </tr>
+                             <tr>
+                               <td>
+                                 <h2 class="ui center aligned header"> 请输入地址：</h2>
+                               </td>
+                               <td class="">
+                                    <p class="ui input focus"><input type="file" placeholder="address" v-on:change="UnewI($event)"></p>
+                               </td>
+                             </tr>
+                             <tr>
+                              <td   class=" ">
+                                <center>
+                                        <a class="ui  green button " v-on:click="upicon()">上传头像 </a>
+                                </center>
+                              </td>
+                                <td   class="">
+                                 <center>
+                                        <a class="ui button"v-on:click="upl2()">取消 </a> 
+                                 </center>
+                                </td>
+                              </tr>                                   
+                       </tbody>
+                   </table>
+        </div>
+        <div class="ui showcard" v-show="cha1" >
+                <table class="ui celled padded table">
+                        {% csrf_token %}
+                     <thead>
+                          <tr>
+                              <th class="single line">修改密码：</th>
+                          </tr>
+                    </thead>
+                    <tbody>
+                          <tr>
+                            <td>
+                              <h2 class="ui center aligned header">请输入密码:</h2>
+                            </td>
+                            <td class="single line"> 
+                                <div class="ui input focus">
+                                    <input type="text" placeholder="password..." v-model="changepassword.cha_psw">
+                                </div> 
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <h2 class="ui center aligned header">请设置新密码:</h2>
+                            </td>
+                            <td class="single line">
+                                <div class="ui input focus">
+                                    <input type="text" placeholder="new password..." v-model="changepassword.cha_newpsw">
+                                </div> 
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <h2 class="ui center aligned header"> 再次输入新密码:</h2>
+                            </td>
+                            <td class="single line">
+                                <div class="ui input focus">
+                                    <input type="text" placeholder="new password..." v-model="changepassword.cha_newpsw1">
+                                </div> 
+                            </td>
+                          </tr>
+                          <tr>
+                           <td   class="single line ">
+                             <center>
+                               <a class="ui  orange button " v-on:click="upsecret()">确认 </a>
+                             </center>
+                           </td>
+                             <td   class="single line ">
+                              <center>
+                                <a class="ui button" v-on:click="cha2()">取消 </a> 
+                              </center>
+                             </td>
+                           </tr>
+                    </tbody>
+                </table>
+        </div><br>
+        <div class="ui showcard" v-show="ide1" >
+                <table class="ui celled padded table">
+                        {% csrf_token %}
+                        <thead>
+                          <tr>
+                              <th class="single line">验证身份:</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <h2 class="ui center aligned header">请输入姓名：</h2>
+                            </td>
+                            <td class="single line"> 
+                                <div class="ui input focus">
+                                    <input type="text" placeholder="name..." v-model="identity.ide_name">
+                                </div> </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <h2 class="ui center aligned header">请输入身份证号：</h2>
+                            </td>
+                            <td class="single line">
+                                <div class="ui input focus">
+                                     <input type="text" placeholder="ID number..." v-model="identity.ide_ID">
+                                 </div> 
+                            </td>
+                          </tr>
+                          <tr>
+                          <td   class="single line ">
+                            <center>
+                               <a class="ui  blue button " v-on:click="upident()">确认 </a>
+                            </center></td>
+                            <td   class="single line ">
+                            <center>
+                               <a class="ui button" v-on:click="ide2()">取消 </a> 
+                            </center></td>
+                           
+                          </tr>
+               </table>
+        </div> 
 </div>
+<script>
+    var ident = new Vue({
+        el:'#ident',
+        data:{
+            identity:{
+                ide_name:null,
+                ide_ID:null,
+            },
+            uploadhead:{
+                upl_file:null,
+            },
+            changepassword:{
+                cha_psw:null,
+                cha_newpsw:null,
+                cha_newpsw1:null, 
+            },
+            ide1:false,
+            upl1:false,
+            cha1:false,
+            cookie:null,
+            Userid:{{User.id}},
+        },
+        // mounted:function(){
+        //     this.AgetCookie();
+        // },
+        methods:{
+            ide2:function(){this.ide1 = !this.ide1;},
+            upl2:function(){this.upl1 = !this.upl1;},
+            cha2:function(){this.cha1 = !this.cha1;},
+            upsecret:function(){
+                var self = this;
+                reqwest({//token未完成 被拦截
+                    url:'api/upsecret/'+ self.Userid,
+                    type:'json',
+                    method:'post',
+                    data:[self.changepassword.cha_psw,
+                        self.changepassword.cha_newpsw],
+                    success:function(resp){
+                        alert('ok');
+                    }
+                })
+            },
+            upicon:function(){
+                var self = this;
+                reqwest({
+                    url:'api/upicon/'+ self.Userid,
+                    type:'json',
+                    method:'post',
+                    data:[self.uploadhead.upl_file],
+                    success:function(resp){
+                        alert('ok');
+                    }
+                })
+            },
+            upident:function(){
+                var self = this;
+                reqwest({
+                    url:'api/upident/'+ self.Userid,
+                    type:'json',
+                    method:'post',
+                    data:[self.identity.ide_name,
+                        self.identity.ide_ID],
+                    success:function(resp){
+                        alert('ok');
+                    }
+                })
+            },
+            UnewI(e) {//显示图片完成 待上传
+                    var file = e.target.files[0];
+                    var reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function(){
+                        var dataurl = reader.result;
+                        var output = document.getElementById('Uoutput'); 
+                        output.src = dataurl
+                        this.uploadhead.upl_file = {'url':dataurl,'file':reader}
+                    }
+                },
+            // AgetCookie:function(){
+            //     var self=this;
+            //         reqwest({
+            //             url:'api/gtetCookie/',
+            //             type:'json',
+            //             methos:'get',
+            //             success:function(resp){
+            //                 self.cookie=self.getCookie('csrftoken');
+            //             },
+            //         })
+            // },
+            // getCookie:function(name){  //获取cookie函数
+            //         name = name + "=";
+            //         var start = document.cookie.indexOf(name),
+            //             value = null;
+            //         if(start>-1){
+            //             var end = document.cookie.indexOf(";",start);
+            //             if(end == -1){
+            //                 end = document.cookie.length;
+            //             }
+            //             value = document.cookie.substring(start+name.length,end);
+            //         }
+            //         return value;
+            //     },
+        },
+        computed:{
+            dimmershow:function(){
+                if(ide1 || upl1 || cha1) return 'dimmer';
+                else return ''
+            }
+        }
+    })
 
+
+</script>
 <footer>
     {% include "footer.html" %}
     </footer>

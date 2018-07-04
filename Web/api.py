@@ -5,6 +5,11 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.middleware.csrf import get_token
 from django import forms
+
+@api_view(['GET'])
+def sendCookie(request):
+    token = get_token(request)
+    return Response(token)
 class singleC_S(serializers.ModelSerializer):#公司的服务管理
     class Meta:
         model = C_S
@@ -279,7 +284,7 @@ def searchCity(request,msg):
 def changePassWord(request,id):
     user = UserProfile.objects.get(id=id)
     password = request.POST['password']
-    user.belong_to.set_password(password)
+    user.belong_to.set_password(self,password)
     user.save()
     return Response(status=None)
 

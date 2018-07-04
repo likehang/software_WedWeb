@@ -26,13 +26,13 @@ urlpatterns = [
     url(r'^index/$',index),
     url(r'^login/$', index_login),
     url(r'^register/$', index_register),
-    url(r'^logout/$', logout, {'next_page': '/register'}),
+    url(r'^logout/$', logout, {'next_page': '/index'}),
     url(r'^backManage/$',backWeb),
     url(r'^single/(?P<id>\d+)$',single),
     url(r'^company/(?P<id>\d+)$',company),
-    url(r'^person/$',person),
-    url(r'^person-fav/$',person_fav),
-    url(r'^person-list/$',person_list),
+    url(r'^person/',person),
+    url(r'^person-fav/',person_fav),
+    url(r'^person-list/',person_list),
     url(r'^server/(?P<site>\d+)&(?P<kind>\d+)$',server),
 
     url(r'api/getCServer/$',getCServer),
@@ -48,10 +48,17 @@ urlpatterns = [
     url(r'api/manageOrderList/(?P<id>\d+)/(?P<msg>\w+)$',manageOrderList),
     url(r'api/getFav/$',getFav),
     url(r'api/dpFav/(?P<ser_id>\d+)$',dpFav),
+    
 
     url(r'api/searchServer/(?P<msg>\w+)$',searchS),
     url(r'api/searchCompany/(?P<msg>\w+)$',searchCom),
     url(r'api/searchCity/(?P<msg>\w+)$',searchCity),
+
+    url(r'api/upsecret/(?P<id>\d+)$',changePassWord),
+    url(r'api/upicon/(?P<id>\d+)$',upUserIcon),
+    url(r'api/upident/(?P<id>\d+)$',upIdent),
+
+
     
     
     

@@ -29,7 +29,7 @@
                     <div class="menu">
                         <a class="item" v-on:click="showCompany()">公司管理</a>
                         <a class="item" v-on:click="showList()">订单管理
-                            <div class=" ui teal circular label">数量</div></a>
+                            <div class=" ui teal circular label">{{len}}</div></a>
                     </div>
                 </div>
                 <div class="item">
@@ -70,6 +70,11 @@
                                 </select>
                             </div>
                             <div class="ui error message" v-show=""><p>城市限制</p></div>
+                            <br>
+                            <div class="field">
+                                <label>简介</label>
+                                <textarea  cols="3" rows="10" v-model="form_Company.new_form.introduction" :readOnly="!modal.Com_isEdit"></textarea>
+                            </div>
                             <br>
                             <div class="">
                                 <label>内部电话</label>
@@ -380,6 +385,7 @@
                 Citys:[],
                 lists:[],
                 Choise_kind:0,
+                len:0,
                 date_bool:true,
                 compl_bool:true,
                 date_sort:"up",
@@ -455,7 +461,8 @@
                         type:'json',
                         method:'get',
                         success:function(resp){console.log(resp);
-                            self.lists=resp}
+                            self.lists=resp;
+                            self.len = self.lists.length;}
                     })
                 },
                 getAllServers:function(){

@@ -42,7 +42,7 @@ class UserProfile(models.Model):#客户信息
     profile_image = models.FileField(upload_to='store/userimg',default='images/matt.jpg',null=True,blank=True)
     email = models.EmailField(null=True,blank = True)
     ident_name = models.CharField(max_length=12,default='',null=True,blank = True)
-    sex = models.BooleanField(default=1)#1->male;2->female
+    sex = models.BooleanField(default=True)#1->male;0->female
     location = models.ForeignKey(to=City,null=True,blank = True)
     ident_kind = models.ForeignKey(to=ident_Kind,default=1)
     phone = models.CharField(max_length=11,default='')
@@ -58,6 +58,7 @@ class Company(models.Model):#存公司
     name = models.CharField(max_length=30 , default='unnamed_company')#名字
     business_kind =models.ForeignKey(to=business_choices)#公司类型
     icon = models.ImageField(upload_to='store/icon')#图标
+    introduction = models.TextField(max_length=255,default='null')#介绍
     phone= models.CharField(max_length=20,default = 'null',blank=True,null=True)#联系电话
     adress = models.ForeignKey(to=City)#所在城市
     ident = models.BooleanField(default = False)#审核状态

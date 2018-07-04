@@ -22,72 +22,71 @@
 			<div class="container">
 
 				<div class="single">
-						<div class="single-grid">
-							<div class="col-md-8 w3ls-blog-left">
-								<div class="w3-blog-left-grid">
-									<div class="w3ls-blog-leftl">
-										<h4>{{server.create_time}}</h4>
-									</div>
-									<div class="w3ls-blog-leftr">
-										<h3>{{server.topic}}</h3>
-										<p>{{server.introduction}}</p>
-										<ul>
-											<li><a href="#"><i class="glyphicon glyphicon-user" aria-hidden="true"></i>{{company.manager}}</a></li>
-											<li><a href="#"><i class="heart icon"></i></i>{{server.public_like}}</a></li>
-											<li><a href="#"><i class="yen sign icon"></i>{{server.price}}</a></li>
-										</ul>
-									</div>
-									<div class="clearfix"> </div>
-									<div class="admin-text">
-											<h5>detail</h5>
-											<div class="admin-text-left">
-												<a href="#"><img src="{{server.icon.url}}" alt=""/></a>
-												<div class="admin-text-right">
-													<p>{{server.detail}}</p>
-													{% for image in images %}
-													<a href="#"><img src="{{image.img.url}}" alt=""/></a>
-													{% endfor %}
-													<span class="right floated">Writed by:<a href="#">{{company.manager}}</a></span>
-												</div>
-											</div>
-										<div class="clearfix"> </div>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-4 w3-agile-blog-right">
-								<div class="ui segment">
-									<h3>{{company.name}}</h3>
-									<img class="" src="{{company.icon.url}}" alt="">
-									<div>
-										<a href=""> <button class="ui red button">订购</button></a>
-									</div>
-								</div>
-								<div class="agile-info-recent">
-									<h3>other server</h3>
-									<div class="w3ls-recent-grids">
-										{% for i in other %}
-										<div class="w3l-recent-grid">
-											<div class="wom">
-												<a href="#"><img src="{{i.icon.url}}" alt=" " class="img-responsive" /></a>
-											</div>
-											<div class="wom-right">
-												<h4><a href="#">{{i.topic}}</a></h4>
-												<p>{{i.introduction}}</p>
-											</div>
-											<div class="clearfix"> </div>
+							
+						<div class="ui divided items">
+								<div class="item">
+									<img class="ui left large image" src="{% static '/images/2.jpg' %}">
+								  <div class="content">
+									  <br>
+									<p><font size = 9 color=grey>婚纱租借</font></p>
+									<br>
+									<br>
+									<div style="text-indent:2em;">
+											<p ><font size =6>对商品的具体描述</font></p>
+											<p ><font size =6>商品参数</font></p>
+											<br>	
 										</div>
-										{% endfor %}
+									<br>
+									<div class="">
+											<font size=5 ><b>Tags</b></font>
+											<a class="ui big light blue image label"> 婚纱</a>
+											<a class="ui big teal image label">租借</a>
+											<br>	
+										</div>
+										<br>
+									<div class="meta">
+									  <p align=right><font size = 6 color="grey"><i class="yen sign icon"></i>价格</font></p>
 									</div>
+									<br>
+									<div class="extra">
+											<div class="ui button"><i class="heart icon"></i>收藏</div>
+									  <div class="ui right floated primary button">订购<i class="right chevron icon"></i> </div>
+									</div>
+								  </div>
 								</div>
-								<div class="footer-top-grid1">
-									<h3>Tags</h3>
-									<ul class="w3-tag2">
-										{% for tag in tags %}
-										<li><a href="#">{{tag.flag_name}}</a></li>
-										{% endfor %}
-									</ul>
+								
+
+							<!--悬浮窗-->
+							<div style="width: 272px !important; height: 250px !important;position: fixed;bottom:80px;right: 10px; margin-top: 15px;" >
+								<div class="ui segment" v-show="modal.intro">
+									<center><img class="ui small avatar image" src="{% static '/images/logo.jpg' %}"></center>
+									<br>
+									<p align=center><a href="/company">公司名</a></p>
+									<p align=center><span ><span><a> 进店逛逛 </a></span></p>
+									<center><button class="ui button" onclick="shopping"><i class="shop icon"></i>订购</button></center>
+									<br><br>
 								</div>
 							</div>
+						<!--悬浮窗结束-->
+						<div class="ui segment vertical padded">
+							<h3>图文详情</h3>
+						   </div>
+						   <div class="ui basic segment">
+								<div style="text-indent:2em;">
+								   <p ><font size =4 color ="grey">秦皇岛领尚文化传播有限公司是一家具有高水平、硬技术的专业文化传播公司。
+									   公司集构思、策划、宣传、执行于一体，对外开展：大型会议及会展服务、综艺演出、各类庆典、企业年会、商业策划。
+									   同时公司还经营：拍摄宣传片、广告片、艺术类艺员培训、组织各类赛事、艺人推广、文化交流活动、演出设备租赁等项目。
+									   并与国内各知名演艺人员保持良好合作关系，与多家网络、杂志、媒体、电视栏目、影视剧组、企事业单位有长期合作。</font></p>
+								   <br>
+								   </div>
+						   </div>
+						   <center>
+						   <div class="ui huge images">
+								<img src="{% static '/images/f1.jpg' %}">
+								<img src="{% static '/images/2.jpg' %}">
+								<img src="{% static '/images/AFGiQHnBZnbJDXFcnZhmrJSeEZj2ZGSd.jpg' %}">
+							  </div>
+						  </center>
 							<div class="clearfix"> </div>
 						</div>
 				</div>
