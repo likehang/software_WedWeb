@@ -11,10 +11,18 @@ from Web.models import *
 def index(request):#用户的验证
     context={}
     if request.method =='GET':
+<<<<<<< HEAD
+        # if request.user:
+        #     User=UserProfile.objects.get(id=request.user.id)
+        #     print(User)
+        # else:
+        #     User = None
+=======
         if isinstance(request.user,User):
             user = UserProfile.objects.get(belong_to = request.user)
         else:
             user = None
+>>>>>>> 710f68841e4c651b09e4e4220bf2d3b4d3ad94b5
         cities = City.objects.all()
         ser_kind = server_choices.objects.all()
         k1 = server_choices.objects.get(ex_ser_name='定制婚礼')
