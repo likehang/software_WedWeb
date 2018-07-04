@@ -48,7 +48,9 @@
                     <div class="ui segment vertical">
                         <a href=""><img src="{% static '/images/sz57a8MNSQANMAYZHZH0djf_WGz4fsM1.jpg' %}" alt="" class="ui circular centered small image"></a>
                         <div >
+                            {% if user.is_C_man %}
                             <a class="ui yellow basic label icon"><i class="user outline icon "></i>公司管理员</a>
+                            {% endif %}
                             <button class="ui right floated red button">验证身份</button>
                             <a class="ui green basic floated label">身份确认</a>
                             <a class="ui orange basic floated label">身份验证</a>

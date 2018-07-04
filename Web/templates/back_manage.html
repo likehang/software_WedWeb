@@ -107,7 +107,7 @@
                         <div class="ui segment field">
                             <label>当前图标</label>
                             <br>
-                            <img :src="form_Company.new_form.icon" style="width: 300px;height: 300px;" class="ui image" id="output">
+                            <img :src="form_Company.new_form.icon" style="width: 300px;height: 300px;" class="ui image" id="Coutput">
                             <br>
                             <div class="">
                                 <label>上传图标</label>
@@ -121,48 +121,46 @@
             <div class="ui vertical segment " v-show="menu.list">
                 <div>
                     <span class="ui header">订单管理</span>
-                    <a class="ui label"><i class="angle double down icon"></i> 顺序</a>
-                    <a class="ui label"><i class="angle double up icon"></i> 顺序</a>
+                    <a class="ui label" v-on:click="datesort(date_bool)"><i class="angle double  icon" :class="date_sort"></i> 日期顺序</a>
+                    <a class="ui label" v-on:click="statussort(compl_bool)"><i class="angle double icon" :class="compl_sort"></i> 完成度顺序</a>
                 </div>
                 <div class="ui divider"></div>
                 <div class="ui inverted divided list">
-                    <div>
-                        <a class="ui right ribbon label">生成日期</a>
+                    <div v-for="list in lists">
+                        <a class="ui right ribbon label">{{list.create_time}}</a>
                         <div class="ui grid ">
                                 <div class="three wide column">
-                                        <img class="left floated large ui image"
-                                src="{% static '/images/timg.jpg' %}">
+                                    <img class="left floated small ui image":src="list.needlist.icon">
                                 </div>   
                                 <div class="five wide column">
-                                    <div class="header"><h3>主题</h3></div>
-                                    <a class="item" v-on:click="showCompanyMess()">公司</a>
+                                    <div class="header"><h3>主题：{{list.needlist.topic}}</h3></div>
+                                    <div><i class="yen sign icon"></i>{{list.price}} </div>
                                 </div>
                                 <div class="five wide column">
                                     <br>
-                                    <div class="">客户</div>
-                                    <div class="">客户联系方式</div>    
+                                    <div class="">用户名：{{list.Username.belong_to.username}}</div>
+                                    <div class="">联系电话：{{list.Username.phone}}</div>    
                                 </div>
                                 <div class="three wide column">
                                         <div class="header">
-                                            <div class="">订单号</div>
-                                             <div class="">订单状态</div>
-                                                <a href="">[更多]</a>          
+                                            <div class="">订单号：{{list.id}}</div><br>
+                                            <a class="ui basic orange label">{{list.status.status_name}}</a>        
                                         </div>
                                 </div>
                                 <div class="three wide column">
                                 </div>
-                                <div class="six wide column">
-                                    <i class="yen sign icon"></i>价格                           
+                                <div class="eight wide column">
+                                      <p>{{list.needlist.introduction}}</p>                        
                                 </div> 
-                                <div class="three wide column"> </div>
+                                <div class="one wide column"> </div>
                             <div class="four wide column">
                                 <div class="ui icon buttons centered">
-                                    <div class="ui basic green button icon">
+                                    <a class="ui basic green button icon" v-if="list.status.next_1 != 0" v-on:click="comfirmlist(list.id,'next')">
                                         <i class="plus icon"></i>下一阶段
-                                    </div>
-                                    <div class="ui basic red button icon">
+                                    </a>
+                                    <a class="ui basic red button icon" v-if="list.status.next_1 != 0" v-on:click="comfirmlist(list.id,'cancel')">
                                         <i class="delete icon"></i>取消
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -170,10 +168,7 @@
                     </div>
                 </div>
                 <div>
-
                 </div>
-                <div>下一阶段</div>
-                <div>取消</div>
             </div>
             <div class="ui vertical segment " v-show="menu.server">
                 <div class="ui vertical segment" v-show="servermenu.sinpage">
@@ -183,13 +178,13 @@
                             <div class="field">
                                 <div class="field">
                                     <label>服务主题</label>
-                                    <input type="text" placeholder="xxxx" name="C_name" v-model="form_SingleServer.new_form.topic" :readOnly="!modal.Ser_isEdit">
+                                    <input type="text" placeholder="xxxx" v-model="form_SingleServer.new_form.topic" :readOnly="!modal.Ser_isEdit">
                                 </div>
                                 <div class="ui error message" v-show=""><p>长度限制</p></div>
                                 <br>
                                 <div class="field">
                                     <label>服务种类</label>
-                                    <select name="C_kind" class="ui fluid dropdown" v-model="form_SingleServer.new_form.service_kind" :disabled="!modal.Ser_isEdit">
+                                    <select class="ui fluid dropdown" v-model="form_SingleServer.new_form.service_kind" :disabled="!modal.Ser_isEdit">
                                         <option :value="kind.id" v-for="kind in Skinds">{{kind.ex_ser_name}}</option>
                                     </select>
                                 </div>
@@ -197,27 +192,28 @@
                                 <br>
                                 <div class="field">
                                     <label>简介</label>
-                                    <textarea name="" id="" cols="30" rows="10" v-model="form_SingleServer.new_form.detail" :readOnly="!modal.Ser_isEdit"></textarea>
+                                    <textarea  cols="3" rows="10" v-model="form_SingleServer.new_form.introduction" :readOnly="!modal.Ser_isEdit"></textarea>
                                 </div>
                                 <br>
                                 <div class="field">
                                     <label>价格区间</label>
                                     <div  class="three fields">  
                                         <div class="field">
-                                            <input type="text" placeholder="minprice" name="min" v-model="form_SingleServer.new_form.minprice" :readOnly="!modal.Ser_isEdit">
+                                            <input type="text" placeholder="minprice" v-model="form_SingleServer.new_form.minprice" :readOnly="!modal.Ser_isEdit">
                                         </div>
                                         <div class="field">
-                                            ~
+                                            <center>~</center>
                                         </div>
                                         <div class="field">
-                                            <input type="text" placeholder="maxprice" name="max" v-model="form_SingleServer.new_form.maxprice" :readOnly="!modal.Ser_isEdit">
+                                            <input type="text" placeholder="maxprice" v-model="form_SingleServer.new_form.maxprice" :readOnly="!modal.Ser_isEdit">
                                         </div>
                                     </div>
                                 </div>
                                 <br>
                                 <div class="field">
                                     <label>详细参数</label>
-                                    <table class="ui compact celled structured table" :disabled="!modal.Ser_isEdit">
+                                    <textarea cols="3" rows="10" v-model="form_SingleServer.new_form.detail" :readOnly="!modal.Ser_isEdit"></textarea>
+                                    <!-- <table class="ui compact celled structured table" :disabled="!modal.Ser_isEdit">
                                         <thead>
                                             <tr>
                                                 <th class="center aligned">物品</th>
@@ -253,7 +249,7 @@
                                                 </th>
                                             </tr>
                                         </tfoot>
-                                    </table>
+                                    </table> -->
                                 </div>
                                 <br>
                                 <div class="two fields">
@@ -261,7 +257,7 @@
                                         <a class="ui blue button" v-on:click="Ser_edit(0)">{{modal.Ser_button}}</a>
                                     </div>
                                     <div class="field">
-                                        <a class="ui grey button">取消</a>
+                                        <a class="ui grey button" v-on:click="showMulPage()">取消</a>
                                     </div>
                                 </div>
                             </div>
@@ -269,11 +265,11 @@
                                 <div class="field">
                                     <label>首图标</label>
                                     <br>
-                                    <img :src="form_SingleServer.new_form.icon" style="width: 300px;height: 300px;" class="ui image">
+                                    <img :src="form_SingleServer.new_form.icon"  id="Soutput" style="width: 300px;height: 300px;" class="ui image">
                                     <br>
                                     <div class="">
                                         <label>上传图标</label>
-                                        <input class="" type="file" name="C_icon" :disabled="!modal.Ser_isEdit">
+                                        <input class="" type="file" v-on:change="SnewI($event)" :disabled="!modal.Ser_isEdit">
                                     </div>
                                     <div class="ui error message" v-show=""><p>大小限制</p></div>
                                 </div>
@@ -306,7 +302,7 @@
                 <div class="ui vertical segment" v-show="servermenu.mulpage">
                     <span class="ui header">业务管理</span>
                     <span>
-                        <select class="ui right floated pointing " v-on:click="">
+                        <select class="ui right floated pointing " >
                             <div class="menu" v-show="modal.showSerKind">
                                 <option class="item" value="0" v-on:click="setSerKind(0)">全部</option>
                                 <option class="item" :value="Skind.id" v-for="Skind in Skinds" v-on:click="setSerKind(Skind.id)">{{Skind.ex_ser_name}}</option>
@@ -384,8 +380,13 @@
                 Citys:[],
                 lists:[],
                 Choise_kind:0,
+                date_bool:true,
+                compl_bool:true,
+                date_sort:"up",
+                compl_sort:"up",
                 DjangoCookie:null,
                 Cnew_img:null,
+                Snew_img:null,
                 new_ser:[],
                 servers:[],
                 server_graphs:[],
@@ -403,6 +404,7 @@
                 this.getCkinds();
                 this.getCitys();
                 this.getCompany();
+                this.getLists();
             },
             methods:{
                 setSerKind:function(kind){this.Choise_kind = kind;},
@@ -466,7 +468,7 @@
                             self.servers=resp}
                     })
                 },
-                getserver_graphs:function(ser){
+                getserver_graphs:function(ser){// get put del 都没写
                     var id = ser.id 
                     var self = this
                     reqwest({
@@ -488,9 +490,8 @@
                         }
                     })
                 },
-                putCompany:function(){
+                putCompany:function(){//图片上传未完成
                     var self = this;
-                    form.append()
                     reqwest({
                         url:'api/manageCompany/',
                         type:'json',
@@ -502,22 +503,63 @@
                             self.form_Company.new_form=resp;}
                     })
                 },
-                putSingleList:function(id){
-                    var self = this;
-                    reqwest({})
+                comfirmlist:function(id,msg){//后台处理订单阶段无变化？？
+                    if(msg =='cancel'){
+                        if(confirm('确定 取消 该订单？')){this.postSingleList(id,msg);}
+                    }
+                    else{
+                        if(confirm('完成本阶段，进入下一阶段？')){this.postSingleList(id,msg);}
+                    }
                 },
-                putSingleServer:function(id){
+                postSingleList:function(id,msg){
                     var self = this;
-                    reqwest({})
+                    reqwest({
+                        url:'api/manageOrderList/'+id+'/'+msg,
+                        type:'json',
+                        method:'post',
+                        headers:{'X-CSRFToken':self.DjangoCookie},
+                        success:function(resp){
+                            console.log(resp);
+                            self.lists = resp}
+                    })
                 },
-
-                addSingleServer:function(){
+                postSingleServer:function(id){//未 测试
                     var self = this;
-                    reqwest({})
+                    reqwest({
+                        url:'api/ManageCServer/'+id,
+                        type:'json',
+                        method:'post',
+                        headers:{'X-CSRFToken':self.DjangoCookie},
+                        data:self.form_SingleServer.new_form,
+                        success:function(resp){
+                            console.log(resp);
+                            self.servers=resp;}
+                        })
                 },
-                delSingleServer:function(id){
+                addSingleServer:function(){//未 测试
                     var self = this;
-                    reqwest({})
+                    reqwest({
+                        url:'api/getCServer/',
+                        type:'json',
+                        method:'put',
+                        headers:{'X-CSRFToken':self.DjangoCookie},
+                        data:self.form_SingleServer.new_form,
+                        success:function(resp){
+                            console.log(resp);
+                            self.servers=resp;}
+                    })
+                },
+                delSingleServer:function(id){//未 测试
+                    var self = this;
+                    reqwest({
+                        url:'api/ManageCServer/'+id,
+                        type:'json',
+                        method:'delete',
+                        headers:{'X-CSRFToken':self.DjangoCookie},
+                        success:function(resp){
+                            console.log(resp);
+                            self.servers=resp;}
+                    })
                 },
                 Com_edit:function(id){
                     var Com =this.modal;
@@ -576,17 +618,27 @@
                     alert('true') ;
                     return true;
                 },
-                CnewI(e) {
+                CnewI(e) {//显示图片完成 待上传
                     var file = e.target.files[0];
                     var reader = new FileReader();
                     reader.readAsDataURL(file);
                     reader.onload = function(){
                         var dataurl = reader.result;
-                        var output = document.getElementById('output'); 
+                        var output = document.getElementById('Coutput'); 
                         output.src = dataurl
                         this.Cnew_img = {'url':dataurl,'file':reader}
                     }
-                    
+                },
+                SnewI(e) {//显示图片完成 待上传
+                    var file = e.target.files[0];
+                    var reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function(){
+                        var dataurl = reader.result;
+                        var output = document.getElementById('Soutput'); 
+                        output.src = dataurl
+                        this.Snew_img = {'url':dataurl,'file':reader}
+                    }
                 },
                 getCookie:function(name){  //获取cookie函数
                     name = name + "=";
@@ -601,9 +653,19 @@
                     }
                     return value;
                 },
+                // datesort:function(bool){
+                //     if (bool){this.lists.sort((a,b)=>{return a.create_time <b.create_time });this.date_sort="up";}
+                //     else {this.lists.reverse();this.date_sort="down";}
+                // },
+                // statussort:function(bool){
+                //     if (bool){this.lists.sort((a,b)=>{return a.status.status_level <b.status.status_level });this.compl_sort="up";}
+                //     else {this.lists.reverse();this.compl_sort="down";}
+                // },
             },
             computed:{
-                
+                // list_intro:function(list){
+                //     if (this.list.needlist.introduction.length> 2) return 'more'
+                // }
             },
 
         })
