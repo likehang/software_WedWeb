@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.middleware.csrf import get_token
 from django import forms
-class singleC_S(serializers.ModelSerializer):
+class singleC_S(serializers.ModelSerializer):#公司的服务管理
     class Meta:
         model = C_S
         fields='__all__'
@@ -17,8 +17,8 @@ def getCServer(request):
         token = get_token(request)
         user = request.user
         com = Company.objects.get(manager__belong_to = user)
-        ser = C_S.objects.filter(belong = com)
-        serializer = singleC_S(ser , many = True)
+        sers = C_S.objects.filter(belong = com)
+        serializer = singleC_S(sers , many = True)
         return Response(serializer.data)
     elif request.method == 'PUT':
         user = request.user
@@ -38,7 +38,10 @@ def getCServer(request):
         ser.maxprice = float(reform['maxprice'])
         ser.detail = reform['detail']
         ser.save()
-        return Response(status=None)
+
+        sers = C_S.objects.filter(belong = com)
+        serializer = singleC_S(sers , many = True)
+        return Response(serializer.data)
     else:
         return Response(status=None)
     
@@ -49,19 +52,25 @@ def ManageCServer(request,id):
         user = request.user
         com = Company.objects.get(manager__belong_to = user)
         ser = C_S.objects.get(id = id)
-        reform = request.POST
-        ser.topic = reform['topic']
-        if request.FILES:
-            ser.icon = request.FILES
+        if ser.belong == com:
+            reform = request.POST
+            ser.topic = reform['topic']
+            if request.FILES:
+                ser.icon = request.FILES
+            else:
+                print('no files')
+            ser.introduction = reform['introduction']
+            ser.service_kind.id = reform['service_kind']
+            ser.minprice = float(reform['minprice'])
+            ser.maxprice = float(reform['maxprice'])
+            ser.detail = reform['detail']
+            ser.save()
+
+            sers = C_S.objects.filter(belong = com)
+            serializer = singleC_S(sers , many = True)
+            return Response(serializer.data)
         else:
-            print('no files')
-        ser.introduction = reform['introduction']
-        ser.service_kind.id = reform['service_kind']
-        ser.minprice = float(reform['minprice'])
-        ser.maxprice = float(reform['maxprice'])
-        ser.detail = reform['detail']
-        ser.save()
-        return Response(status=None)
+            return Response(status=None)
     elif request.method == 'DELETE':
         user = request.user
         com = Company.objects.get(manager__belong_to = user)
@@ -74,7 +83,7 @@ def ManageCServer(request,id):
     else:
         return Response(status=None)
 
-class graph(serializers.ModelSerializer):
+class graph(serializers.ModelSerializer):#单个服务的图片管理  未完成
     class Meta:
         model = Graph
         fields = '__all__'
@@ -87,7 +96,7 @@ def getserver_graphs(request,id):
 def putserver_graphs(request,id):
     pass
 
-class Skinds(serializers.ModelSerializer):
+class Skinds(serializers.ModelSerializer):#获取服务类型 
     class Meta:
         model = server_choices
         fields = '__all__'
@@ -99,7 +108,7 @@ def getServer_kind(request):
     serializer = Skinds(kins , many = True)
     return Response(serializer.data)
 
-class singleCom(serializers.ModelSerializer):
+class singleCom(serializers.ModelSerializer):#获取管理员所在公司信息
     class Meta:
         model = Company
         fields = ['name','icon','phone','ident','isopen','inward_phone','business_kind','adress']
@@ -151,7 +160,7 @@ def manageCompany(request):
         return Response(old_serializer.data,status=None)
 
 
-class Orderlist(serializers.ModelSerializer):
+class Orderlist(serializers.ModelSerializer):#公司获取订单 个人提交订单
     class Meta:
         model = Order_list
         fields = '__all__'
@@ -171,14 +180,16 @@ def getputClist(request):
         return Response(status=None)
 
 @api_view(['POST'])
-def manageOrderList(request,id):
+def manageOrderList(request,id,msg):
     if request.method == 'POST':
         The_list = Order_list.objects.get(id=id)
-        msg = request.POST['next']
         if msg =='cancel':
+            print('cancel')
             The_list.status.status_level = The_list.status.next_2
-        else:
+        elif msg =='next':
+            print('next')
             The_list.status.status_level = The_list.status.next_1
+        print(The_list.status)
         The_list.save()
 
         user = request.user
@@ -189,7 +200,7 @@ def manageOrderList(request,id):
     else:
         return Response(status=None)
 
-class FavList(serializers.ModelSerializer):
+class FavList(serializers.ModelSerializer):# 收藏的获取新增删除
     class Meta:
         model = Fav
         fields = '__all__'
@@ -225,7 +236,7 @@ def dpFav(request,ser_id):
     else:
         return Response(status=None)
 
-class Business_kind(serializers.ModelSerializer):
+class Business_kind(serializers.ModelSerializer):#获取 公司 经营的范围
     class Meta:
         model = business_choices
         fields = '__all__'
@@ -236,7 +247,7 @@ def getBusinessKind(request):
     print('getBusinessKind')
     return Response(serializer.data)
 
-class serCity(serializers.ModelSerializer):
+class serCity(serializers.ModelSerializer):#获取 城市
     class Meta:
         model = City
         fields = '__all__'
@@ -247,6 +258,7 @@ def getCity(request):
     print('getCity')
     return Response(serializer.data)
 
+""" 服务、公司、城市  三个模糊检索项 """
 @api_view(['GET'])
 def searchS(request,msg):
     sers = C_S.objects.filter(introduction__icontains = msg)
@@ -262,3 +274,28 @@ def searchCity(request,msg):
     citys = City.objects.filter(city_name__icontains = msg)
     serializer = serCity(citys,many = True)
     return Response(serializer.data)
+
+@api_view(['POST'])#修改密码
+def changePassWord(request,id):
+    user = UserProfile.objects.get(id=id)
+    password = request.POST['password']
+    user.belong_to.set_password(password)
+    user.save()
+    return Response(status=None)
+
+@api_view(['POST'])#上传图片
+def upUserIcon(request,id):
+    user = UserProfile.objects.get(id=id)
+    file = request.FILES
+    user.profile_image = file
+    user.save()
+    return Response(status=None)
+
+@api_view(['POST'])#上传身份信息
+def upIdent(request,id):
+    user = UserProfile.objects.get(id=id)
+    number = request.POST['number']
+    user.ident = number
+    user.is_ident = True
+    user.save()
+    return Response(status=None)
