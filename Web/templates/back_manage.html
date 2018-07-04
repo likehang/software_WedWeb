@@ -13,7 +13,7 @@
 	<div class="banner">
         {% include "header.html" %}
             <div class="agileinfo-top-heading">
-			    <h2>提供优质婚礼服务  留下最美好的婚礼时光</h2>
+			    <h2>Blog Post</h2>
 		    </div>
 	</div>
 {% verbatim %}
@@ -51,9 +51,9 @@
                         <div class="field">
                             <div class="">
                                 <label>公司名称</label>
-                                <input maxlength="15" type="text" placeholder="xxxx" id="C_name" v-model.trim="form_Company.new_form.name" :readOnly="!modal.Com_isEdit">
+                                <input type="text" placeholder="xxxx" id="C_name" v-model.trim="form_Company.new_form.name" :readOnly="!modal.Com_isEdit">
                             </div>
-                            <div class="ui error message" v-if="this.form_Company.new_form.name==''"><p>长度限制</p></div>
+                            <div class="ui error message" v-show=""><p>长度限制</p></div>
                             <br>
                             <div class="">
                                 <label>经营范围</label>
@@ -73,19 +73,15 @@
                             <br>
                             <div class="">
                                 <label>内部电话</label>
-                                <input maxlength="11" type="text" placeholder="方便网站联系" id="C_inphone" v-model.trim="form_Company.new_form.inward_phone" :readOnly="!modal.Com_isEdit" 
-                                onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
-                                onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+                                <input type="text" placeholder="方便网站联系" id="C_inphone" v-model.trim="form_Company.new_form.inward_phone" :readOnly="!modal.Com_isEdit">
                             </div>
-                            <div class="ui error message" v-if="this.form_Company.new_form.inward_phone ==''"><p>电话限制</p></div>
+                            <div class="ui error message" v-show=""><p>电话限制</p></div>
                             <br>
                             <div class="">
                                 <label>客户电话</label>
-                                <input maxlength="11" type="text" placeholder="方便与用户联系" id="C_phone" v-model.trim="form_Company.new_form.phone" :readOnly="!modal.Com_isEdit"
-                                onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
-                                onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+                                <input type="text" placeholder="方便与用户联系" id="C_phone" v-model.trim="form_Company.new_form.phone" :readOnly="!modal.Com_isEdit">
                             </div>
-                            <div class="ui error message" v-if="this.form_Company.new_form.phone ==''" ><p>电话限制</p></div>
+                            <div class="ui error message" v-show=""><p>电话限制</p></div>
                             <br>
                             <div class="two fields">
                                 <div class="field">
@@ -182,9 +178,9 @@
                             <div class="field">
                                 <div class="field">
                                     <label>服务主题</label>
-                                    <input maxlength="15" type="text" placeholder="xxxx" v-model="form_SingleServer.new_form.topic" :readOnly="!modal.Ser_isEdit">
+                                    <input type="text" placeholder="xxxx" v-model="form_SingleServer.new_form.topic" :readOnly="!modal.Ser_isEdit">
                                 </div>
-                                <div class="ui error message" v-if="this.form_SingleServer.new_form.topic==''"><p>长度限制</p></div>
+                                <div class="ui error message" v-show=""><p>长度限制</p></div>
                                 <br>
                                 <div class="field">
                                     <label>服务种类</label>
@@ -192,29 +188,24 @@
                                         <option :value="kind.id" v-for="kind in Skinds">{{kind.ex_ser_name}}</option>
                                     </select>
                                 </div>
+                                <div class="ui error message" v-show=""><p>经营限制</p></div>
                                 <br>
                                 <div class="field">
                                     <label>简介</label>
-                                    <textarea  maxlength="255" cols="3" rows="10" v-model="form_SingleServer.new_form.introduction" :readOnly="!modal.Ser_isEdit"></textarea>
+                                    <textarea  cols="3" rows="10" v-model="form_SingleServer.new_form.introduction" :readOnly="!modal.Ser_isEdit"></textarea>
                                 </div>
                                 <br>
                                 <div class="field">
                                     <label>价格区间</label>
                                     <div  class="three fields">  
                                         <div class="field">
-                                            <input type="text" placeholder="minprice" v-model="form_SingleServer.new_form.minprice" :readOnly="!modal.Ser_isEdit"
-                                            onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\.\D/g,'')}"
-                                            onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\.\D/g,'')}"/>
- 
+                                            <input type="text" placeholder="minprice" v-model="form_SingleServer.new_form.minprice" :readOnly="!modal.Ser_isEdit">
                                         </div>
                                         <div class="field">
                                             <center>~</center>
                                         </div>
                                         <div class="field">
-                                            <input type="text" placeholder="maxprice" v-model="form_SingleServer.new_form.maxprice" :readOnly="!modal.Ser_isEdit"
-                                            onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\.\D/g,'')}"
-                                            onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\.\D/g,'')}"/>
- 
+                                            <input type="text" placeholder="maxprice" v-model="form_SingleServer.new_form.maxprice" :readOnly="!modal.Ser_isEdit">
                                         </div>
                                     </div>
                                 </div>
@@ -372,9 +363,7 @@
                     showSerKind:false,
                     Ser_isEdit:false,
                     Ser_button:"修改",
-                    Ser_dis:"disable",  
-                    txt:null,
-                    val:null,
+                    Ser_dis:"disable",
                 },
                 menu:{
                     main:true,
@@ -385,7 +374,7 @@
                 servermenu:{
                     mulpage:true,
                     sinpage:false,
-                },  
+                },
                 company_detail:[],
                 Ckinds:[],
                 Citys:[],
@@ -401,7 +390,7 @@
                 new_ser:[],
                 servers:[],
                 server_graphs:[],
-                Skinds:[],   
+                Skinds:[],
                 form_Company:{
                     new_form:[],
                     old_form:[],
@@ -503,7 +492,16 @@
                 },
                 putCompany:function(){//图片上传未完成
                     var self = this;
-
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+                    form.append()
+>>>>>>> bc6d0707e9c0a6bbf56aea7157d481afd2cc506c
+>>>>>>> 7c20468407a57442e2f2c16077b5c1defa79c0f4
+=======
+>>>>>>> 710f68841e4c651b09e4e4220bf2d3b4d3ad94b5
                     reqwest({
                         url:'api/manageCompany/',
                         type:'json',
@@ -665,18 +663,6 @@
                     }
                     return value;
                 },
-
-                //methodGetByteLen(str, len) {
-                //    if (this.computednByteLen <= len) {
-                //      return str
-                //    }
-                //    for (let i = Math.floor(len / 2); i < str.length; i++) {
-                //      if (str.substr(0, i).replace(/[^\x00-\xff]/g, '01').length >= len) {
-                //        return str.substr(0, Math.floor(i / 2) * 2) + '...'
-                //      }
-                //    }
-                //}, 
-                
                 // datesort:function(bool){
                 //     if (bool){this.lists.sort((a,b)=>{return a.create_time <b.create_time });this.date_sort="up";}
                 //     else {this.lists.reverse();this.date_sort="down";}
@@ -686,22 +672,7 @@
                 //     else {this.lists.reverse();this.compl_sort="down";}
                 // },
             },
-             computed:{
-
-                // 获取字符的个数
-                // computedCharLen() {
-                //    return this.form_SingleServer.new_form.topic.length
-                //},
-                // 获取字节的个数
-                //computedByteLen() {
-                //   return this.form_SingleServer.new_form.topic.replace(/[^\x00-\xff]/g, '01').length
-                //},
-                // 控制显示的内容
-                //computedTxt() {
-                //   return form_SingleServer.new_form.topic.methodGetByteLen(this.txt, 10)
-                //}, 
-                
-
+            computed:{
                 // list_intro:function(list){
                 //     if (this.list.needlist.introduction.length> 2) return 'more'
                 // }
