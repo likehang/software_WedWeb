@@ -80,9 +80,15 @@
                         </div> 
                     <div class="four wide column">
                         <div class="ui icon buttons centered">
-                            <div class="ui basic red button icon">
-                                <i class="delete icon"></i>取消
-                            </div>
+                            {% if list.status.id < 7 %}
+                            <form method="post">{% csrf_token %} 
+                                <input type="text" name="ser_id" value="{{list.id}}" :disable> 
+                                <input type="text" name="user_id" value="{{User.id}}" :disable> 
+                                <button type="submit" class="ui basic red button icon">
+                                    <i class="delete icon"></i>取消交易
+                                </button>
+                            </form>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

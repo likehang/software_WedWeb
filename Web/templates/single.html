@@ -9,7 +9,8 @@
 <link rel="stylesheet" href="{% static '/css/style.css' %}" type="text/css" media="all" />
 <script src="{% static '/js/jquery-1.11.1.min.js' %}"></script>
 <script src="{% static '/js/bootstrap.js' %}"></script>
- 
+<script src="{% static '/js/reqwest.js' %}"></script>
+<script src="{% static '/js/vue.js' %}"></script>
 </head>
 <body>
 	<div class="banner">
@@ -25,32 +26,38 @@
 							
 						<div class="ui divided items">
 								<div class="item">
-									<img class="ui left large image" src="{% static '/images/2.jpg' %}">
+									<img class="ui left large image" src="/store/{{server.icon}}">
 								  <div class="content">
 									  <br>
-									<p><font size = 9 color=grey>婚纱租借</font></p>
+									<p><font size = 9 color=grey>{{server.topic}}</font></p>
 									<br>
 									<br>
 									<div style="text-indent:2em;">
-											<p ><font size =6>对商品的具体描述</font></p>
-											<p ><font size =6>商品参数</font></p>
+											<p ><font size =6>{{server.service_kind.ex_ser_name}}</font></p>
+											<p ><font size =6>{{server.detail}}</font></p>
 											<br>	
 										</div>
 									<br>
 									<div class="">
 											<font size=5 ><b>Tags</b></font>
-											<a class="ui big light blue image label"> 婚纱</a>
-											<a class="ui big teal image label">租借</a>
+											<a class="ui big light blue image label">标签1</a>
+											<a class="ui big teal image label">标签2</a>
 											<br>	
 										</div>
 										<br>
 									<div class="meta">
-									  <p align=right><font size = 6 color="grey"><i class="yen sign icon"></i>价格</font></p>
+									  <p align=right><font size = 6 color="grey"><i class="yen sign icon"></i>{{server.minprice}}</font></p>
 									</div>
 									<br>
 									<div class="extra">
-											<div class="ui button"><i class="heart icon"></i>收藏</div>
-									  <div class="ui right floated primary button">订购<i class="right chevron icon"></i> </div>
+										{% if fav %}
+										<a class="ui red button" href="../../single/{{server.id}}/del/single"><i class="heart icon"></i>已收藏</a>
+										{% else %}
+										<a class="ui button" href="../../single/{{server.id}}/put/single"><i class="heart icon"></i>收藏</a>
+										{% endif %}
+										<form method="post">{% csrf_token %} 
+									  		<button class="ui right floated primary button">订购<i class="right chevron icon"></i> </button>
+										</form>
 									</div>
 								  </div>
 								</div>
@@ -59,11 +66,14 @@
 							<!--悬浮窗-->
 							<div style="width: 272px !important; height: 250px !important;position: fixed;bottom:80px;right: 10px; margin-top: 15px;" >
 								<div class="ui segment" v-show="modal.intro">
-									<center><img class="ui small avatar image" src="{% static '/images/logo.jpg' %}"></center>
+									<center><img class="ui small avatar image" src="/store/{{company.icon}}"></center>
 									<br>
-									<p align=center><a href="/company">公司名</a></p>
-									<p align=center><span ><span><a> 进店逛逛 </a></span></p>
-									<center><button class="ui button" onclick="shopping"><i class="shop icon"></i>订购</button></center>
+									<p align=center><a href="/company/{{company.id}}">{{company.name}}</a></p>
+									<p align=center><span ><span><a class="ui label pink" href="/company/{{company.id}}"> 进店逛逛 </a></span></p>
+									<form method="post" >{% csrf_token %} 
+										<center><button type="submit" class="ui blue button" href=""><i class="shop icon"></i>订购</button></center>
+									</form>
+									
 									<br><br>
 								</div>
 							</div>
@@ -73,28 +83,24 @@
 						   </div>
 						   <div class="ui basic segment">
 								<div style="text-indent:2em;">
-								   <p ><font size =4 color ="grey">秦皇岛领尚文化传播有限公司是一家具有高水平、硬技术的专业文化传播公司。
-									   公司集构思、策划、宣传、执行于一体，对外开展：大型会议及会展服务、综艺演出、各类庆典、企业年会、商业策划。
-									   同时公司还经营：拍摄宣传片、广告片、艺术类艺员培训、组织各类赛事、艺人推广、文化交流活动、演出设备租赁等项目。
-									   并与国内各知名演艺人员保持良好合作关系，与多家网络、杂志、媒体、电视栏目、影视剧组、企事业单位有长期合作。</font></p>
+								   <p ><font size =4 color ="grey">{{server.introduction}}</font></p>
 								   <br>
 								   </div>
 						   </div>
 						   <center>
 						   <div class="ui huge images">
-								<img src="{% static '/images/f1.jpg' %}">
-								<img src="{% static '/images/2.jpg' %}">
-								<img src="{% static '/images/AFGiQHnBZnbJDXFcnZhmrJSeEZj2ZGSd.jpg' %}">
+							   {% for img in images %}
+								<img src="/store/{{img.img}}">
+								{% endfor %}
 							  </div>
 						  </center>
 							<div class="clearfix"> </div>
 						</div>
 				</div>
-				<!-- //single -->
+
 			</div>
 		</div>
-		<!-- // Blog -->
-	<!-- footer -->
+
 	<footer>
 		{% include "footer.html" %}
 	</footer>

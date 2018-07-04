@@ -29,14 +29,11 @@ urlpatterns = [
     url(r'^logout/$', logout, {'next_page': '/index'}),
     url(r'^backManage/$',backWeb),
     url(r'^single/(?P<id>\d+)$',single),
-
+    url(r'^single/(?P<ser_id>\d+)/(?P<msg>\w+)/(?P<way>\w+)$',favfunction),
     url(r'^company/(?P<id>\d+)$',company),
     url(r'^person/',person),
     url(r'^person-fav/',person_fav),
     url(r'^person-list/',person_list),
-    url(r'^person/$',person),
-    url(r'^person-fav/$',person_fav),
-    url(r'^person-list/$',person_list),
     url(r'^server/(?P<site>\d+)&(?P<kind>\d+)$',server),
 
     url(r'api/getCServer/$',getCServer),

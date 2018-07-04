@@ -1,6 +1,6 @@
 import os
 from Web.models import *
-from rest_framework import serializers,status
+from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.middleware.csrf import get_token
@@ -180,7 +180,8 @@ def getputClist(request):
         serializer = Orderlist(lists,many = True)
         return Response(serializer.data)
     elif request.method == 'PUT':
-        pass
+        print('haha')
+        return Response(status=None)
     else:
         return Response(status=None)
 
@@ -189,14 +190,12 @@ def manageOrderList(request,id,msg):
     if request.method == 'POST':
         The_list = Order_list.objects.get(id=id)
         if msg =='cancel':
-            print('cancel')
-            The_list.status.status_level = The_list.status.next_2
+            The_list.status = status.objects.get(status_level = The_list.status.next_2) 
         elif msg =='next':
-            print('next')
-            The_list.status.status_level = The_list.status.next_1
-        print(The_list.status)
+            print(The_list.status.status_level)
+            print(The_list.status.next_1)
+            The_list.status = status.objects.get(status_level = The_list.status.next_1) 
         The_list.save()
-
         user = request.user
         com = Company.objects.get(manager__belong_to = user)
         lists = Order_list.objects.filter(needlist__belong = com)

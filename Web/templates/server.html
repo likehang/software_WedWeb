@@ -26,15 +26,15 @@
                 {% for ct in city %}
                     {%if kind.id %}
                         {% if ct.id == site.id %}
-                            <a class="ui large label" href="../../server/{{ct.id}}&{{kind.id}}" style="background-color:#f173ac; color:white">{{ct}}</a>
+                            <a class="ui large label" href="../../server/{{ct.id}}&{{kind.id}}" style="background-color:#f173ac; color:white">{{ct.city_name}}</a>
                         {% else %}
-                            <a class="ui large label" href="../../server/{{ct.id}}&{{kind.id}}" style="background-color:#f8aba6;color:white" >{{ct}}</a>
+                            <a class="ui large label" href="../../server/{{ct.id}}&{{kind.id}}" style="background-color:#f8aba6;color:white" >{{ct.city_name}}</a>
                         {% endif %}
                     {%else%}
                         {% if ct.id == site.id %}
-                            <a class="ui large label" href="../../server/{{ct.id}}&0" style="background-color:#f173ac;color:white">{{ct}}</a>
+                            <a class="ui large label" href="../../server/{{ct.id}}&0" style="background-color:#f173ac;color:white">{{ct.city_name}}</a>
                         {% else %}
-                            <a class="ui large label" href="../../server/{{ct.id}}&0" style="background-color:#f8aba6;color:white" >{{ct}}</a>
+                            <a class="ui large label" href="../../server/{{ct.id}}&0" style="background-color:#f8aba6;color:white" >{{ct.city_name}}</a>
                         {% endif %}
                     {% endif %}
                 {% endfor %}
@@ -44,15 +44,15 @@
                 {% for sk in s_kind %}
                     {%if site.id %}
                         {% if sk.id == kind.id %}
-                            <a class="ui large label" href="../../server/{{site.id}}&{{sk.id}}" style="background-color:#f173ac;color:white">{{sk}}</a>
+                            <a class="ui large label" href="../../server/{{site.id}}&{{sk.id}}" style="background-color:#f173ac;color:white">{{sk.ex_ser_name}}</a>
                         {% else %}
-                            <a class="ui large label" href="../../server/{{site.id}}&{{sk.id}}" style="background-color:#f8aba6;color:white">{{sk}}</a>
+                            <a class="ui large label" href="../../server/{{site.id}}&{{sk.id}}" style="background-color:#f8aba6;color:white">{{sk.ex_ser_name}}</a>
                         {% endif %}
                     {%else%}
                         {% if sk.id == kind.id %}
-                            <a class="ui large label" href="../../server/0&{{sk.id}}" style="background-color:#f173ac;color:white">{{sk}}</a>
+                            <a class="ui large label" href="../../server/0&{{sk.id}}" style="background-color:#f173ac;color:white">{{sk.ex_ser_name}}</a>
                         {% else %}
-                            <a class="ui large label" href="../../server/0&{{sk.id}}" style="background-color:#f8aba6;color:white">{{sk}}</a>
+                            <a class="ui large label" href="../../server/0&{{sk.id}}" style="background-color:#f8aba6;color:white">{{sk.ex_ser_name}}</a>
                         {% endif %}
                     {% endif %}
                 {% endfor %}

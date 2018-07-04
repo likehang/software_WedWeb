@@ -13,7 +13,7 @@
 	<div class="banner">
         {% include "header.html" %}
             <div class="agileinfo-top-heading">
-			    <h2>Blog Post</h2>
+			    <h2>提供优质婚礼服务  留下最美好的婚礼时光</h2>
 		    </div>
 	</div>
 {% verbatim %}
@@ -29,7 +29,9 @@
                     <div class="menu">
                         <a class="item" v-on:click="showCompany()">公司管理</a>
                         <a class="item" v-on:click="showList()">订单管理
-                            <div class=" ui teal circular label">{{len}}</div></a>
+                            <div class=" ui teal circular label">
+                                {{lists.length}}
+                            </div></a>
                     </div>
                 </div>
                 <div class="item">
@@ -51,9 +53,9 @@
                         <div class="field">
                             <div class="">
                                 <label>公司名称</label>
-                                <input type="text" placeholder="xxxx" id="C_name" v-model.trim="form_Company.new_form.name" :readOnly="!modal.Com_isEdit">
+                                <input maxlength="15" type="text" placeholder="xxxx" id="C_name" v-model.trim="form_Company.new_form.name" :readOnly="!modal.Com_isEdit">
                             </div>
-                            <div class="ui error message" v-show=""><p>长度限制</p></div>
+                            <div class="ui error message"v-if="this.form_Company.new_form.name==''"><p>长度限制</p></div>
                             <br>
                             <div class="">
                                 <label>经营范围</label>
@@ -61,7 +63,6 @@
                                     <option v-for="Ckind in Ckinds" :value="Ckind.id" >{{Ckind.ex_name}}</option>
                                 </select>
                             </div>
-                            <div class="ui error message" v-show=""><p>经营限制</p></div>
                             <br>
                             <div class="">
                                 <label>城市</label>
@@ -69,24 +70,22 @@
                                     <option v-for="city in Citys" :value="city.id" >{{city.city_name}}</option>
                                 </select>
                             </div>
-                            <div class="ui error message" v-show=""><p>城市限制</p></div>
-                            <br>
-                            <div class="field">
-                                <label>简介</label>
-                                <textarea  cols="3" rows="10" v-model="form_Company.new_form.introduction" :readOnly="!modal.Com_isEdit"></textarea>
-                            </div>
                             <br>
                             <div class="">
                                 <label>内部电话</label>
-                                <input type="text" placeholder="方便网站联系" id="C_inphone" v-model.trim="form_Company.new_form.inward_phone" :readOnly="!modal.Com_isEdit">
+                                <input maxlength="11" type="text" placeholder="方便网站联系" id="C_inphone" v-model.trim="form_Company.new_form.inward_phone" :readOnly="!modal.Com_isEdit" 
+                                onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                                onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
                             </div>
-                            <div class="ui error message" v-show=""><p>电话限制</p></div>
+                            <div class="ui error message" v-if="this.form_Company.new_form.inward_phone ==''"><p>电话限制</p></div>
                             <br>
                             <div class="">
                                 <label>客户电话</label>
-                                <input type="text" placeholder="方便与用户联系" id="C_phone" v-model.trim="form_Company.new_form.phone" :readOnly="!modal.Com_isEdit">
+                                <input maxlength="11" type="text" placeholder="方便与用户联系" id="C_phone" v-model.trim="form_Company.new_form.phone" :readOnly="!modal.Com_isEdit"
+                                 onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                                 onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
                             </div>
-                            <div class="ui error message" v-show=""><p>电话限制</p></div>
+                            <div class="ui error message"  v-if="this.form_Company.new_form.phone ==''" ><p>电话限制</p></div>
                             <br>
                             <div class="two fields">
                                 <div class="field">
@@ -116,7 +115,7 @@
                             <br>
                             <div class="">
                                 <label>上传图标</label>
-                                <input type="file" v-on:change="CnewI($event)" :disabled="!modal.Com_isEdit" accept="image/*">
+                                <input type="file" v-on:change="CnewI($event)" :disabled="!modal.Com_isEdit" accept="image/*" >
                             </div>
                             <div class="ui error message" v-show=""><p>大小限制</p></div>
                         </div>
@@ -163,7 +162,7 @@
                                     <a class="ui basic green button icon" v-if="list.status.next_1 != 0" v-on:click="comfirmlist(list.id,'next')">
                                         <i class="plus icon"></i>下一阶段
                                     </a>
-                                    <a class="ui basic red button icon" v-if="list.status.next_1 != 0" v-on:click="comfirmlist(list.id,'cancel')">
+                                    <a class="ui basic red button icon" v-if="list.status.next_2 != 0" v-on:click="comfirmlist(list.id,'cancel')">
                                         <i class="delete icon"></i>取消
                                     </a>
                                 </div>
@@ -183,9 +182,9 @@
                             <div class="field">
                                 <div class="field">
                                     <label>服务主题</label>
-                                    <input type="text" placeholder="xxxx" v-model="form_SingleServer.new_form.topic" :readOnly="!modal.Ser_isEdit">
+                                    <input maxlength="15" type="text" placeholder="xxxx" v-model="form_SingleServer.new_form.topic" :readOnly="!modal.Ser_isEdit">
                                 </div>
-                                <div class="ui error message" v-show=""><p>长度限制</p></div>
+                                <div class="ui error message" v-if="this.form_SingleServer.new_form.topic==''"><p>长度限制</p></div>
                                 <br>
                                 <div class="field">
                                     <label>服务种类</label>
@@ -197,20 +196,24 @@
                                 <br>
                                 <div class="field">
                                     <label>简介</label>
-                                    <textarea  cols="3" rows="10" v-model="form_SingleServer.new_form.introduction" :readOnly="!modal.Ser_isEdit"></textarea>
+                                    <textarea maxlength="255" cols="3" rows="10" v-model="form_SingleServer.new_form.introduction" :readOnly="!modal.Ser_isEdit"></textarea>
                                 </div>
                                 <br>
                                 <div class="field">
                                     <label>价格区间</label>
                                     <div  class="three fields">  
                                         <div class="field">
-                                            <input type="text" placeholder="minprice" v-model="form_SingleServer.new_form.minprice" :readOnly="!modal.Ser_isEdit">
+                                                <input type="text" placeholder="minprice" v-model="form_SingleServer.new_form.minprice" :readOnly="!modal.Ser_isEdit"
+                                                onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\.\D/g,'')}"
+                                                onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\.\D/g,'')}"/>
                                         </div>
                                         <div class="field">
                                             <center>~</center>
                                         </div>
                                         <div class="field">
-                                            <input type="text" placeholder="maxprice" v-model="form_SingleServer.new_form.maxprice" :readOnly="!modal.Ser_isEdit">
+                                            <input type="text" placeholder="maxprice" v-model="form_SingleServer.new_form.maxprice" :readOnly="!modal.Ser_isEdit"
+                                            onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\.\D/g,'')}"
+                                            onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\.\D/g,'')}"/>
                                         </div>
                                     </div>
                                 </div>
@@ -306,8 +309,8 @@
                 </div>
                 <div class="ui vertical segment" v-show="servermenu.mulpage">
                     <span class="ui header">业务管理</span>
-                    <span>
-                        <select class="ui right floated pointing " >
+                    <span class="ui right floated">
+                        <select class="ui pointing " >
                             <div class="menu" v-show="modal.showSerKind">
                                 <option class="item" value="0" v-on:click="setSerKind(0)">全部</option>
                                 <option class="item" :value="Skind.id" v-for="Skind in Skinds" v-on:click="setSerKind(Skind.id)">{{Skind.ex_ser_name}}</option>
@@ -385,7 +388,6 @@
                 Citys:[],
                 lists:[],
                 Choise_kind:0,
-                len:0,
                 date_bool:true,
                 compl_bool:true,
                 date_sort:"up",
@@ -461,8 +463,7 @@
                         type:'json',
                         method:'get',
                         success:function(resp){console.log(resp);
-                            self.lists=resp;
-                            self.len = self.lists.length;}
+                            self.lists=resp}
                     })
                 },
                 getAllServers:function(){
@@ -499,28 +500,21 @@
                 },
                 putCompany:function(){//图片上传未完成
                     var self = this;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-                    form.append()
->>>>>>> bc6d0707e9c0a6bbf56aea7157d481afd2cc506c
->>>>>>> 7c20468407a57442e2f2c16077b5c1defa79c0f4
-=======
->>>>>>> 710f68841e4c651b09e4e4220bf2d3b4d3ad94b5
                     reqwest({
                         url:'api/manageCompany/',
                         type:'json',
                         method:'post',
                         headers:{'X-CSRFToken':self.DjangoCookie},
-                        data:self.form_Company.new_form,
+                        data:[
+                            self.form_Company.new_form,
+                            self.Cnew_img,
+                            ],
                         success:function(resp){
                             console.log(resp);
                             self.form_Company.new_form=resp;}
                     })
                 },
-                comfirmlist:function(id,msg){//后台处理订单阶段无变化？？
+                comfirmlist:function(id,msg){
                     if(msg =='cancel'){
                         if(confirm('确定 取消 该订单？')){this.postSingleList(id,msg);}
                     }
@@ -644,6 +638,7 @@
                         var output = document.getElementById('Coutput'); 
                         output.src = dataurl
                         this.Cnew_img = {'url':dataurl,'file':reader}
+                        console.log(this.Cnew_img)
                     }
                 },
                 SnewI(e) {//显示图片完成 待上传

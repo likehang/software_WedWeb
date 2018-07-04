@@ -22,8 +22,8 @@
    <!--
 
 -->
-<div>
-        <div class="ui vertical horizontal segments">
+<div class="">
+        <div class="ui vertical horizontal segments container">
                 <div class="ui right aligned vertical segment">
                     <a href="../../person/">
                         <h5 class="ui large violet header center aligned inverted">
@@ -52,10 +52,11 @@
                                 {% for fav in favs %}
                                 <div class="segment item">
                                   <div class="ui small image">
-                                    <img url="{{fav.fav_ser.icon.url}}">
+                                    <img src="/store/{{fav.fav_ser.icon}}">
                                   </div>
                                   <div class="content">
-                                    <a class="header left floated" href="../../single/{{fav.fav_ser.id}}">{{fav.fav_ser.topic}}</a>&nbsp;<button class="ui right floated button">删除</button>
+                                    <a class="header left floated" href="../../single/{{fav.fav_ser.id}}">{{fav.fav_ser.topic}}</a>&nbsp;
+                                    <a class="ui right floated button" href="../../single/{{fav.fav_ser.id}}/del/personfav">删除</a>
                                     <div class="description ">
                                       <p>{{fav.fav_ser.introduction}}</p>
                                     </div>

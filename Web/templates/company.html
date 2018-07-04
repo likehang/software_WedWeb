@@ -82,11 +82,10 @@ src="/store/{{ com.icon }}">
                     {% if ser.service_kind == kind %}
                         <h2 class="header">{{kind.ex_ser_name}}</h2>
                         <div class="item">
-                        <img class="ui small avatar image" src="{% static '/images/2.jpg' %}">
+                        <img class="ui small avatar image" src="/store/{{ser.icon}}">
                         <div class="content">
-                            <div class="header"><font size =5><a href="../../server/{{ser.id}}"></a></font>{{ser.topic}}</div>
+                            <div class="header"><font size =5><a href="../../single/{{ser.id}}">{{ser.topic}}</a></font></div>
                             <div class="description">{{ser.introduction|truncatewords:100}}</div>
-
                         </div>
                         <p align=right><font size=3><i class="yen sign icon"></i>{{ser.minprice}}~{{ser.maxprice}}</font></p>
                         </div>
@@ -95,7 +94,7 @@ src="/store/{{ com.icon }}">
             {% endfor %}
               </div>
               </div>
-        <p align=center><i class="text telephone icon"></i>TEL:{{com.iphone}}</p>
+        <p align=center><i class="text telephone icon"></i>TEL:{{com.phone}}</p>
         <p align=center>Address:{{com.adress.city_name}}</p>
         <br>
 
