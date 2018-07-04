@@ -14,44 +14,7 @@
 <body>
 	<!-- banner -->
 	<div class="banner">
-		<div class="header">
-			<div class="container">
-				<div class="header-left">
-					<div class="w3layouts-logo">
-						<h1>
-							<a href="../../index/"> 婚礼时光<span></span></a>
-						</h1>
-					</div>
-				</div>
-				<div class="top-nav">
-						<nav class="navbar navbar-default">
-							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-								<ul class="nav navbar-nav">
-									<li><a class="active" href="../../index/">Home</a></li>
-									<li>
-										<a href="#" class="dropdown-toggle hvr-bounce-to-bottom" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">服务<span class="caret"></span></a>
-										<ul class="dropdown-menu">
-                                            {% for sk in s_kind  %}
-                                            <li><a class="hvr-bounce-to-bottom" href="../../server/{{site}}&{{sk.id}}">{{sk}}</a></li>
-											{% endfor %}         
-										</ul>
-									<li class="">
-										<a href="#" class="dropdown-toggle hvr-bounce-to-bottom" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">地址<span class="caret"></span></a>
-										<ul class="dropdown-menu">
-											{% for ct in city  %}
-											<li><a class="hvr-bounce-to-bottom" href="../../server/{{ct.id}}&{{kind}}">{{ct}}</a></li> 
-											{% endfor %}        
-										</ul>
-									</li>								
-									<li class="ui right float"><a href="">login</a></li>
-								</ul>	
-								<div class="clearfix"> </div>
-							</div>	
-						</nav>		
-					</div>
-				<div class="clearfix"> </div>
-			</div>
-		</div>
+            {% include "header.html" %}
 		<div class="agileinfo-top-heading">
 			<h2>Blog Post</h2>
 		</div>
@@ -82,22 +45,51 @@
                 </div>
             </div>
         <div class="ui divider"></div>
+
         <div class="ui inverted divided list">
+<<<<<<< HEAD
+            {% for list in lists %}
+            <div > 
+                <a class="ui right ribbon label">{{list.create_time}}</a>
+=======
+<<<<<<< HEAD
+            <div > 
+                <a class="ui right ribbon label">生成日期</a>
+=======
 <<<<<<< HEAD
             <div>
                 <a class="ui right ribbon label">date</a>
+>>>>>>> a4041d38765433faedff9095e5e19fdd587d2a3b
+>>>>>>> 7c20468407a57442e2f2c16077b5c1defa79c0f4
                 <div class="ui grid ">
                     <div class="three wide column">
-                        <div class="header">男士、女士</div>电话</div>
+                        <img class="left floated large ui image"
+                        src="/store/{{ list.needlist.icon }}">
+                    </div>   
                     <div class="nine wide column">
-                        <div class="header">主题</div>参数
-                        <a href="">[更多]</a>
+                        <div class="header"><font size="5">
+                            {{list.needlist.topic}}
+                        </div></font>
+                            <font color="grey">{{list.needlist.belong.name}}</font><br>
+                            <font color="grey">{{list.needlist.belong.phone}}</font><br>
+                            <font color="grey">{{list.needlist.service_kind.ex_ser_name}}</font>
+                            <a class="ui image label"> 标签1 </a>
+                            <a class="ui image label"> 标签2 </a>
+                        <br>     
                     </div>
-                    <div class="four wide column">
+                    <div class="three wide column">
                         <div class="header">
-                            <i class="yen sign icon"></i>价格
-                            <a class="ui olive basic floated label">状态</a>
+                            <br><br>
+                            <div class="">订单号：{{list.id}}</div>
+                            <div class="ui basic orange label">{{list.status.status_name}}</div>
+                            <div >{{list.needlist.detail}}[更多]</div>         
                         </div>
+<<<<<<< HEAD
+                    </div>
+                    <div class="three wide column"></div>
+=======
+<<<<<<< HEAD
+=======
 =======
             <div > 
                 <a class="ui right ribbon label">生成日期</a>
@@ -127,11 +119,16 @@
                     </div>
                     <div class="three wide column">
                         </div>
+>>>>>>> a4041d38765433faedff9095e5e19fdd587d2a3b
+>>>>>>> 7c20468407a57442e2f2c16077b5c1defa79c0f4
                         <div class="nine wide column">
-                            <i class="yen sign icon"></i>价格                           
+                            <i class="yen sign icon"></i>{{list.price}}                           
                         </div> 
                     <div class="four wide column">
+<<<<<<< HEAD
+=======
 >>>>>>> bc6d0707e9c0a6bbf56aea7157d481afd2cc506c
+>>>>>>> a4041d38765433faedff9095e5e19fdd587d2a3b
                         <div class="ui icon buttons centered">
                             <div class="ui basic red button icon">
                                 <i class="delete icon"></i>取消
@@ -141,11 +138,11 @@
                 </div>
                 <div class="ui divider"></div>
             </div>
+            {% endfor %}
         </div>
+
         <div>
         </div>
-        <div>下一阶段</div>
-        <div>取消</div>
     </div>
 </div>
 

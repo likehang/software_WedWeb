@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^logout/$', logout, {'next_page': '/register'}),
     url(r'^backManage/$',backWeb),
     url(r'^single/(?P<id>\d+)$',single),
-    url(r'^gallery/$',gallery),
+    url(r'^company/$',company),
     url(r'^person/$',person),
     url(r'^person-fav/$',person_fav),
     url(r'^person-list/$',person_list),
@@ -45,7 +45,7 @@ urlpatterns = [
     url(r'api/getserver_graphs/$',getserver_graphs),
     url(r'api/manageCompany/$',manageCompany),
     url(r'api/getputClist/$',getputClist),
-    url(r'api/manageOrderList/$',manageOrderList),
+    url(r'api/manageOrderList/(?P<id>\d+)/(?P<msg>\w+)$',manageOrderList),
     url(r'api/getFav/$',getFav),
     url(r'api/dpFav/(?P<ser_id>\d+)$',dpFav),
 
