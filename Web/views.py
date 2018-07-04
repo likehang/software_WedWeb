@@ -9,18 +9,10 @@ from Web.models import *
 def index(request):#用户的验证
     context={}
     if request.method =='GET':
-<<<<<<< HEAD
-        # if request.user:
-        #     User=UserProfile.objects.get(id=request.user.id)
-        #     print(User)
-        # else:
-        #     User = None
-=======
         if isinstance(request.user,User):
             user = UserProfile.objects.get(belong_to = request.user)
         else:
             user = None
->>>>>>> 710f68841e4c651b09e4e4220bf2d3b4d3ad94b5
         cities = City.objects.all()
         ser_kind = server_choices.objects.all()
         k1 = server_choices.objects.get(ex_ser_name='定制婚礼')
@@ -41,7 +33,7 @@ def index(request):#用户的验证
         print(context)
         return render(request,'index.html',context=context)
     else:
-        return redirect(to='index')
+        return redirect(to='/index/')
 
 
 def backWeb(request):
@@ -56,7 +48,7 @@ def backWeb(request):
                 context['city']=cities
                 context['s_kind'] = ser_kind
                 return render(request,'back_manage.html',context=context)
-    return redirect(to='index')
+    return redirect(to='/index/')
 
 def single(request,id):
     context={}
@@ -83,7 +75,7 @@ def single(request,id):
         print(context)
         return render(request,'single.html',context=context)
     else:
-        return redirect(to='index')
+        return redirect(to='/index/')
 
 def server(request,site,kind):
     context={}
@@ -115,7 +107,7 @@ def person(request):
         if isinstance(request.user,User):
             user = UserProfile.objects.get(belong_to = request.user)
         else:
-            return redirect(to='index')
+            return redirect(to='/index/')
         context={}
         cities = City.objects.all()
         ser_kind = server_choices.objects.all()
@@ -123,14 +115,14 @@ def person(request):
         context['city'] =cities
         context['s_kind'] = ser_kind
         return render(request,'person.html',context=context)
-    return redirect(to='index')
+    return redirect(to='/index/')
 
 def person_fav(request):
     context={}
     if isinstance(request.user,User):
         user = UserProfile.objects.get(belong_to = request.user)
     else:
-        return redirect(to='index')
+        return redirect(to='/index/')
     cities = City.objects.all()
     ser_kind = server_choices.objects.all()
     favs = Fav.objects.filter(fav_user = user)
@@ -145,7 +137,7 @@ def person_list(request):
     if isinstance(request.user,User):
         user = UserProfile.objects.get(belong_to = request.user)
     else:
-        return redirect(to='index')
+        return redirect(to='/index/')
     cities = City.objects.all()
     ser_kind = server_choices.objects.all()
     lists = Order_list.objects.filter(Username = user)
@@ -189,7 +181,7 @@ def index_login(request):
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             login(request, form.get_user())
-            return redirect(to='index')
+            return redirect(to='/index/')
     context['form'] = form
     return render(request, 'register_login.html', context)
 
@@ -205,6 +197,6 @@ def index_register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(to='index')
+            return redirect(to='/index/')
     context['form'] = form
     return render(request, 'register_login.html', context)
