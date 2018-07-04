@@ -143,8 +143,8 @@ def person_list(request):
     context['s_kind'] = ser_kind
     return render(request,'person-list.html',context=context)
 
-def gallery(request):
-    return render(request,'gallery.html',context=None)
+def company(request):
+    return render(request,'company.html',context=None)
 
 class LoginForm(forms.Form):
     username = forms.CharField()

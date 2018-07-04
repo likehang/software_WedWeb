@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^logout/$', logout, {'next_page': '/register'}),
     url(r'^backManage/$',backWeb),
     url(r'^single/(?P<id>\d+)$',single),
-    url(r'^gallery/$',gallery),
+    url(r'^company/$',company),
     url(r'^person/$',person),
     url(r'^person-fav/$',person_fav),
     url(r'^person-list/$',person_list),

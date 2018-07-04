@@ -26,7 +26,7 @@
 
 
 <div class="ui  ">
-        <img class="ui centered medium image" 
+        <img class="ui centered small image" 
 src="{% static '/images/logo.jpg' %}">
 </div>
 <div class="ui container">
@@ -34,40 +34,80 @@ src="{% static '/images/logo.jpg' %}">
     <h1><p align=center>公司名</p></h1>
     <h3><p align=center>公司简介</p></h3>
          <div class="ui segment vertical padded">
-           
-            <p ><font size =4 color ="grey">秦皇岛领尚文化传播有限公司是一家具有高水平、硬技术的专业文化传播公司。
-                公司集构思、策划、宣传、执行于一体，对外开展：大型会议及会展服务、综艺演出、各类庆典、企业年会、商业策划。
-                 同时公司还经营：拍摄宣传片、广告片、艺术类艺员培训、组织各类赛事、艺人推广、文化交流活动、演出设备租赁等项目。
-                 并与国内各知名演艺人员保持良好合作关系，与多家网络、杂志、媒体、电视栏目、影视剧组、企事业单位有长期合作。</font></p>
-           
-            <p ><font size =4 color ="grey">公司主旨</font></p>
-            <p><font size =4 color ="grey">内容</font></p>
-            <p ><font size =4 color ="grey">优秀案例</font></p>
-            <p><font size =4 color ="grey">内容</font></p>
+             <div style="text-indent:2em;">
+                <p ><font size =4 color ="grey">秦皇岛领尚文化传播有限公司是一家具有高水平、硬技术的专业文化传播公司。
+                    公司集构思、策划、宣传、执行于一体，对外开展：大型会议及会展服务、综艺演出、各类庆典、企业年会、商业策划。
+                    同时公司还经营：拍摄宣传片、广告片、艺术类艺员培训、组织各类赛事、艺人推广、文化交流活动、演出设备租赁等项目。
+                    并与国内各知名演艺人员保持良好合作关系，与多家网络、杂志、媒体、电视栏目、影视剧组、企事业单位有长期合作。</font></p>
+                
+                </div>
         </div>
-    <h3><p align=center>主营项目</p></h3>
-
-    <div class="ui three column grid">
-        <div class="column">服务类型</div>
-        <div class="column">服务介绍</div>
-        <div class="column"><i class="yen sign icon"></i>价格</div>
-        <div class="column">服务类型</div>
-        <div class="column">服务介绍</div>
-        <div class="column"><i class="yen sign icon"></i>价格</div>
-        <div class="column">服务类型</div>
-        <div class="column">服务介绍</div>
-        <div class="column"><i class="yen sign icon"></i>价格</div>
-    </div>
-    <br>
     <h3><p align=center>案例展示</p></h3>
-         
+    <!--下面是向左滚动代码-->
+<div id="butong_net_left" style="overflow:hidden;width:100%;">
+        <table cellpadding="0" cellspacing="0" border="0">
+        <tr><td id="butong_net_left1" valign="top" align="center">
+        <table cellpadding="2" cellspacing="0" border="0">
+        <tr align="center">
+        <td><img src="{% static '/images/g5.jpg' %}"></td>
+        <td><img src="{% static '/images/g6.jpg' %}"></td>
+        <td><img src="{% static '/images/g7.jpg' %}"></td>
+        
+        </tr>
+        </table>
+        </td>
+        <td id="butong_net_left2" valign="top"></td>
+        </tr>
+        </table>
         </div>
+        <script>
+        var speed=10//速度数值越大速度越慢
+        butong_net_left2.innerHTML=butong_net_left1.innerHTML
+        function Marquee3(){
+        if(butong_net_left2.offsetWidth-butong_net_left.scrollLeft<=0)
+        butong_net_left.scrollLeft-=butong_net_left1.offsetWidth
+        else{
+        butong_net_left.scrollLeft++
+        }
+        }
+        var MyMar3=setInterval(Marquee3,speed)
+        butong_net_left.onmouseover=function() {clearInterval(MyMar3)}
+        butong_net_left.onmouseout=function() {MyMar3=setInterval(Marquee3,speed)}
+        </script>
+        <!--向左滚动代码结束-->
+        <h3><p align=center>主营项目</p></h3>
+        <div class="ui middle aligned animated list">
+                <div class="item">
+                  <img class="ui small avatar image" src="{% static '/images/2.jpg' %}">
+                  <div class="content">
+                    <div class="header"><font size =5><a>婚纱租借</a></font></div>
+                    <div class="description">简略描述</div>
+
+                  </div>
+                  <p align=right><font size=3><i class="yen sign icon"></i>价格</font></p>
+                </div>
+                <div class="item">
+                  <img class="ui small avatar image" src="{% static '/images/3.jpg' %}">
+                  <div class="content">
+                        <div class="header"><font size =5><a>鲜花布置</a></font></div>
+                        <div class="description">简略描述</div>
+                  </div>
+                  <p align=right><font size =3><i class="yen sign icon"></i>价格</font></p>
+                </div>
+                <div class="item">
+                        <img class="ui small avatar image" src="{% static '/images/g7.jpg' %}">
+                        <div class="content">
+                              <div class="header"><font size =5><a>会场布置</a></font></div>
+                              <div class="description">简略描述</div>
+                        </div>
+                        <p align=right><font size =3><i class="yen sign icon"></i>价格</font></p>
+                 </div>
+              </div>
+              </div>
         <p align=center><i class="text telephone icon"></i>TEL</p>
         <p align=center><i class="mail icon"></i>E-mail</p>
         <p align=center>Address</p>
         <br>
-    </div>
-</div>
 
 
 <footer>
