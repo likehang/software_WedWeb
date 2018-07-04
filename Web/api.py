@@ -104,17 +104,6 @@ class singleCom(serializers.ModelSerializer):
         model = Company
         fields = ['name','icon','phone','ident','isopen','inward_phone','business_kind','adress']
 
-<<<<<<< HEAD
-class ComForm(forms.Form):
-    name = forms.CharField(max_length=30, required=True)
-    icon = forms.ImageField(required = True)
-    phone = forms.CharField(max_length=20, required=True)
-    isopen = forms.BooleanField(required=True)
-    inward_phone = forms.CharField(max_length=20, required=True)
-    business_choices = forms.IntegerField(required=True)
-    adress = forms.IntegerField(required=True)
-=======
->>>>>>> bc6d0707e9c0a6bbf56aea7157d481afd2cc506c
 
 @api_view(['GET','POST'])
 def manageCompany(request):
@@ -132,11 +121,6 @@ def manageCompany(request):
         user = request.user
         com = Company.objects.get(manager__belong_to = user)
         old_serializer = singleCom(com , many = False)
-<<<<<<< HEAD
-        #new_serializer = singleCom(data = request.data)
-        form = ComForm(request.POST,request.FILES)
-        print(form)
-=======
         reform = request.POST
         print(reform)
         com.name = reform['name']
@@ -153,7 +137,6 @@ def manageCompany(request):
         serializer = singleCom(com , many = False)
         return Response(serializer.data)
         
->>>>>>> bc6d0707e9c0a6bbf56aea7157d481afd2cc506c
         # if new_serializer.is_valid():
         #     if os.path.exists(MEDIA_ROOT+com.icon):
         #         print('exist')

@@ -8,11 +8,7 @@ from Web.models import *
 def index(request):
     context={}
     if request.method =='GET':
-<<<<<<< HEAD
         # if request.user:
-=======
-        # try :
->>>>>>> bc6d0707e9c0a6bbf56aea7157d481afd2cc506c
         #     User=UserProfile.objects.get(id=request.user.id)
         #     print(User)
         # else:

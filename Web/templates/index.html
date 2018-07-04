@@ -10,6 +10,7 @@
 <script src="{% static '/js/jquery-1.11.1.min.js' %}"></script>
 <script src="{% static '/js/vue.js' %}"></script>
 <script src="{% static '/js/bootstrap.js' %}"></script>
+<script src="{% static '/js/reqwest.js' %}"></script>
 
 </head>
 <body>
@@ -33,21 +34,38 @@
 
 	{% verbatim %}
 	<div id = "tab">
-		<div id="shortcut directory" v-show="modal.tab" class="ui  segment" style="width: 272px !important; height: 280.531px !important;position: fixed;bottom:60px;right: 10px; padding-left: 20px;">
-			<div class="another example"  >
-					<div class="ui relaxed divided list"> 
-					  <div class="item" v-for="server in servers">
-					  </div>
-					</div>
-				  </div>
-				</div>		
+		<div class="ui segment" v-show="modal.tab" style="width: 272px !important; position: fixed;bottom:60px; right: 10px; padding: 10px;">
+				<div class="header">
+					<li v-for="server in servers">
+						{{ server.topic }}
+				  	</li> 						
+				</div>
+					<li v-for="server in servers">
+						{{ server.introduction }}
+				  	</li>	
+			<div class="ui fitted divider"></div>
+				<div class="header">
+					<li v-for="company in companies">
+						{{ company.name }}
+					</li>  
+				</div>
+				    <li v-for="company in companies">
+						{{ company.introduction }}
+					</li>
+			<div class="ui fitted divider"></div>	
+				<div class="header" >
+					<li v-for="city in cities">
+						<a :href="'../../server/'+city.id+'&0'">{{ city.city_name }}</a>
+					</li> 
+				</div>		    
+		</div>
 		<div style="width: 272px !important; height: 100.531px !important;position: fixed;bottom:80px;right: 10px; margin-top: 15px;" >
 			<div class="ui segment" v-show="modal.intro">
 				<p>Hi!我是您的新娘顾问Echo我将为您提供专业的婚礼策划咨询及预约服务，有什么可以帮您的吗？</p>
 			</div>
 			<div class="ui input focus" style="width:272px;position:fixed;bottom:20px;">
 				<input type="text" v-model="modal.userName" >
-				<a class="ui button" v-on:click="showtab()" style="width:45px !important;padding-left: 8px;">OK</a>
+				<a class="ui button" v-on:click="showtab(modal.userName)" style="width:45px !important;padding-left: 8px;">OK</a>
 			</div>
 		</div>
 	</div>
@@ -68,14 +86,17 @@
         cities:[],
 			},
 			methods:{
-				showtab:function(){
+				showtab:function(msg){
 						this.modal.intro=false;
 						this.modal.tab=true;
+						this.getcity(msg);
+						this.getserver(msg);
+						this.getcompany(msg);
 				},
-				getserver:function(){
+				getserver:function(msg){
 					var self = this;
 					reqwest({
-							url:'api/getserver/',
+							url:'api/searchServer/'+msg,
 							type:'json',
 							method:'get',
 							success:function(resp){
@@ -83,10 +104,10 @@
 								self.servers=resp;}
 					})
 				},
-					getcompany:function(){
+					getcompany:function(msg){
 						var self = this;
 						reqwest({
-								url:'api/getcompany/',
+								url:'api/searchCompany/'+msg,
 								type:'json',
 								method:'get',
 								success:function(resp){
@@ -94,10 +115,10 @@
 									self.companies=resp;}
 						})
 				},
-				getcity:function(){
+				getcity:function(msg){
 					var self = this;
 					reqwest({
-							url:'api/getcity/',
+							url:'api/searchCity/'+msg,
 							type:'json',
 							method:'get',
 							success:function(resp){
