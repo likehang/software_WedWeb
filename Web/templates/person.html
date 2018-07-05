@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="{% static '/css/semantic.css' %}" media="screen" title="no title" charset="utf-8">
 <link href="{% static '/css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
 <link rel="stylesheet" href="{% static '/css/style.css' %}" type="text/css" media="all" />
+<link rel="stylesheet" href="{% static '/css/animate.css' %}" type="text/css" media="all" />
 <script src="{% static '/js/jquery-1.11.1.min.js' %}"></script>
 <script src="{% static '/js/bootstrap.js' %}"></script>
 <script src="{% static '/js/vue.js' %}"></script>
@@ -18,7 +19,17 @@
             left: 50%;
             top: 50%;
             z-index:999;
+        }，
+        #mask{
+            width: 100%;
+            opacity: 0.6;
+            background-color: black;
+            bottom: 0;
+            left: 0;
+            position: fixed;
+            z-index: 998;
         }
+
 </style>
 
 </head>
@@ -27,7 +38,7 @@
 	<div class="banner">
         {% include "header.html" %}
 		<div class="agileinfo-top-heading">
-			<h2>Blog Post</h2>
+			<h2>个人详情</h2>
 		</div>
     </div>
 
@@ -56,10 +67,13 @@
                     </div>
                 <form method="post" class="ui form error success" >
                         {% csrf_token %}
+                        <input type="text" name="upiden" value="0"  v-show="false">
+                        <input type="text" name="upsecret" value="0" v-show="false">
+                        <input type="text" name="upicon" value="0" v-show="false">
                     <br>
                    
                     <div class="ui segment vertical">
-                        <a href=""><img src="/store/{{ User.icon }}" alt="" class="ui circular centered small image"></a>
+                        <a href=""><img src="/store/{{ User.profile_image }}" alt="" class="ui circular centered small image"></a>
                         <div >
                             {% if User.is_C_man %}
                             <a class="ui yellow basic label icon"><i class="user outline icon "></i>公司管理员</a>
@@ -102,21 +116,21 @@
                             <label for="sex">性别</label>
                             <div class="two fields">
                                 <div class="field ">
-                                    <div class="ui radio checkbox center aligned">
+                                    <div class="ui radio checkbox">
                                         {% if User.sex %}
-                                            <input type="radio" name="sex" value="True" checked>
+                                            <input type="radio" name="sex" value="man" checked>
                                         {%else%}
-                                            <input type="radio" name="sex" value="True" >
+                                            <input type="radio" name="sex" value="man" >
                                         {% endif %}
                                         <label>男</label>
                                     </div>
                                 </div>
                                 <div class="field">
-                                    <div class="ui radio checkbox center aligned">
+                                    <div class="ui radio checkbox">
                                         {% if User.sex %}
-                                        <input type="radio" name="sex" value="False">
+                                        <input type="radio" name="sex" value="woman">
                                         {% else %}
-                                        <input type="radio" name="sex" value="False" checked>
+                                        <input type="radio" name="sex" value="woman" checked>
                                         {% endif %}
                                         <label>女</label>
                                     </div>
@@ -138,10 +152,14 @@
                 </form>
              
         </div>   
-        <div class="ui showcard" v-show="upl1" >
-                    
+        <div class="ui showcard" ref="mask" v-show="upl1" id="dim">
+            <div class="">
+            <form method="post" enctype=multipart/form-data>
+                    {% csrf_token %}
+                    <input type="text" name="upiden" value="0" v-show="false">
+                    <input type="text" name="upsecret" value="0" v-show="false">
+                    <input type="text" name="upicon" value="1" v-show="false">
                 <table class="ui celled padded table">
-                        {% csrf_token %}
                         <thead>
                              <tr>
                                  <th class="single line">上传头像:</th>
@@ -154,7 +172,7 @@
                                </td>
                                <td class="">
                                     <div class="ui ">
-                                        <img class="ui  left floated image" id="Uoutput" src="/store/{{ User.icon }}">
+                                        <img class="ui  left floated image" id="Uoutput" src="/store/{{ User.profile_image }}">
                                    </div> 
                                </td>
                              </tr>
@@ -163,13 +181,13 @@
                                  <h2 class="ui center aligned header"> 请输入地址：</h2>
                                </td>
                                <td class="">
-                                    <p class="ui input focus"><input type="file" placeholder="address" v-on:change="UnewI($event)"></p>
+                                    <p class="ui input focus"><input type="file" placeholder="address" name="image" v-on:change="UnewI($event)"></p>
                                </td>
                              </tr>
                              <tr>
                               <td   class=" ">
                                 <center>
-                                        <a class="ui  green button " v-on:click="upicon()">上传头像 </a>
+                                    <button class="ui  green button " v-on:click="upicon()">上传头像 </button>
                                 </center>
                               </td>
                                 <td   class="">
@@ -180,10 +198,16 @@
                               </tr>                                   
                        </tbody>
                    </table>
+                </form>
+            </div>
         </div>
         <div class="ui showcard" v-show="cha1" >
+            <form method="post">
                 <table class="ui celled padded table">
                         {% csrf_token %}
+                        <input type="text" name="upiden" value="0" v-show="false">
+                        <input type="text" name="upsecret" value="1" v-show="false">
+                        <input type="text" name="upicon" value="0" v-show="false">
                      <thead>
                           <tr>
                               <th class="single line">修改密码：</th>
@@ -196,7 +220,7 @@
                             </td>
                             <td class="single line"> 
                                 <div class="ui input focus">
-                                    <input type="text" placeholder="password..." v-model="changepassword.cha_psw">
+                                    <input type="password" placeholder="password..." name="old" v-model="changepassword.cha_psw" minlength="8">
                                 </div> 
                             </td>
                           </tr>
@@ -206,7 +230,7 @@
                             </td>
                             <td class="single line">
                                 <div class="ui input focus">
-                                    <input type="text" placeholder="new password..." v-model="changepassword.cha_newpsw">
+                                    <input type="password" placeholder="new password..." name="new" v-model="changepassword.cha_newpsw" minlength="8">
                                 </div> 
                             </td>
                           </tr>
@@ -216,14 +240,14 @@
                             </td>
                             <td class="single line">
                                 <div class="ui input focus">
-                                    <input type="text" placeholder="new password..." v-model="changepassword.cha_newpsw1">
+                                    <input type="password" placeholder="new password..." name="new1" v-model="changepassword.cha_newpsw1" minlength="8"/>
                                 </div> 
                             </td>
                           </tr>
                           <tr>
                            <td   class="single line ">
                              <center>
-                               <a class="ui  orange button " v-on:click="upsecret()">确认 </a>
+                               <button class="ui  orange button " type="submit" >确认 </button>
                              </center>
                            </td>
                              <td   class="single line ">
@@ -234,10 +258,14 @@
                            </tr>
                     </tbody>
                 </table>
+            </form>
         </div><br>
         <div class="ui showcard" v-show="ide1" >
+            <form method="post">{% csrf_token %} 
+                <input type="text" name="upiden" value="1" v-show="false">
+                <input type="text" name="upsecret" value="0" v-show="false">
+                <input type="text" name="upicon" value="0" v-show="false">
                 <table class="ui celled padded table">
-                        {% csrf_token %}
                         <thead>
                           <tr>
                               <th class="single line">验证身份:</th>
@@ -250,7 +278,7 @@
                             </td>
                             <td class="single line"> 
                                 <div class="ui input focus">
-                                    <input type="text" placeholder="name..." v-model="identity.ide_name">
+                                    <input type="text" placeholder="name..." name="name" minlength="4">
                                 </div> </td>
                           </tr>
                           <tr>
@@ -259,14 +287,16 @@
                             </td>
                             <td class="single line">
                                 <div class="ui input focus">
-                                     <input type="text" placeholder="ID number..." v-model="identity.ide_ID">
+                                    <input type="text" placeholder="ID number..."name="ID" maxlength="18"
+                                    onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                                    onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
                                  </div> 
                             </td>
                           </tr>
                           <tr>
                           <td   class="single line ">
                             <center>
-                               <a class="ui  blue button " v-on:click="upident()">确认 </a>
+                               <button class="ui  blue button " type="submit">确认 </button>
                             </center></td>
                             <td   class="single line ">
                             <center>
@@ -275,10 +305,12 @@
                            
                           </tr>
                </table>
+            </form>
         </div> 
 </div>
 <script>
     var ident = new Vue({
+        delimiters:["[[", "]]"],
         el:'#ident',
         data:{
             identity:{
@@ -296,65 +328,62 @@
             ide1:false,
             upl1:false,
             cha1:false,
-            cookie:null,
-            Userid:{{User.id}},
         },
-        // mounted:function(){
-        //     this.AgetCookie();
-        // },
         methods:{
             ide2:function(){this.ide1 = !this.ide1;},
             upl2:function(){this.upl1 = !this.upl1;},
             cha2:function(){this.cha1 = !this.cha1;},
-            upsecret:function(){
-                var self = this;
-                reqwest({//token未完成 被拦截
-                    url:'api/upsecret/'+ self.Userid,
-                    type:'json',
-                    method:'post',
-                    data:[self.changepassword.cha_psw,
-                        self.changepassword.cha_newpsw],
-                    success:function(resp){
-                        alert('ok');
-                    }
-                })
-            },
-            upicon:function(){
-                var self = this;
-                reqwest({
-                    url:'api/upicon/'+ self.Userid,
-                    type:'json',
-                    method:'post',
-                    data:[self.uploadhead.upl_file],
-                    success:function(resp){
-                        alert('ok');
-                    }
-                })
-            },
-            upident:function(){
-                var self = this;
-                reqwest({
-                    url:'api/upident/'+ self.Userid,
-                    type:'json',
-                    method:'post',
-                    data:[self.identity.ide_name,
-                        self.identity.ide_ID],
-                    success:function(resp){
-                        alert('ok');
-                    }
-                })
-            },
-            UnewI(e) {//显示图片完成 待上传
-                    var file = e.target.files[0];
-                    var reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = function(){
-                        var dataurl = reader.result;
-                        var output = document.getElementById('Uoutput'); 
-                        output.src = dataurl
-                        this.uploadhead.upl_file = {'url':dataurl,'file':reader}
-                    }
-                },
+            // upsecret:function(){
+            //     var fm = new FormData()
+            //     fm.append('old',this.changepassword.cha_psw)
+            //     fm.append('new',this.changepassword.cha_newpsw)
+            //     var self = this;
+            //     reqwest({//token未完成 被拦截
+            //         url:'api/upsecret/'+ self.Userid,
+            //         type:'json',
+            //         method:'post',
+            //         data:fm,
+            //         success:function(resp){
+            //             alert('ok');
+            //         }
+            //     })
+            // },
+            // upicon:function(){
+            //     var self = this;
+            //     reqwest({
+            //         url:'api/upicon/'+ self.Userid,
+            //         type:'json',
+            //         method:'post',
+            //         data:[self.uploadhead.upl_file],
+            //         success:function(resp){
+            //             alert('ok');
+            //         }
+            //     })
+            // },
+            // upident:function(){
+            //     var self = this;
+            //     reqwest({
+            //         url:'api/upident/'+ self.Userid,
+            //         type:'json',
+            //         method:'post',
+            //         data:[self.identity.ide_name,
+            //             self.identity.ide_ID],
+            //         success:function(resp){
+            //             alert('ok');
+            //         }
+            //     })
+            // },
+            // UnewI(e) {//显示图片完成 待上传
+            //         var file = e.target.files[0];
+            //         var reader = new FileReader();
+            //         reader.readAsDataURL(file);
+            //         reader.onload = function(){
+            //             var dataurl = reader.result;
+            //             var output = document.getElementById('Uoutput'); 
+            //             output.src = dataurl
+            //             this.uploadhead.upl_file = {'url':dataurl,'file':reader}
+            //         }
+            //     },
             // AgetCookie:function(){
             //     var self=this;
             //         reqwest({
@@ -385,7 +414,7 @@
                 if(ide1 || upl1 || cha1) return 'dimmer';
                 else return ''
             }
-        }
+        },
     })
 
 

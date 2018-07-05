@@ -34,31 +34,39 @@
 
 	{% verbatim %}
 	<div id = "tab">
-		<div class="ui segment" v-show="modal.tab" style="width: 272px !important; position: fixed;bottom:60px; right: 10px; padding: 10px;">
-				<div class="header">
-					<li v-for="server in servers">
-						{{ server.topic }}
-				  	</li> 						
-				</div>
-					<li v-for="server in servers">
-						{{ server.introduction }}
-				  	</li>	
-			<div class="ui fitted divider"></div>
-				<div class="header">
-					<li v-for="company in companies">
-						{{ company.name }}
-					</li>  
-				</div>
-				    <li v-for="company in companies">
-						{{ company.introduction }}
-					</li>
-			<div class="ui fitted divider"></div>	
-				<div class="header" >
-					<li v-for="city in cities">
-						<a :href="'../../server/'+city.id+'&0'">{{ city.city_name }}</a>
-					</li> 
-				</div>		    
+		<div class="ui segment" v-show="modal.tab" style="width: 300px !important;z-index:999; position: fixed;bottom:60px; right: 10px; padding: 10px;">
+			<div  v-for="server in servers">	
+			<li class="news-meta-item" data-index="1">
+					<span class="news-title" >
+						<span class="title-link" >
+							<a class="title-content" :href="'../../single/'+server.id" target="_blank">{{server.topic }}</a>
+							<li maxlength="25">{{server.introduction}}</li>
+						</span>
+					</span>
+				</li>	
+			</div>
+		<div class="ui fitted divider"></div>
+		<div v-for="company in companies">
+		    <li class="news-meta-item" data-index="1" >
+				<span class="news-title" >
+					<span class="title-link"  >
+						<a class="title-content" :href="'../../company/'+company.id" target="_blank">{{ company.name }}</a>
+		                <li maxlength="25" >{{company.introduction}}</li>       
+					</span>
+				</span>
+			</li>
 		</div>
+		<div class="ui fitted divider"></div>
+		<div v-for="city in cities">
+			<li class="news-meta-item" data-index="1" >
+				<span class="news-title">
+					<span class="title-link" >
+						<a class="title-content" :href="'../../server/'+city.id+'&0'" target="_blank">{{ city.city_name }}</a>
+					</span>
+				</span>
+			</li>
+		</div>
+	</div>	
 		<div style="width: 272px !important; height: 100.531px !important;position: fixed;bottom:80px;right: 10px; margin-top: 15px;" >
 			<div class="ui segment" v-show="modal.intro">
 				<p>Hi!我是您的新娘顾问Echo我将为您提供专业的婚礼策划咨询及预约服务，有什么可以帮您的吗？</p>
@@ -77,13 +85,10 @@
 					intro:true,
 					tab:false,
 					userName:null,
-					server:null,
-					company:null,
-					city:null,
 				},
 				servers:[],
 				companies:[],
-        cities:[],
+        		cities:[],
 			},
 			methods:{
 				showtab:function(msg){
@@ -133,7 +138,7 @@
 	<div class="posts">
 		<div class="container">
 			<div class="w3-agileits-heading">
-				<h3>服务 <span>各种各样</span></h3>
+				<h3>精选<span>服务</span></h3>
 			</div>
 			<div class="posts-grids">
 				<div class="ui segment ">

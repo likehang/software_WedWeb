@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.middleware.csrf import get_token
 from django import forms
+from django.views.decorators.csrf import csrf_exempt
 
 @api_view(['GET'])
 def sendCookie(request):
@@ -38,7 +39,7 @@ def getCServer(request):
         else:
             print('no files')
         ser.introduction = reform['introduction']
-        ser.service_kind.id = reform['service_kind']
+        ser.service_kind = server_choices.objects.get(id = reform['service_kind'])
         ser.minprice = float(reform['minprice'])
         ser.maxprice = float(reform['maxprice'])
         ser.detail = reform['detail']
@@ -65,7 +66,7 @@ def ManageCServer(request,id):
             else:
                 print('no files')
             ser.introduction = reform['introduction']
-            ser.service_kind.id = reform['service_kind']
+            ser.service_kind = server_choices.objects.get(id = reform['service_kind'])
             ser.minprice = float(reform['minprice'])
             ser.maxprice = float(reform['maxprice'])
             ser.detail = reform['detail']
@@ -145,8 +146,8 @@ def manageCompany(request):
         com.phone = reform['phone']
         com.isopen = bool(reform['isopen'])
         com.inward_phone = reform['inward_phone']
-        com.business_kind.id = reform['business_kind']
-        com.adress.id = reform['adress']
+        com.business_kind =business_choices.objects.get(id = reform['business_kind']) 
+        com.adress =City.objects.get(id = reform['adress']) 
         com.save()
         serializer = singleCom(com , many = False)
         return Response(serializer.data)
@@ -179,9 +180,6 @@ def getputClist(request):
         lists = Order_list.objects.filter(needlist__belong = com)
         serializer = Orderlist(lists,many = True)
         return Response(serializer.data)
-    elif request.method == 'PUT':
-        print('haha')
-        return Response(status=None)
     else:
         return Response(status=None)
 
@@ -279,27 +277,3 @@ def searchCity(request,msg):
     serializer = serCity(citys,many = True)
     return Response(serializer.data)
 
-@api_view(['POST'])#修改密码
-def changePassWord(request,id):
-    user = UserProfile.objects.get(id=id)
-    password = request.POST['password']
-    user.belong_to.set_password(self,password)
-    user.save()
-    return Response(status=None)
-
-@api_view(['POST'])#上传图片
-def upUserIcon(request,id):
-    user = UserProfile.objects.get(id=id)
-    file = request.FILES
-    user.profile_image = file
-    user.save()
-    return Response(status=None)
-
-@api_view(['POST'])#上传身份信息
-def upIdent(request,id):
-    user = UserProfile.objects.get(id=id)
-    number = request.POST['number']
-    user.ident = number
-    user.is_ident = True
-    user.save()
-    return Response(status=None)

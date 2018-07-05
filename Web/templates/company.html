@@ -16,7 +16,7 @@
 	<div class="banner">
         {% include "header.html" %}
 		<div class="agileinfo-top-heading">
-			<h2>Blog Post</h2>
+			<h2>公司管理</h2>
 		</div>
     </div>
    <!--
@@ -49,7 +49,7 @@ src="/store/{{ com.icon }}">
             {% for ser in sers %}
         <td>
             <a href="../../single/{{ser.id}}">
-                <img src="/store/{{ser.icon}}">
+                <img style="height: 450px;width: 450px"  src="/store/{{ser.icon}}">
             </a>
         </td>
             {% endfor %}
@@ -85,7 +85,7 @@ src="/store/{{ com.icon }}">
                         <img class="ui small avatar image" src="/store/{{ser.icon}}">
                         <div class="content">
                             <div class="header"><font size =5><a href="../../single/{{ser.id}}">{{ser.topic}}</a></font></div>
-                            <div class="description">{{ser.introduction|truncatewords:100}}</div>
+                            <div class="description">{{ser.introduction}}</div>
                         </div>
                         <p align=right><font size=3><i class="yen sign icon"></i>{{ser.minprice}}~{{ser.maxprice}}</font></p>
                         </div>

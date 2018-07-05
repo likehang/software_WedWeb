@@ -55,9 +55,6 @@ urlpatterns = [
     url(r'api/searchCompany/(?P<msg>\w+)$',searchCom),
     url(r'api/searchCity/(?P<msg>\w+)$',searchCity),
 
-    url(r'api/upsecret/(?P<id>\d+)$',changePassWord),
-    url(r'api/upicon/(?P<id>\d+)$',upUserIcon),
-    url(r'api/upident/(?P<id>\d+)$',upIdent),
 
 
     

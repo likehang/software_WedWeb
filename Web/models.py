@@ -42,7 +42,11 @@ class UserProfile(models.Model):#客户信息
     profile_image = models.FileField(upload_to='store/userimg',default='images/matt.jpg',null=True,blank=True)
     email = models.EmailField(null=True,blank = True)
     ident_name = models.CharField(max_length=12,default='',null=True,blank = True)
-    sex = models.BooleanField(default=True)#1->male;0->female
+    sex_s = {
+        ('man','man'),
+        ('woman','woman'),
+    }
+    sex = models.CharField(choices = sex_s,default='man' ,max_length=5)#1->male;0->female
     location = models.ForeignKey(to=City,null=True,blank = True)
     ident_kind = models.ForeignKey(to=ident_Kind,default=1)
     phone = models.CharField(max_length=11,default='')
@@ -92,7 +96,7 @@ class Graph(models.Model):#服务例图
     belong = models.ForeignKey(to=C_S)#所属服务
     order_number = models.PositiveIntegerField(default=1)#图片顺序
     img = models.ImageField(upload_to='store/img')#存储的图
-    flag = models.CharField(max_length=20,default='')
+    flag = models.CharField(max_length=20,default='null')
 
     def __str__(self):
         return self.belong.topic+' '+ str(self.order_number)

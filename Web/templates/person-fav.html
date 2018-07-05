@@ -16,7 +16,7 @@
 	<div class="banner">
         {% include "header.html" %}
 		<div class="agileinfo-top-heading">
-			<h2>Blog Post</h2>
+			<h2>收藏详情</h2>
 		</div>
     </div>
    <!--
@@ -58,7 +58,7 @@
                                     <a class="header left floated" href="../../single/{{fav.fav_ser.id}}">{{fav.fav_ser.topic}}</a>&nbsp;
                                     <a class="ui right floated button" href="../../single/{{fav.fav_ser.id}}/del/personfav">删除</a>
                                     <div class="description ">
-                                      <p>{{fav.fav_ser.introduction}}</p>
+                                      <p>{{fav.fav_ser.introduction|truncatewords:50}}</p>
                                     </div>
                                   </div>
                                 </div>

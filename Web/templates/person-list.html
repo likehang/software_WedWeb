@@ -16,7 +16,7 @@
 	<div class="banner">
             {% include "header.html" %}
 		<div class="agileinfo-top-heading">
-			<h2>Blog Post</h2>
+			<h2>订单状况</h2>
 		</div>
     </div>
    <!--
@@ -69,9 +69,9 @@
                     <div class="three wide column">
                         <div class="header">
                             <br><br>
-                            <div class="">订单号：{{list.id}}</div>
-                            <div class="ui basic orange label">{{list.status.status_name}}</div>
-                            <div >{{list.needlist.detail}}[更多]</div>         
+                            <div class="">订单号：{{list.id}}</div> <br>
+                            <div class="ui basic orange label">{{list.status.status_name}}</div> <br>
+                            <div >{{list.needlist.detail|truncatewords:100}}</div>         
                         </div>
                     </div>
                     <div class="three wide column"></div>

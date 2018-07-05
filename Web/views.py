@@ -137,12 +137,27 @@ def person(request):
         return render(request,'person.html',context=context)
     elif request.method =='POST':
             form = request.POST
-            user.belong_to.username = form['User_name']
-            user.email = form['User_email']
-            user.location.id = int(form['city'])
-            user.sex = bool(form['sex'])#  error!
-            user.phone = form['User_phone']
-            user.save()
+            if form['upicon'] == '1':
+                if request.FILES:
+                    user.profile_image = request.FILES['image']
+                    user.save()
+            elif form['upsecret'] == '1':
+                if user.belong_to.check_password(form['old']):
+                    user.belong_to.set_password(form['new'])
+                    user.belong_to.save()
+            elif form['upiden'] == '1':
+                user.ident_name = form['name']
+                user.ident = form['ID']
+                user.is_ident = True
+                user.save()
+            else:
+                user.belong_to.username = form['User_name']
+                user.email = form['User_email']
+                user.location = City.objects.get(id = form['city'])
+                user.sex = form['sex'] #别碰。。。
+                user.phone = form['User_phone']
+                user.belong_to.save()
+                user.save()
             cities = City.objects.all()
             ser_kind = server_choices.objects.all()
             context['User'] = user
