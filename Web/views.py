@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.middleware.csrf import get_token
 from Web.models import *
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -36,7 +37,6 @@ def index(request):#用户的验证
         return render(request,'index.html',context=context)
     else:
         return redirect(to='/index/')
-
 
 def backWeb(request):
     context={}

@@ -37,13 +37,13 @@ urlpatterns = [
     url(r'^server/(?P<site>\d+)&(?P<kind>\d+)$',server),
 
     url(r'api/getCServer/$',getCServer),
-    url(r'api/ManageCServer/$',ManageCServer),
+    url(r'api/ManageCServer/(?P<id>\d+)$',ManageCServer),
     url(r'api/getServer_kind/$',getServer_kind),
     url(r'api/getCity/$',getCity),
     url(r'api/getBusinessKind/$',getBusinessKind),
     
 
-    url(r'api/getserver_graphs/$',getserver_graphs),
+    url(r'api/getserver_graphs/(?P<id>\d+)$',getserver_graphs),
     url(r'api/manageCompany/$',manageCompany),
     url(r'api/getputClist/$',getputClist),
     url(r'api/manageOrderList/(?P<id>\d+)/(?P<msg>\w+)$',manageOrderList),

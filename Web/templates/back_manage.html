@@ -8,13 +8,15 @@
 <link rel="stylesheet" href="{% static '/css/style.css' %}" type="text/css" media="all" />
 <script src="{% static '/js/vue.js' %}"></script>
 <script src="{% static '/js/reqwest.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 </head>
 <body>
 	<div class="banner">
         {% include "header.html" %}
             <div class="agileinfo-top-heading">
 			    <h2>提供优质婚礼服务  留下最美好的婚礼时光</h2>
-		    </div>
+            </div>
+            {% csrf_token %}
 	</div>
 {% verbatim %}
 <div class="ui grid padded" id="mainmenu">
@@ -53,27 +55,27 @@
                         <div class="field">
                             <div class="">
                                 <label>公司名称</label>
-                                <input maxlength="15" type="text" placeholder="xxxx" id="C_name" v-model.trim="form_Company.new_form.name" :readOnly="!modal.Com_isEdit">
+                                <input maxlength="15" type="text" placeholder="xxxx" name="name" v-model.trim="form_Company.new_form.name" :readOnly="!modal.Com_isEdit">
                             </div>
                             <div class="ui error message"v-if="this.form_Company.new_form.name==''"><p>长度限制</p></div>
                             <br>
                             <div class="">
                                 <label>经营范围</label>
-                                <select id="C_kind" class="ui fluid dropdown" v-model="form_Company.new_form.business_kind" :disabled="!modal.Com_isEdit">
+                                <select name="business_kind" class="ui fluid dropdown" v-model="form_Company.new_form.business_kind" :disabled="!modal.Com_isEdit">
                                     <option v-for="Ckind in Ckinds" :value="Ckind.id" >{{Ckind.ex_name}}</option>
                                 </select>
                             </div>
                             <br>
                             <div class="">
                                 <label>城市</label>
-                                <select id="C_city" class="ui fluid dropdown" v-model="form_Company.new_form.adress" :disabled="!modal.Com_isEdit">
+                                <select name="adress" class="ui fluid dropdown" v-model="form_Company.new_form.adress" :disabled="!modal.Com_isEdit">
                                     <option v-for="city in Citys" :value="city.id" >{{city.city_name}}</option>
                                 </select>
                             </div>
                             <br>
                             <div class="">
                                 <label>内部电话</label>
-                                <input maxlength="11" type="text" placeholder="方便网站联系" id="C_inphone" v-model.trim="form_Company.new_form.inward_phone" :readOnly="!modal.Com_isEdit" 
+                                <input maxlength="11" type="text" placeholder="方便网站联系" name="inward_phone" v-model.trim="form_Company.new_form.inward_phone" :readOnly="!modal.Com_isEdit" 
                                 onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
                                 onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
                             </div>
@@ -81,7 +83,7 @@
                             <br>
                             <div class="">
                                 <label>客户电话</label>
-                                <input maxlength="11" type="text" placeholder="方便与用户联系" id="C_phone" v-model.trim="form_Company.new_form.phone" :readOnly="!modal.Com_isEdit"
+                                <input maxlength="11" type="text" placeholder="方便与用户联系" name="phone" v-model.trim="form_Company.new_form.phone" :readOnly="!modal.Com_isEdit"
                                  onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
                                  onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
                             </div>
@@ -90,7 +92,7 @@
                             <div class="two fields">
                                 <div class="field">
                                     <div class="ui toggle checkbox ">
-                                        <input type="checkbox" id="C_run" v-model="form_Company.new_form.isopen" :disabled="!modal.Com_isEdit"><label>营业状态</label> 
+                                        <input type="checkbox" id="isopen" v-model="form_Company.new_form.isopen" :disabled="!modal.Com_isEdit"><label>营业状态</label> 
                                     </div>
                                 </div>
                                 <div class="field">
@@ -115,7 +117,8 @@
                             <br>
                             <div class="">
                                 <label>上传图标</label>
-                                <input type="file" v-on:change="CnewI($event)" :disabled="!modal.Com_isEdit" accept="image/*" >
+                                <input type="file" v-on:change="CnewI($event)" :disabled="!modal.Com_isEdit" id="Cnew" accept="image/*" >
+                                <input type="text" id = "file" v-show="false"v-model="Cnew_img">
                             </div>
                             <div class="ui error message" v-show=""><p>大小限制</p></div>
                         </div>
@@ -262,7 +265,7 @@
                                 <br>
                                 <div class="two fields">
                                     <div class="field">
-                                        <a class="ui blue button" v-on:click="Ser_edit(0)">{{modal.Ser_button}}</a>
+                                        <a class="ui blue button" v-on:click="Ser_edit(form_SingleServer.new_form.id)">{{modal.Ser_button}}</a>
                                     </div>
                                     <div class="field">
                                         <a class="ui grey button" v-on:click="showMulPage()">取消</a>
@@ -289,7 +292,7 @@
                                         <br>
                                         <div v-for="graph in server_graphs">
                                             <label class="center ">{{graph.order_number}}</label>
-                                            <img src="" alt="" style="width: 200px;height: 200px;">
+                                            <div><img :src="graph.img" alt="" style="width: 200px;height: 200px;"></div>
                                             <br>
                                         </div>
                                         <br>
@@ -321,7 +324,7 @@
                         <div class="ui two column grid items"> 
                             <div class="column item" v-for="server in servers" v-show="samekind(server.service_kind)">
                                 <div class="ui blue segment grid">
-                                    <a class="ui right red corner label">
+                                    <a class="ui right red corner label" v-on:click="readyDel(server.id)"> 
                                         <i class="delete icon"></i>
                                     </a>
                                     <div class="ui fluid image four wide column">
@@ -427,8 +430,12 @@
                     },
                 new_Ser:function(){
                     this.servermenu.mulpage=false;this.servermenu.sinpage=true;
-                    this.form_SingleServer.new_form = []
+                    this.form_SingleServer.new_form.topic = 'null' ;
+                    this.form_SingleServer.new_form.introduction = 'null' ;
                     this.form_SingleServer.new_form.service_kind = this.Choise_kind;
+                    this.form_SingleServer.new_form.minprice = 0.00 ;
+                    this.form_SingleServer.new_form.maxprice = 0.00 ;
+                    this.form_SingleServer.new_form.detail = 'null' ;
                     this.Ser_edit();
                 },
                 showMain:function(){this.menu.main=true;this.menu.company=false;this.menu.list=false;this.menu.server=false},
@@ -452,8 +459,7 @@
                         method:'get',
                         success:function(resp){
                             console.log(resp);
-                            self.form_Company.new_form=resp;
-                            self.DjangoCookie=self.getCookie('csrftoken');}
+                            self.form_Company.new_form=resp;}
                         })
                 },
                 getLists:function(){
@@ -500,15 +506,16 @@
                 },
                 putCompany:function(){//图片上传未完成
                     var self = this;
+                    var c = self.form_Company.new_form;
+                    var file = document.getElementsByName('file')
+                    console.log(file)
+                    var cookie = self.getCookie()
                     reqwest({
                         url:'api/manageCompany/',
                         type:'json',
                         method:'post',
                         headers:{'X-CSRFToken':self.DjangoCookie},
-                        data:[
-                            self.form_Company.new_form,
-                            self.Cnew_img,
-                            ],
+                        data:{c,file},
                         success:function(resp){
                             console.log(resp);
                             self.form_Company.new_form=resp;}
@@ -524,6 +531,7 @@
                 },
                 postSingleList:function(id,msg){
                     var self = this;
+                    var cookie = self.getCookie()
                     reqwest({
                         url:'api/manageOrderList/'+id+'/'+msg,
                         type:'json',
@@ -534,14 +542,16 @@
                             self.lists = resp}
                     })
                 },
-                postSingleServer:function(id){//未 测试
+                postSingleServer:function(id){
                     var self = this;
+                    var s = self.form_SingleServer.new_form
+                    var cookie = self.getCookie()
                     reqwest({
                         url:'api/ManageCServer/'+id,
                         type:'json',
                         method:'post',
                         headers:{'X-CSRFToken':self.DjangoCookie},
-                        data:self.form_SingleServer.new_form,
+                        data:{s},
                         success:function(resp){
                             console.log(resp);
                             self.servers=resp;}
@@ -549,19 +559,22 @@
                 },
                 addSingleServer:function(){//未 测试
                     var self = this;
+                    var s = self.form_SingleServer.new_form
+                    var cookie = self.getCookie()
                     reqwest({
                         url:'api/getCServer/',
                         type:'json',
                         method:'put',
                         headers:{'X-CSRFToken':self.DjangoCookie},
-                        data:self.form_SingleServer.new_form,
+                        data:{s},
                         success:function(resp){
                             console.log(resp);
                             self.servers=resp;}
                     })
                 },
-                delSingleServer:function(id){//未 测试
+                delSingleServer:function(id){
                     var self = this;
+                    var cookie = self.getCookie()
                     reqwest({
                         url:'api/ManageCServer/'+id,
                         type:'json',
@@ -583,7 +596,9 @@
                 },
                 Ser_edit:function(id){
                     var Ser=this.modal;
-                    if(Ser.Ser_isEdit){}
+                    if(Ser.Ser_isEdit){
+                        if(id){this.postSingleServer(id);}
+                        else this.addSingleServer()}
                     Ser.Ser_isEdit=!Ser.Ser_isEdit;
                     if(Ser.Ser_isEdit){Ser.dis="";Ser.Ser_button="保存";}
                     else{Ser.Ser_dis="disabled";Ser.Ser_button="修改";}
@@ -592,6 +607,9 @@
                     if (this.Choise_kind == 0){return true;}
                     else if(kind == this.Choise_kind){return true;}
                     else{return false;}
+                },
+                readyDel:function(id){
+                    if(confirm('确定 删除 该 服务/案例？')){this.delSingleServer(id);}
                 },
                 getCkinds:function(){
                     var self = this;
@@ -637,8 +655,8 @@
                         var dataurl = reader.result;
                         var output = document.getElementById('Coutput'); 
                         output.src = dataurl
-                        this.Cnew_img = {'url':dataurl,'file':reader}
-                        console.log(this.Cnew_img)
+                        output = document.getElementById('file'); 
+                        output.value = dataurl
                     }
                 },
                 SnewI(e) {//显示图片完成 待上传
@@ -652,18 +670,9 @@
                         this.Snew_img = {'url':dataurl,'file':reader}
                     }
                 },
-                getCookie:function(name){  //获取cookie函数
-                    name = name + "=";
-                    var start = document.cookie.indexOf(name),
-                        value = null;
-                    if(start>-1){
-                        var end = document.cookie.indexOf(";",start);
-                        if(end == -1){
-                            end = document.cookie.length;
-                        }
-                        value = document.cookie.substring(start+name.length,end);
-                    }
-                    return value;
+                getCookie:function(){  //获取cookie函数
+                    this.DjangoCookie = document.getElementsByName('csrfmiddlewaretoken')[0].attributes[1].value;
+                    return this.DjangoCookie;
                 },
                 // datesort:function(bool){
                 //     if (bool){this.lists.sort((a,b)=>{return a.create_time <b.create_time });this.date_sort="up";}

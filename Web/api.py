@@ -16,7 +16,7 @@ class singleC_S(serializers.ModelSerializer):#公司的服务管理
         model = C_S
         fields='__all__'
 
-@api_view(['GET'])
+@api_view(['GET','PUT'])
 def getCServer(request):
     print('getCServer')
     if request.method == 'GET':
@@ -30,19 +30,20 @@ def getCServer(request):
         user = request.user
         com = Company.objects.get(manager__belong_to = user)
         reform = request.POST
+        print(reform)
         ser = C_S()
 
         ser.belong = com
-        ser.topic = reform['topic']
+        ser.topic = reform['s[topic]']
         if request.FILES:
             ser.icon = request.FILES
         else:
             print('no files')
-        ser.introduction = reform['introduction']
-        ser.service_kind = server_choices.objects.get(id = reform['service_kind'])
-        ser.minprice = float(reform['minprice'])
-        ser.maxprice = float(reform['maxprice'])
-        ser.detail = reform['detail']
+        ser.introduction = reform['s[introduction]']
+        ser.service_kind = server_choices.objects.get(id = reform['s[service_kind]'])
+        ser.minprice = float(reform['s[minprice]'])
+        ser.maxprice = float(reform['s[maxprice]'])
+        ser.detail = reform['s[detail]']
         ser.save()
 
         sers = C_S.objects.filter(belong = com)
@@ -60,16 +61,16 @@ def ManageCServer(request,id):
         ser = C_S.objects.get(id = id)
         if ser.belong == com:
             reform = request.POST
-            ser.topic = reform['topic']
+            ser.topic = reform['s[topic]']
             if request.FILES:
                 ser.icon = request.FILES
             else:
                 print('no files')
-            ser.introduction = reform['introduction']
-            ser.service_kind = server_choices.objects.get(id = reform['service_kind'])
-            ser.minprice = float(reform['minprice'])
-            ser.maxprice = float(reform['maxprice'])
-            ser.detail = reform['detail']
+            ser.introduction = reform['s[introduction]']
+            ser.service_kind = server_choices.objects.get(id = reform['s[service_kind]'])
+            ser.minprice = float(reform['s[minprice]'])
+            ser.maxprice = float(reform['s[maxprice]'])
+            ser.detail = reform['s[detail]']
             ser.save()
 
             sers = C_S.objects.filter(belong = com)
@@ -96,7 +97,9 @@ class graph(serializers.ModelSerializer):#单个服务的图片管理  未完成
 
 @api_view(['GET','PUT'])
 def getserver_graphs(request,id):
-    pass
+    graphs = Graph.objects.filter(belong = id).order_by('order_number')
+    serializer =graph(graphs,many = True)
+    return Response(serializer.data)
 
 @api_view(['DELETE'])
 def putserver_graphs(request,id):
@@ -132,22 +135,24 @@ def manageCompany(request):
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        print('post')
         user = request.user
         com = Company.objects.get(manager__belong_to = user)
         old_serializer = singleCom(com , many = False)
         reform = request.POST
         print(reform)
-        com.name = reform['name']
-        if request.FILES:
-            com.icon = request.FILES
+        com.name = reform["c[name]"]
+        if reform["file"]:
+            print(reform["file"])
         else:
             print('no files')
-        com.phone = reform['phone']
-        com.isopen = bool(reform['isopen'])
-        com.inward_phone = reform['inward_phone']
-        com.business_kind =business_choices.objects.get(id = reform['business_kind']) 
-        com.adress =City.objects.get(id = reform['adress']) 
+        com.phone = reform["c[phone]"]
+        if reform["c[isopen]"] == 'true':
+            com.isopen = True
+        elif reform["c[isopen]"] == 'false':
+            com.isopen = False
+        com.inward_phone = reform["c[inward_phone]"]
+        com.business_kind =business_choices.objects.get(id = reform["c[business_kind]"]) 
+        com.adress =City.objects.get(id = reform["c[adress]"]) 
         com.save()
         serializer = singleCom(com , many = False)
         return Response(serializer.data)
@@ -190,8 +195,6 @@ def manageOrderList(request,id,msg):
         if msg =='cancel':
             The_list.status = status.objects.get(status_level = The_list.status.next_2) 
         elif msg =='next':
-            print(The_list.status.status_level)
-            print(The_list.status.next_1)
             The_list.status = status.objects.get(status_level = The_list.status.next_1) 
         The_list.save()
         user = request.user
