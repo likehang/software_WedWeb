@@ -46,7 +46,7 @@ class UserProfile(models.Model):#客户信息
         ('man','man'),
         ('woman','woman'),
     }
-    sex = models.CharField(choices = sex_s,default='man' ,max_length=5)#1->male;0->female
+    sex = models.CharField(choices = sex_s,default='man' ,max_length=5)
     location = models.ForeignKey(to=City,null=True,blank = True)
     ident_kind = models.ForeignKey(to=ident_Kind,default=1)
     phone = models.CharField(max_length=11,default='')

@@ -34,44 +34,42 @@
 
 	{% verbatim %}
 	<div id = "tab">
-		<div class="ui segment" v-show="modal.tab" style="width: 300px !important;z-index:999; position: fixed;bottom:60px; right: 10px; padding: 10px;">
-			<div  v-for="server in servers">	
-			<li class="news-meta-item" data-index="1">
-					<span class="news-title" >
-						<span class="title-link" >
-							<a class="title-content" :href="'../../single/'+server.id" target="_blank">{{server.topic }}</a>
-							<li maxlength="25">{{server.introduction}}</li>
-						</span>
-					</span>
-				</li>	
+		<div class="ui segment" v-show="modal.tab" style="width: 350px !important;z-index:999; position: fixed;bottom:60px; right: 10px; padding: 10px;">
+			<div class="ui message" v-show="servers != []">
+			<div class="msg-wrapper scrollbar__wrap" >
+				<div class="scrollbar__view module-list"v-for="server in servers">
+					<ul>
+						<li><a class="title-content" :href="'../../single/'+server.id" target="_blank">{{server.topic }}</a></li>
+						<div class="case_paper"style="overflow-y:hidden;height:45px;">{{server.introduction}}</div>
+					</ul>
+				</div>
 			</div>
-		<div class="ui fitted divider"></div>
-		<div v-for="company in companies">
-		    <li class="news-meta-item" data-index="1" >
-				<span class="news-title" >
-					<span class="title-link"  >
-						<a class="title-content" :href="'../../company/'+company.id" target="_blank">{{ company.name }}</a>
-		                <li maxlength="25" >{{company.introduction}}</li>       
-					</span>
-				</span>
-			</li>
 		</div>
-		<div class="ui fitted divider"></div>
-		<div v-for="city in cities">
-			<li class="news-meta-item" data-index="1" >
-				<span class="news-title">
-					<span class="title-link" >
-						<a class="title-content" :href="'../../server/'+city.id+'&0'" target="_blank">{{ city.city_name }}</a>
-					</span>
-				</span>
-			</li>
+		<div class="ui message" v-show="companies!= []">
+		<div class="msg-wrapper scrollbar__wrap" >
+					<div class="scrollbar__view module-list"v-for="company in companies">
+						<ul>
+							<li><a class="title-content" :href="'../../company/'+company.id" target="_blank">{{ company.name }}</a></li>
+							<div class="case_paper"style="overflow-y:hidden;height:45px;">{{company.introduction}}</div> 
+						</ul>
+					</div>
+				</div>
+		</div>	
+		<div class="ui message" v-if="cities">
+		<div class="msg-wrapper scrollbar__wrap" >
+				<div class="scrollbar__view module-list"v-for="city in cities">
+					<ul>
+						<li><a class="title-content" :href="'../../server/'+city.id+'&0'" target="_blank">{{ city.city_name }}</a></li>
+					</ul>
+				</div>
+			</div>
 		</div>
 	</div>	
-		<div style="width: 272px !important; height: 100.531px !important;position: fixed;bottom:80px;right: 10px; margin-top: 15px;" >
+		<div style="width: 350px !important; height: 100.531px !important;position: fixed;bottom:80px;right: 10px; margin-top: 15px;" >
 			<div class="ui segment" v-show="modal.intro">
 				<p>Hi!我是您的新娘顾问Echo我将为您提供专业的婚礼策划咨询及预约服务，有什么可以帮您的吗？</p>
 			</div>
-			<div class="ui input focus" style="width:272px;position:fixed;bottom:20px;">
+			<div class="ui input focus" style="width:350px;position:fixed;bottom:20px;">
 				<input type="text" v-model="modal.userName" >
 				<a class="ui button" v-on:click="showtab(modal.userName)" style="width:45px !important;padding-left: 8px;">OK</a>
 			</div>
@@ -146,6 +144,50 @@
 					<span class="right floated"><a href="../../server/0&{{k1.id}}">More>></a></span>
 				</div>
 				{% for ser in favor1 %}
+				<div class="col-md-4 w3-agile-post-grids">
+					<div class="w3-agile-post-img" style="background-image:url({{ ser.icon.url }})">
+						<a href="../../single/{{ser.id}}"> 
+							<ul>
+								<li>{{ser.create_time}}</li>
+							</ul>
+						</a>
+					</div>
+					<div class="w3-agile-post-info">
+						<h4><a href="../../single/{{ser.id}}">{{ser.topic}}</a></h4>
+						<p>{{ser.introduction}}</p>
+					</div>
+				</div>
+				{% endfor %}  
+				<div class="clearfix"> </div>
+			</div>
+			<div class="posts-grids">
+				<div class="ui segment ">
+					<span class="left floated">{{k2.ex_ser_name}}</span>
+					<span class="right floated"><a href="../../server/0&{{k1.id}}">More>></a></span>
+				</div>
+				{% for ser in favor2 %}
+				<div class="col-md-4 w3-agile-post-grids">
+					<div class="w3-agile-post-img" style="background-image:url({{ ser.icon.url }})">
+						<a href="../../single/{{ser.id}}"> 
+							<ul>
+								<li>{{ser.create_time}}</li>
+							</ul>
+						</a>
+					</div>
+					<div class="w3-agile-post-info">
+						<h4><a href="../../single/{{ser.id}}">{{ser.topic}}</a></h4>
+						<p>{{ser.introduction}}</p>
+					</div>
+				</div>
+				{% endfor %}  
+				<div class="clearfix"> </div>
+			</div>
+			<div class="posts-grids">
+				<div class="ui segment ">
+					<span class="left floated">{{k3.ex_ser_name}}</span>
+					<span class="right floated"><a href="../../server/0&{{k1.id}}">More>></a></span>
+				</div>
+				{% for ser in favor3 %}
 				<div class="col-md-4 w3-agile-post-grids">
 					<div class="w3-agile-post-img" style="background-image:url({{ ser.icon.url }})">
 						<a href="../../single/{{ser.id}}"> 

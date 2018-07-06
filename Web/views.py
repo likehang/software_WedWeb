@@ -19,8 +19,8 @@ def index(request):#用户的验证
         cities = City.objects.all()
         ser_kind = server_choices.objects.all()
         k1 = server_choices.objects.get(ex_ser_name='定制婚礼')
-        k2 = server_choices.objects.get(ex_ser_name='婚礼服饰')
-        k3 = server_choices.objects.get(ex_ser_name='其他')
+        k2 = server_choices.objects.get(ex_ser_name='婚礼场地')
+        k3 = server_choices.objects.get(ex_ser_name='婚礼摄影')
         kind1 = C_S.objects.filter(service_kind = k1).order_by('public_like')[:3]
         kind2= C_S.objects.filter(service_kind = k2).order_by('public_like')[:3]
         kind3 = C_S.objects.filter(service_kind = k3).order_by('public_like')[:3]
@@ -151,13 +151,15 @@ def person(request):
                 user.is_ident = True
                 user.save()
             else:
+                print(form)
                 user.belong_to.username = form['User_name']
                 user.email = form['User_email']
                 user.location = City.objects.get(id = form['city'])
-                user.sex = form['sex'] #别碰。。。
+                user.sex = str(form['sex'] )
                 user.phone = form['User_phone']
                 user.belong_to.save()
                 user.save()
+                print(user.sex)
             cities = City.objects.all()
             ser_kind = server_choices.objects.all()
             context['User'] = user

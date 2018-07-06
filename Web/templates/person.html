@@ -141,7 +141,9 @@
                     <br>
                     <div class="field">
                         <label >Your Phone</label>
-                        <input type="text" placeholder="xxxx" name="User_phone" value={{User.phone}}>
+                        <input type="text" placeholder="xxxx" name="User_phone" value={{User.phone}} maxlength="11"
+                        onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                        onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
                     </div>
                     <br>
                     <div class="three fields">

@@ -120,7 +120,7 @@ def getServer_kind(request):
 class singleCom(serializers.ModelSerializer):#获取管理员所在公司信息
     class Meta:
         model = Company
-        fields = ['name','icon','phone','ident','isopen','inward_phone','business_kind','adress']
+        fields = '__all__'
 
 
 @api_view(['GET','POST'])
